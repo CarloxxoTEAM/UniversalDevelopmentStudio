@@ -1,3 +1,7 @@
-logo-uds.png            Logo do UDS (1024x1024, fundo transparente)
-logo-uds-nome.png       Logo com o nome e o slogan
-design-uds-*.png        Capturas do design (tema escuro, claro e visualizador de imagens)
+logo-uds.png                         Logo do UDS (1024x1024, fundo transparente)
+logo-uds-nome.png                    Logo com o nome e o slogan
+design-uds-tema-escuro.png           Tela base, tema escuro, ícones Estilo 1 (padrão)
+design-uds-tema-claro.png            Tema claro (ícones pretos)
+design-uds-icones-estilo2.png        Tela com os ícones do Estilo 2
+design-uds-visualizador-imagem.png   Visualizador de imagens
+icones-base/                         Modelos vazios (SVG), regras de desenho e fonte dos ícones de arquivo

@@ -1,12 +1,82 @@
 # Universal Development Studio (UDS)
 
-Ambiente universal e portátil para desenvolvimento, edição e visualização de arquivos.
 *One Studio. Unlimited Possibilities.*
 
-Roda direto de uma pasta, sem instalação. Interface inspirada no VS Code, com um bloco de notas por projeto no lugar do painel de IA.
+O UDS é um ambiente **universal e portátil** para desenvolvimento, edição e visualização de arquivos. Em uma única janela, você abre uma pasta, edita código e vê imagens (e, nas próximas versões, áudio, vídeo, modelos 3D, PDF e mais). Ele roda direto de uma pasta ou pendrive, sem instalação, e guarda tudo ao lado do executável.
+
+A interface segue o estilo dos editores modernos, com explorador de arquivos à esquerda, abas e editor no centro, painel inferior e, à direita, um **bloco de notas por projeto**.
+
+**Versão atual:** 1.0.1 · **Plataforma:** Windows (Linux e macOS nas etapas 9.00 em diante) · **Licença:** MIT
+
+## O que já funciona
+- Abrir uma pasta do computador e navegar pelos arquivos.
+- Criar, renomear e excluir arquivos e pastas.
+- Abas e editor de texto com numeração de linhas e destaque de sintaxe.
+- Visualizador de imagens (PNG, JPG, GIF, WEBP, BMP, ICO, SVG) com zoom, rotação e ajuste.
+- **Ícones para mais de 200 extensões**, em 2 estilos (preto e branco, de acordo com o tema).
+- Temas claro e escuro, tamanho da fonte e zoom.
+- Bloco de notas por projeto, com vínculo a arquivos.
+- Modo portátil: configurações e notas ficam na pasta `portable/`.
+
+Os ícones de Busca, Git, Execução e Extensões e o painel Terminal já aparecem na tela, mas só ganham função nas versões indicadas no roteiro abaixo.
+
+## Usar (portátil)
+1. Abra **Releases** no GitHub e baixe o ZIP do Windows.
+2. Extraia em qualquer pasta ou pendrive.
+3. Execute `UniversalDevelopmentStudio.exe`.
+
+Para atualizar, extraia a nova versão por cima, mantendo a pasta `portable/`. Requisito no Windows: WebView2 Runtime (já vem no Windows 10 e 11 atualizados). Se aparecer "O Windows protegeu seu PC", clique em *Mais informações* e depois em *Executar assim mesmo*, porque o programa ainda não tem assinatura digital.
+
+## Comandos do programa
+Tudo isso está no menu que abre ao clicar no **logo do UDS** (canto superior esquerdo).
+
+| Comando | O que faz | Atalho |
+|---|---|---|
+| Abrir pasta… | Escolhe a pasta do projeto; ela aparece no explorador | `Ctrl+O` |
+| Abrir arquivo… | Abre um arquivo avulso em uma aba | |
+| Novo arquivo | Cria um arquivo vazio na pasta do projeto e o abre | |
+| Nova pasta | Cria uma pasta no projeto | |
+| Salvar | Salva todos os arquivos alterados (marcados com ●) | `Ctrl+S` |
+| Reabrir como texto | Abre como texto um arquivo que o UDS tratou como binário ou imagem | |
+| Fechar aba | Fecha a aba; se houver alterações, pergunta se salva | |
+| Alternar tema claro/escuro | Troca o tema; os ícones mudam de cor junto | |
+| Barra lateral / Painel inferior / Notas | Mostra ou esconde cada área (também pelos 3 botões no canto superior direito) | |
+| Aumentar / Diminuir zoom | Muda o tamanho de toda a interface | `Ctrl +` / `Ctrl -` |
+| Zoom padrão | Volta a 100% (clicar em "100%" no topo também) | `Ctrl 0` |
+| Sobre o UDS | Mostra versão e slogan na aba Output | |
+
+**Outros atalhos e gestos**
+- `Ctrl` + roda do mouse: zoom da interface.
+- `Tab` no editor: insere 2 espaços.
+- Botão direito no explorador: novo arquivo, nova pasta, renomear, excluir.
+- Botão ⋯ no topo do explorador: novo arquivo, nova pasta, atualizar.
+- Notas: **＋ Nova nota** cria; duplo clique no título renomeia; **＋ Vincular arquivo atual** adiciona um atalho `@arquivo` que abre o arquivo ao clicar; botão direito no atalho remove o vínculo.
+
+**Configurações** (ícone de engrenagem): tema, **estilo dos ícones** (Estilo 1 padrão ou Estilo 2), tamanho da fonte, zoom e *Restaurar padrões*.
+
+## Comandos para desenvolver
+Requisitos: [Node.js 20+](https://nodejs.org), [Rust](https://rustup.rs) e os [pré-requisitos do Tauri](https://tauri.app/start/prerequisites/).
+
+| Comando | O que faz |
+|---|---|
+| `npm install` | Baixa as ferramentas de compilação (Tauri CLI) |
+| `npm run icons` | Gera o ícone do **programa** (`.ico`, `.icns`, `.png`) a partir de `app-icon.png`. Não tem relação com os ícones de arquivo |
+| `npm test` | Roda os testes da interface, inclusive a conferência dos ícones |
+| `cargo test --manifest-path src-tauri/Cargo.toml` | Roda os testes do núcleo em Rust |
+| `npm run dev` | Abre o UDS em modo de desenvolvimento |
+| `npm run build` | Compila o executável em `src-tauri/target/release/` |
+| `python scripts/package.py windows` | Depois do build: monta a pasta portátil e o ZIP em `dist-portable/` |
+| `git tag v1.0.1` e `git push origin v1.0.1` | Publica uma versão: o GitHub Actions compila, testa, gera o ZIP e o coloca em **Releases** |
+
+## Guias na pasta `ReadMe/`
+| Arquivo | Conteúdo |
+|---|---|
+| [`ReadMe/icones.md`](ReadMe/icones.md) | Os 2 estilos de ícone, preto e branco por tema, como adicionar ou trocar ícones e a lista completa por extensão |
+| [`ReadMe/atualizacoes.md`](ReadMe/atualizacoes.md) | O que mudou em cada versão |
+| [`ReadMe/estrutura.md`](ReadMe/estrutura.md) | Pastas, arquitetura, portabilidade e como criar um visualizador |
+| [`ReadMe/design.md`](ReadMe/design.md) | Logo, paleta de cores e capturas do design |
 
 ## Roteiro de desenvolvimento
-
 Cada etapa só avança quando a anterior funciona. `[x]` = pronta, `[ ]` = a fazer.
 
 **FUNDAÇÃO**
@@ -65,43 +135,4 @@ Cada etapa só avança quando a anterior funciona. `[x]` = pronta, `[ ]` = a faz
 - [ ] 9.50 - Idiomas da interface e acessibilidade básica
 - [ ] 10.00 - Versão estável com guia de plugins e de temas
 
-O que já existe na interface e funciona hoje: abrir pasta, explorador, criar/renomear/excluir, abas, editor com numeração e destaque de sintaxe, imagens, tema claro/escuro, tamanho da fonte, zoom (Ctrl +, Ctrl -, Ctrl 0), bloco de notas por projeto. Os ícones de Busca, Git, Execução e Extensões, e o painel Terminal, já aparecem na tela, mas só ganham função nas versões indicadas.
-
-## Usar (portátil)
-1. Em **Releases**, baixe o ZIP da sua plataforma.
-2. Extraia em qualquer pasta ou pendrive.
-3. Execute `UniversalDevelopmentStudio.exe`.
-
-Configurações e notas ficam em `portable/`. Para atualizar, extraia a nova versão por cima, mantendo `portable/` e `projects/`.
-Windows: precisa do WebView2 Runtime (já incluso no Windows 10/11 atualizados).
-
-## Desenvolver
-Requisitos: [Node.js 20+](https://nodejs.org), [Rust](https://rustup.rs) e os [pré-requisitos do Tauri](https://tauri.app/start/prerequisites/).
-
-```
-npm install
-npm run icons    # gera os ícones a partir de app-icon.png
-npm test         # testes da interface (JavaScript)
-cargo test --manifest-path src-tauri/Cargo.toml   # testes do núcleo (Rust)
-npm run dev      # abre o UDS em modo de desenvolvimento
-npm run build    # gera o executável em src-tauri/target/release/
-```
-
-## Publicar uma versão
-```
-git tag v1.0.0
-git push origin v1.0.0
-```
-O GitHub Actions compila, testa, gera o ZIP portátil e o publica em Releases.
-
-## Estrutura
-| Pasta | Função |
-|---|---|
-| `src-tauri/` | Núcleo em Rust (arquivos, configurações, portabilidade) |
-| `src/` | Interface (`app.js`, `core.js` com funções puras e testadas) |
-| `src/visualizadores/` | Um módulo por visualizador (`imagem.js`); veja `registro.js` |
-| `tests/` | Testes automáticos |
-| `assets-design/` | Logo e imagens do design |
-| `portable/` | Configurações do usuário (criada ao lado do executável) |
-
-Veja `docs/ARQUITETURA.md`, `CONTRIBUTING.md` e `CHANGELOG.md`. Licença: MIT.
+Contribuições: veja `CONTRIBUTING.md`. Licença: MIT.

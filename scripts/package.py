@@ -12,7 +12,7 @@ pkg = out / name
 shutil.rmtree(out, ignore_errors=True)
 pkg.mkdir(parents=True)
 shutil.copy2(exe, pkg / exe.name)
-for d in ["portable", "plugins", "languages", "projects", "docs"]:
+for d in ["portable", "plugins", "languages", "projects", "ReadMe"]:
     if (root / d).exists():
         shutil.copytree(root / d, pkg / d)
 for f in ["README.md", "LICENSE"]:

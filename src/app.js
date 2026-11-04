@@ -1,26 +1,27 @@
 // Interface do UDS (Fundação). Fala com o núcleo Rust (src-tauri/src/main.rs) via invoke().
 if(!window.__TAURI__){document.body.innerHTML='<p style="padding:20px">Abra o UDS pelo executável UniversalDevelopmentStudio.</p>';throw new Error('sem Tauri')}
 const T=window.__TAURI__,$=s=>document.querySelector(s);
-const {esc,base,par,join,extOf,langOf,iconInfo,highlight}=UDSCore;
+const {esc,base,par,join,extOf,langOf,iconPath,iconColor,ESTILOS,highlight}=UDSCore;
 const inv=(c,a)=>T.core.invoke(c,a),url=p=>T.core.convertFileSrc(p);
-const VERSION='1.0.0';
-let root=null,cfg={theme:'dark',recent:[],fs:13,zoom:1,notes:{},activeNote:{},sideOpen:true,panelOpen:true,notesOpen:true},docs={},tabs=[],active=null,dirs={},openD={},side='exp',sec={opened:false,proj:true,outline:false,timeline:false},ptab='term',buf={term:'',prob:'',out:'',dbg:''};
+const VERSION='1.0.1';
+let root=null,cfg={theme:'dark',iconStyle:'estilo1',recent:[],fs:13,zoom:1,notes:{},activeNote:{},sideOpen:true,panelOpen:true,notesOpen:true},docs={},tabs=[],active=null,dirs={},openD={},side='exp',sec={opened:false,proj:true,outline:false,timeline:false},ptab='term',buf={term:'',prob:'',out:'',dbg:''};
 const IC={folder:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',git:'<circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="8" r="2.2"/><path d="M6 7.2v9.6M18 10.2c0 4-6 3-12 6"/>',play:'<path d="M7 4.5v15l12-7.5z"/>',plug:'<path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>',l1:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/>',l2:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 15h18"/>',l3:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/>',chev:'<path d="m6 9 6 6 6-6"/>'};
 const svg=n=>`<svg class="i" viewBox="0 0 24 24">${IC[n]}</svg>`;
 const log=t=>{buf.out+=esc(t)+'\n';if(ptab=='out')showPanel()};
 const flash=t=>{$('#s2').textContent=t;setTimeout(()=>{if($('#s2').textContent==t)$('#s2').textContent=''},2500)};
 const saveCfg=()=>inv('save_config',{json:JSON.stringify(cfg)}).catch(()=>{});
-const fileIcon=n=>{const i=iconInfo(n);return`<span class="fi" style="background:${i.color};color:${i.fg}">${esc(i.label)}</span>`};
+const fileIcon=(n,sz)=>`<img class="fi" alt="" src="${iconPath(n,cfg.iconStyle,iconColor(cfg.theme))}"${sz?` width="${sz}" height="${sz}"`:''}>`;
 const FC={src:'#ff6b6b',assets:'#35b7a3',lib:'#6bd968',components:'#4fc1ff',docs:'#e8a33d',styles:'#c586c0',images:'#35b7a3',public:'#4fc1ff',node_modules:'#7a7a85',dist:'#7a7a85',target:'#7a7a85',config:'#e8a33d',scripts:'#6bd968',tests:'#6bd968'};
 const PAL=['#e8a33d','#4fc1ff','#6bd968','#c586c0','#ff6b6b','#35b7a3'];
-const folderIcon=n=>`<svg class="i" viewBox="0 0 24 24" style="width:14px;height:14px;fill:${FC[n.toLowerCase()]||PAL[[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%6]};stroke:none">${IC.folder}</svg>`;
+const folderIcon=n=>`<svg class="i" viewBox="0 0 24 24" style="width:16px;height:16px;fill:${FC[n.toLowerCase()]||PAL[[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%6]};stroke:none">${IC.folder}</svg>`;
 function ask(l,v=''){return new Promise(r=>{const m=$('#mod'),i=$('#mi');$('#ml').textContent=l;i.value=v;m.style.display='grid';i.focus();i.select();const done=x=>{m.style.display='none';i.onkeydown=null;r(x)};i.onkeydown=e=>{if(e.key=='Enter')done(i.value.trim());if(e.key=='Escape')done(null)}})}
 
 /* ---------- Zoom e layout (0.40) ---------- */
 function setZoom(z){z=Math.min(3,Math.max(.5,Math.round(z*100)/100));cfg.zoom=z;const a=$('#app');a.style.zoom=z;a.style.width=`calc(100vw / ${z})`;a.style.height=`calc(100vh / ${z})`;$('#zl').textContent=Math.round(z*100)+'%';saveCfg()}
 function applyLayout(){$('#side').style.display=cfg.sideOpen?'':'none';$('#panel').style.display=cfg.panelOpen?'':'none';$('#notes').style.display=cfg.notesOpen?'':'none';[['t1','sideOpen'],['t2','panelOpen'],['t3','notesOpen']].forEach(([id,k])=>$('#'+id).classList.toggle('on',cfg[k]));renderNotes()}
 const toggle=k=>{cfg[k]=!cfg[k];applyLayout();saveCfg()};
-function toggleTheme(){cfg.theme=cfg.theme=='dark'?'light':'dark';document.documentElement.dataset.theme=cfg.theme;saveCfg()}
+function setTheme(t){cfg.theme=t;document.documentElement.dataset.theme=t;saveCfg();renderAll()}
+function toggleTheme(){setTheme(cfg.theme=='dark'?'light':'dark')}
 
 /* ---------- Menus ---------- */
 const MENU=[['ARQUIVO',[['Abrir pasta…','Ctrl+O',openFolder],['Abrir arquivo…','',openFile],['Novo arquivo','',()=>mk(root,false)],['Nova pasta','',()=>mk(root,true)],['Salvar','Ctrl+S',saveAll],['Reabrir como texto','',()=>reopen(active)],['Fechar aba','',()=>closeTab(active)]]],
@@ -55,11 +56,12 @@ function renderRail(){const a=$('#act');a.innerHTML='';RAIL.forEach(([id,ic,t,of
 function tree(p,d){return(dirs[p]||[]).map(e=>{const pad=`style="padding-left:${8+d*12}px"`;if(e.is_dir){const o=openD[e.path];return`<div class="it" ${pad} data-d="${esc(e.path)}"><span class="ch">${o?'⌄':'›'}</span>${folderIcon(e.name)} ${esc(e.name)}</div>`+(o?tree(e.path,d+1):'')}return`<div class="it ${active==e.path?'on':''}" ${pad} data-p="${esc(e.path)}"><span class="ch"></span>${fileIcon(e.name)} ${esc(e.name)}${docs[e.path]&&docs[e.path].dirty?' ●':''}</div>`}).join('')}
 const shd=(k,t,extra='')=>`<div class="sh" data-s="${k}"><span>${sec[k]?'⌄':'›'}</span>${t}<span class="sp"></span>${extra}</div>`;
 function renderSide(){const s=$('#side');
- if(side=='set'){s.innerHTML=`<div class="eh">CONFIGURAÇÕES</div><div class="pad">Tema<br><select id="th"><option value="dark">Escuro</option><option value="light">Claro</option></select><br><br>Tamanho da fonte do editor: <b id="fv">${cfg.fs}</b><br><input type="range" id="fs" min="10" max="24" value="${cfg.fs}" style="width:100%"><br><br>Zoom: <b>${Math.round(cfg.zoom*100)}%</b><br><button id="z1">−</button> <button id="z2">＋</button> <button id="z0">100%</button><br><br><button id="rs">Restaurar padrões</button><br><br><span id="pp"></span></div>`;
-  $('#th').value=cfg.theme;$('#th').onchange=e=>{cfg.theme=e.target.value;document.documentElement.dataset.theme=cfg.theme;saveCfg()};
+ if(side=='set'){s.innerHTML=`<div class="eh">CONFIGURAÇÕES</div><div class="pad">Tema<br><select id="th"><option value="dark">Escuro</option><option value="light">Claro</option></select><br><br>Estilo dos ícones<br><select id="is">${ESTILOS.map(k=>`<option value="${k}">${esc(UDSIconIndex.estilos[k])}</option>`).join('')}</select><br><br>Tamanho da fonte do editor: <b id="fv">${cfg.fs}</b><br><input type="range" id="fs" min="10" max="24" value="${cfg.fs}" style="width:100%"><br><br>Zoom: <b>${Math.round(cfg.zoom*100)}%</b><br><button id="z1">−</button> <button id="z2">＋</button> <button id="z0">100%</button><br><br><button id="rs">Restaurar padrões</button><br><br><span id="pp"></span></div>`;
+  $('#th').value=cfg.theme;$('#is').value=cfg.iconStyle;$('#th').onchange=e=>setTheme(e.target.value);
+  $('#is').onchange=e=>{cfg.iconStyle=e.target.value;saveCfg();renderAll()};
   $('#fs').oninput=e=>{cfg.fs=+e.target.value;$('#fv').textContent=cfg.fs;document.querySelectorAll('.ed').forEach(x=>x.style.fontSize=cfg.fs+'px');saveCfg()};
   $('#z1').onclick=()=>{setZoom(cfg.zoom-.1);renderSide()};$('#z2').onclick=()=>{setZoom(cfg.zoom+.1);renderSide()};$('#z0').onclick=()=>{setZoom(1);renderSide()};
-  $('#rs').onclick=()=>{cfg.theme='dark';cfg.fs=13;document.documentElement.dataset.theme='dark';setZoom(1);saveCfg();renderAll()};
+  $('#rs').onclick=()=>{cfg.iconStyle='estilo1';cfg.fs=13;setZoom(1);setTheme('dark')};
   inv('portable_path').then(p=>{const e=$('#pp');if(e)e.textContent='Configurações salvas em: '+p});return}
  let h='<div class="eh">EXPLORER<span class="sp"></span><span style="cursor:pointer" id="mo" title="Ações">⋯</span></div><div class="sc">';
  h+=shd('opened','OPENED EDITORS');if(sec.opened)h+=tabs.map(t=>`<div class="it ${active==t?'on':''}" data-p="${esc(t)}" style="padding-left:22px">${fileIcon(t)} ${esc(base(t))}</div>`).join('')||'<div class="pad">Nenhum arquivo aberto.</div>';
@@ -83,7 +85,7 @@ const ctx={url,fail:m=>{$('#view').innerHTML=`<div class="wel">⚠ ${esc(m)}<br>
 function view(){const v=$('#view');v.innerHTML='';$('#s3').textContent='';$('#s2').textContent='';if(!active)return welcome();const p=active,d=docs[p];
  if(d.forced||d.kind=='text'&&!UDS.findViewer(p,d)){$('#s3').textContent=langOf(p);return editor(p)}
  const vw=UDS.findViewer(p,d);if(vw){$('#s3').textContent=vw.nome;try{return vw.open(p,d,v,ctx)}catch(e){return ctx.fail('Falha no visualizador '+vw.nome+': '+e.message)}}
- v.innerHTML=`<div class="wel">${fileIcon(p)}<h1>${esc(base(p))}</h1>Ainda não há visualizador para este formato.<br>${(d.size/1024).toFixed(1)} KB<br><br><button id="rt">Abrir como texto</button></div>`;$('#rt').onclick=()=>reopen(p)}
+ v.innerHTML=`<div class="wel">${fileIcon(p,56)}<h1>${esc(base(p))}</h1>Ainda não há visualizador para este formato.<br>${(d.size/1024).toFixed(1)} KB<br><br><button id="rt">Abrir como texto</button></div>`;$('#rt').onclick=()=>reopen(p)}
 function editor(p){const v=$('#view'),d=docs[p],ext=extOf(p);v.innerHTML='<div class="ed"><div class="gu"></div><div class="al"></div><pre></pre><textarea spellcheck="false" wrap="off" aria-label="Editor"></textarea></div>';const ed=v.querySelector('.ed');ed.style.fontSize=cfg.fs+'px';
  const ta=ed.querySelector('textarea'),pre=ed.querySelector('pre'),gu=ed.querySelector('.gu'),al=ed.querySelector('.al');ta.value=d.text;
  const up=()=>{pre.innerHTML=highlight(ta.value,ext)+'\n';gu.innerHTML=Array.from({length:ta.value.split('\n').length},(_,i)=>i+1).join('<br>')};
@@ -117,4 +119,4 @@ function renderAll(){renderRail();renderTop();renderTabs();renderSide();view();r
 document.addEventListener('keydown',e=>{const m=e.ctrlKey||e.metaKey;if(m&&e.key=='s'){e.preventDefault();saveAll()}else if(m&&e.key=='o'){e.preventDefault();openFolder()}else if(m&&(e.key=='+'||e.key=='=')){e.preventDefault();setZoom(cfg.zoom+.1)}else if(m&&(e.key=='-'||e.key=='_')){e.preventDefault();setZoom(cfg.zoom-.1)}else if(m&&e.key=='0'){e.preventDefault();setZoom(1)}});
 document.addEventListener('wheel',e=>{if(e.ctrlKey){e.preventDefault();setZoom(cfg.zoom+(e.deltaY<0?.1:-.1))}},{passive:false});
 $('#t1').onclick=()=>toggle('sideOpen');$('#t2').onclick=()=>toggle('panelOpen');$('#t3').onclick=()=>toggle('notesOpen');$('#zl').onclick=()=>setZoom(1);
-(async()=>{try{Object.assign(cfg,JSON.parse(await inv('load_config')))}catch(e){}document.documentElement.dataset.theme=cfg.theme;setZoom(cfg.zoom);applyLayout();renderAll();showPanel();log('UDS '+VERSION+' pronto. Dados portáteis em: '+await inv('portable_path'))})();
+(async()=>{try{Object.assign(cfg,JSON.parse(await inv('load_config')))}catch(e){}if(!ESTILOS.includes(cfg.iconStyle))cfg.iconStyle='estilo1';document.documentElement.dataset.theme=cfg.theme;setZoom(cfg.zoom);applyLayout();renderAll();showPanel();log('UDS '+VERSION+' pronto. Dados portáteis em: '+await inv('portable_path'))})();
