@@ -1,4 +1,4 @@
-# Arquitetura (Fase 1)
+# Arquitetura (Fundação)
 
 | Arquivo | Responsabilidade |
 |---|---|
@@ -13,3 +13,19 @@ A interface chama o núcleo com `invoke("nome_do_comando", {...})`. Cada comando
 
 ## Portabilidade
 O executável cria `portable/config/settings.json` ao lado dele. No Windows, o WebView2 também guarda seus dados em `portable/webview/`. Requisito: WebView2 Runtime (já vem no Windows 10/11 atualizados).
+
+## Visualizadores como módulos (0.80)
+`src/visualizadores/registro.js` guarda a lista de visualizadores. Cada módulo se registra:
+
+```js
+UDS.registerViewer({
+  id: 'meu-formato', nome: 'Meu formato',
+  match: (caminho, doc) => caminho.endsWith('.xyz'),
+  open: (caminho, doc, container, ctx) => { container.textContent = 'Olá'; }
+});
+```
+Depois inclua `<script src="visualizadores/meu-formato.js"></script>` no `index.html`. O núcleo não precisa mudar.
+
+## Testes (0.50)
+- `npm test` roda `tests/core.test.js` (funções puras de `src/core.js`).
+- `cargo test --manifest-path src-tauri/Cargo.toml` roda os testes do núcleo Rust.

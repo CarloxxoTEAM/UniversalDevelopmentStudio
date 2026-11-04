@@ -1,0 +1,3 @@
+logo-uds.png            Logo do UDS (1024x1024, fundo transparente)
+logo-uds-nome.png       Logo com o nome e o slogan
+design-uds-*.png        Capturas do design (tema escuro, claro e visualizador de imagens)

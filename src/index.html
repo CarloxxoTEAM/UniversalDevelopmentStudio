@@ -8,24 +8,36 @@
 </head>
 <body>
 <div id="app">
- <div id="menu"><b>UDS</b></div>
+ <header id="top">
+  <img id="logo" src="logo.png" alt="Menu do UDS" title="Menu">
+  <button id="proj"></button>
+  <div id="crumb"></div>
+  <div class="sp"></div>
+  <div id="srch"><span id="si"></span><input id="sq" placeholder="Buscar em todo o projeto (versão 2.10)" disabled aria-label="Buscar em todo o projeto"></div>
+  <div class="tg"><button id="t1" title="Barra lateral"></button><button id="t2" title="Painel inferior"></button><button id="t3" title="Notas"></button></div>
+  <span id="zl" title="Ctrl+0 restaura o zoom">100%</span>
+ </header>
  <div id="main">
-  <div id="act"></div>
-  <div id="side"></div>
+  <nav id="act"></nav>
+  <aside id="side"></aside>
   <div id="ctr">
    <div id="tabs"></div>
    <div id="view"></div>
    <div id="panel">
-    <div id="ptabs"><span class="on">Terminal</span><span>Problems</span><span>Output</span><span>Debug</span></div>
+    <div id="ptabs"></div>
     <div id="out"></div>
-    <div id="cmd"><span>uds$</span><input id="ci" spellcheck="false" aria-label="Terminal"></div>
+    <div id="cmd"><span id="pr"></span><input id="ci" spellcheck="false" aria-label="Terminal"></div>
    </div>
   </div>
+  <aside id="notes"></aside>
  </div>
- <div id="st"><span id="s1">UDS</span><span id="s2"></span><span id="s3"></span><span id="s4">UTF-8</span></div>
+ <footer id="st"><span id="s1">UDS</span><span id="s2"></span><span id="s3"></span><span id="s4">UTF-8</span></footer>
 </div>
-<div id="ctx"></div>
+<div id="drop"></div><div id="ctx"></div>
 <div id="mod"><div><label id="ml"></label><input id="mi" spellcheck="false"></div></div>
+<script src="core.js"></script>
+<script src="visualizadores/registro.js"></script>
+<script src="visualizadores/imagem.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
