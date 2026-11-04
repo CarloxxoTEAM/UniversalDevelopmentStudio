@@ -25,11 +25,15 @@ test('todo ícone do índice existe nos 2 estilos e nas 2 cores',()=>{
  for(const [ext,[cat,nome]] of Object.entries(IDX.map))for(const e of C.ESTILOS)for(const cor of ['preto','branco'])assert.ok(fs.existsSync(path.join(ICON_DIR,C.iconPath('x.'+ext,e,cor))),`faltando: ${ext} ${e} ${cor}`)});
 test('nenhum ícone fica sem uso (exceto os reservados)',()=>{
  const usados=new Set(Object.values(IDX.map).map(m=>m[1])),reais=new Set();
- for(const cat of fs.readdirSync(path.join(ICON_DIR,'icones','estilo1')))for(const f of fs.readdirSync(path.join(ICON_DIR,'icones','estilo1',cat,'preto')))reais.add(f.replace('.png',''));
- assert.equal(reais.size,145);for(const n of reais)if(!IDX.reservados.includes(n))assert.ok(usados.has(n),'sem extensão: '+n)});
+ for(const cat of fs.readdirSync(path.join(ICON_DIR,'icones','estilo1')).filter(c=>c!=='00_pastas'))for(const f of fs.readdirSync(path.join(ICON_DIR,'icones','estilo1',cat,'preto')))reais.add(f.replace('.png',''));
+ assert.equal(reais.size,146);for(const n of reais)if(!IDX.reservados.includes(n))assert.ok(usados.has(n),'sem extensão: '+n)});
 test('os dois estilos e as duas cores têm exatamente os mesmos arquivos',()=>{
  const lista=(e,c)=>fs.readdirSync(path.join(ICON_DIR,'icones',e)).flatMap(cat=>fs.readdirSync(path.join(ICON_DIR,'icones',e,cat,c)).map(f=>cat+'/'+f)).sort().join();
  const ref=lista('estilo1','preto');for(const e of C.ESTILOS)for(const c of ['preto','branco'])assert.equal(lista(e,c),ref,e+' '+c)});
 test('todas as extensões do documento de formatos têm ícone',()=>{
  const exts='html,htm,xml,xhtml,css,scss,sass,less,md,markdown,json,yml,yaml,toml,ini,svg,tex,sgml,js,mjs,cjs,ts,tsx,jsx,py,pyw,pyc,ipynb,java,class,jar,c,h,cpp,hpp,cc,cxx,cs,php,phtml,rb,go,rs,swift,kt,kts,dart,r,m,pl,scala,lua,ex,exs,hs,clj,erl,asm,s,sh,bash,zsh,ps1,bat,cmd,sql,graphql,gql,wasm,mp3,wav,flac,aac,ogg,oga,m4a,opus,wma,aiff,aif,alac,mid,midi,amr,pcm,mp4,m4v,mkv,avi,mov,webm,wmv,flv,f4v,mpeg,mpg,3gp,ogv,m2ts,vob,jpg,jpeg,png,gif,webp,avif,tif,tiff,bmp,heic,heif,ico,psd,psb,ai,eps,indd,raw,cr2,cr3,nef,arw,dng,obj,mtl,fbx,stl,gltf,glb,blend,step,stp,iges,igs,dae,3ds,max,ma,mb,c4d,dxf,dwg,ply,usd,usda,usdc,usdz,wrl,x3d,sqlite,db,db3,bson,accdb,mdb,parquet,ttf,otf,woff,woff2,eot,pdf,doc,docx,xls,xlsx,ppt,pptx,odt,ods,odp,txt,rtf,epub,azw3,mobi,zip,rar,7z,tar,tgz,gz,bz2,iso,img,exe,msi,apk,xapk,aab,dmg,pkg,deb,rpm,appimage,bin,dll,so,dylib'.split(',');
  const sem=exts.filter(e=>!C.iconPath('x.'+e).startsWith('icones/estilo1/'));assert.deepEqual(sem,[])});
+test('ícones de pasta: fechada e aberta existem nos 2 estilos e nas 2 cores',()=>{
+ for(const e of C.ESTILOS)for(const cor of ['preto','branco'])for(const aberta of [false,true])assert.ok(fs.existsSync(path.join(ICON_DIR,C.folderPath(aberta,e,cor))),`pasta ${e} ${cor} ${aberta}`);
+ assert.equal(C.folderPath(true,'estilo2','preto'),'icones/estilo2/00_pastas/preto/pasta-aberta.png');assert.equal(C.folderPath(false),'icones/estilo1/00_pastas/branco/pasta.png')});
+test('GameMaker (.gml) tem ícone nos 2 estilos',()=>{assert.match(C.iconPath('obj_player.gml'),/12_extras\/branco\/gml\.png$/);assert.match(C.iconPath('x.gml','estilo2','preto'),/estilo2\/12_extras\/preto\/gml\.png$/)});

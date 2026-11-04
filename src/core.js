@@ -16,6 +16,9 @@ function iconPath(name,estilo='estilo1',cor='branco'){
  if(!ESTILOS.includes(estilo))estilo='estilo1';if(cor!=='preto')cor='branco';
  const m=IDX.map[iconExt(name)];
  return m?`icones/${estilo}/${m[0]}/${cor}/${m[1]}.png`:`icones/vazio/${estilo}_vazio_${cor}.svg`}
+function folderPath(aberta,estilo='estilo1',cor='branco'){
+ if(!ESTILOS.includes(estilo))estilo='estilo1';if(cor!=='preto')cor='branco';
+ const [c,n]=aberta?IDX.pastas.aberta:IDX.pastas.fechada;return `icones/${estilo}/${c}/${cor}/${n}.png`}
 const iconColor=theme=>theme==='light'?'preto':'branco';
 const KW='function|const|let|var|return|if|else|for|while|do|switch|case|break|continue|import|from|export|default|class|extends|new|interface|type|enum|async|await|try|catch|finally|throw|def|elif|in|of|is|not|and|or|None|True|False|true|false|null|undefined|this|self|void|int|string|boolean|public|private|static|final|package|fn|let|mut|pub|use|struct|impl|match|mod|func|go|defer|namespace|using';
 const HASH=new Set('py,rb,sh,yml,yaml,toml,pl,r'.split(',')),DASH=new Set(['sql','lua','hs']),MARK=new Set('html,htm,xml,svg'.split(','));
@@ -28,6 +31,6 @@ function highlight(s,ext){
   re=new RegExp('('+cm+')|("(?:\\\\.|[^"\\\\\\n])*"|\'(?:\\\\.|[^\'\\\\\\n])*\'|`[^`]*`)|\\b('+KW+')\\b|\\b(\\d+\\.?\\d*)\\b','g')}
  let o='',i=0,m;while((m=re.exec(s))){if(m[0]==='')break;o+=esc(s.slice(i,m.index))+`<i class="${pick(m)}">${esc(m[0])}</i>`;i=re.lastIndex}
  return o+esc(s.slice(i))}
-const api={esc,base,par,join,extOf,langOf,iconPath,iconExt,iconColor,ESTILOS,highlight};
+const api={esc,base,par,join,extOf,langOf,iconPath,folderPath,iconExt,iconColor,ESTILOS,highlight};
 if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UDSCore=api;
 })(typeof window!=='undefined'?window:globalThis);

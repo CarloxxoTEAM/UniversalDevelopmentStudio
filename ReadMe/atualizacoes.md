@@ -2,6 +2,20 @@
 
 Cada versão lista o que mudou. A versão mais nova fica no topo. Os números de etapa (0.10, 1.20...) são os do roteiro no `README.md`.
 
+## 1.0.2 — Novembro de 2026 — Ícones de pasta e GameMaker
+**Novo**
+- **Ícones de pasta**, fechada e aberta, nos 2 estilos e em preto e branco. No explorador, as pastas são brancas no tema escuro e pretas no claro, e mudam para "aberta" ao expandir.
+- Ícone do **GameMaker** (`.gml`) nos 2 estilos e nas 2 cores, como exemplo de tipo criado depois da lista original.
+- `scripts/gerar_icone.py`: gera os 4 ícones de um tipo novo no mesmo traço dos existentes (`python scripts/gerar_icone.py GML gml 12_extras`) e refaz as pastas (`--pastas`).
+- Documentos novos: `ReadMe/ideias.md` (ideias organizadas por versão) e `ReadMe/icones-personalizados.md` (como um tipo de arquivo ganha ícone para sempre, pacotes de ícones e a área "Tipos de Arquivos").
+- Roteiro com 7 etapas novas, marcadas com ✚: 1.05, 1.06, 1.65, 1.66, 4.05, 4.10 e 4.30.
+
+**Melhorado**
+- 17 testes automáticos (novos: ícones de pasta nos 2 estilos e nas 2 cores, e o ícone do GameMaker).
+
+**Removido**
+- Os ícones de pasta coloridos em código (substituídos pelos PNGs).
+
 ## 1.0.1 — Novembro de 2026 — Ícones de arquivo
 **Novo**
 - Sistema de ícones de arquivo: **145 ícones em 2 estilos**, cada um em preto e branco (580 imagens).

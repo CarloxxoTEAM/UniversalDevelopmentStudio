@@ -1,6 +1,6 @@
 # Ícones de arquivo do UDS
 
-O UDS mostra um ícone diferente para cada tipo de arquivo no explorador, nas abas e nas telas de aviso. São **145 ícones**, desenhados em **dois estilos**, cada um em **preto e branco**.
+O UDS mostra um ícone diferente para cada tipo de arquivo no explorador, nas abas e nas telas de aviso. São **146 ícones de arquivo** (os 145 da lista de formatos mais o do GameMaker) e **2 ícones de pasta** (fechada e aberta), desenhados em **dois estilos**, cada um em **preto e branco**.
 
 ## Os dois estilos
 
@@ -33,15 +33,20 @@ src/icones/
 ├── indice.js                     <- liga cada extensão ao seu ícone
 ├── vazio/                        <- ícones de "arquivo desconhecido" (SVG)
 ├── estilo1/
+│   ├── 00_pastas/                <- pasta.png e pasta-aberta.png
 │   ├── 01_marcacao_configuracao/
 │   │   ├── branco/css.png
 │   │   └── preto/css.png
 │   ├── 02_programacao_scripts/ ...
-│   └── ... (11 categorias)
+│   ├── ... (categorias 03 a 11)
+│   └── 12_extras/                <- tipos acrescentados depois (GameMaker)
 └── estilo2/                      <- mesma organização do estilo1
 ```
 
 Cada PNG tem **100 × 100 px** com fundo transparente. O nome do arquivo é o nome do ícone (`js.png`, `mp3.png`...). O mesmo nome existe nos dois estilos e nas duas cores; o teste automático (`npm test`) confere isso.
+
+## Ícones de pasta
+As pastas do explorador usam `00_pastas/pasta.png` (fechada) e `pasta-aberta.png` (quando está expandida). Seguem o tema, como os demais: **brancas no tema escuro e pretas no tema claro**, no estilo escolhido. Cor individual por pasta está planejada (etapa 4.30, em `ideias.md`).
 
 ## Como o UDS escolhe o ícone
 
@@ -60,7 +65,7 @@ Cada PNG tem **100 × 100 px** com fundo transparente. O nome do arquivo é o no
 "mjs2":["02_programacao_scripts","js"]
 ```
 
-**Criar um formato totalmente novo:** crie os quatro PNGs (`estilo1` e `estilo2`, `preto` e `branco`, dentro da categoria certa) e depois registre a extensão no `map` como acima. Rode `npm test`: ele avisa se faltar algum arquivo ou se sobrar um ícone sem uso.
+**Criar um formato totalmente novo:** gere os quatro PNGs com `python scripts/gerar_icone.py SIGLA nome 12_extras` (ou desenhe-os, dentro da categoria certa) e registre a extensão no `map` como acima. O passo a passo, com o exemplo do GameMaker, está em [`icones-personalizados.md`](icones-personalizados.md). Rode `npm test`: ele avisa se faltar algum arquivo ou se sobrar um ícone sem uso.
 
 Como os ícones entram dentro do programa na hora de compilar, uma mudança só aparece numa nova versão (veja `atualizacoes.md`). Carregar ícones de uma pasta externa, sem recompilar, está previsto junto com os temas e plugins (etapas 6.70 e 7.00 do roteiro).
 
@@ -273,5 +278,18 @@ Em `assets-design/icones-base/` ficam os modelos vazios em SVG (100 × 100), as 
 | `pkg.png` | .pkg |
 | `rpm.png` | .rpm |
 | `so.png` | .so |
+
+### 12 · Extras (acrescentados depois da lista original)
+
+| Ícone (arquivo) | Extensões que usam este ícone |
+|---|---|
+| `gml.png` | .gml (GameMaker Language) |
+
+### 00 · Pastas
+
+| Ícone (arquivo) | Uso |
+|---|---|
+| `pasta.png` | Pasta fechada |
+| `pasta-aberta.png` | Pasta aberta (expandida no explorador) |
 
 Os ícones marcados como *reservados* já existem, mas não têm extensão própria. Serão usados quando o UDS passar a identificar arquivos pelo conteúdo (etapa 1.20 do roteiro).

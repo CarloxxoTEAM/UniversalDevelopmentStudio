@@ -13,6 +13,7 @@
 | `src/icones/` | Ícones de arquivo e o índice (veja `icones.md`). |
 | `tests/` | Testes automáticos de JavaScript. |
 | `scripts/package.py` | Monta a pasta portátil e o ZIP. |
+| `scripts/gerar_icone.py` | Gera os ícones de um tipo de arquivo novo e os ícones de pasta. |
 | `.github/workflows/build.yml` | Compila, testa, empacota e publica em Releases ao criar uma tag `vX.Y.Z`. |
 | `assets-design/` | Logo, capturas do design e o material de origem dos ícones. |
 | `ReadMe/` | Estes guias. |

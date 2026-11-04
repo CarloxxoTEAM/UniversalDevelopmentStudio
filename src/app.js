@@ -1,9 +1,9 @@
 // Interface do UDS (Fundação). Fala com o núcleo Rust (src-tauri/src/main.rs) via invoke().
 if(!window.__TAURI__){document.body.innerHTML='<p style="padding:20px">Abra o UDS pelo executável UniversalDevelopmentStudio.</p>';throw new Error('sem Tauri')}
 const T=window.__TAURI__,$=s=>document.querySelector(s);
-const {esc,base,par,join,extOf,langOf,iconPath,iconColor,ESTILOS,highlight}=UDSCore;
+const {esc,base,par,join,extOf,langOf,iconPath,folderPath,iconColor,ESTILOS,highlight}=UDSCore;
 const inv=(c,a)=>T.core.invoke(c,a),url=p=>T.core.convertFileSrc(p);
-const VERSION='1.0.1';
+const VERSION='1.0.2';
 let root=null,cfg={theme:'dark',iconStyle:'estilo1',recent:[],fs:13,zoom:1,notes:{},activeNote:{},sideOpen:true,panelOpen:true,notesOpen:true},docs={},tabs=[],active=null,dirs={},openD={},side='exp',sec={opened:false,proj:true,outline:false,timeline:false},ptab='term',buf={term:'',prob:'',out:'',dbg:''};
 const IC={folder:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',git:'<circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="8" r="2.2"/><path d="M6 7.2v9.6M18 10.2c0 4-6 3-12 6"/>',play:'<path d="M7 4.5v15l12-7.5z"/>',plug:'<path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4"/>',gear:'<circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M4.9 19.1 7 17M17 7l2.1-2.1"/>',l1:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/>',l2:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 15h18"/>',l3:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/>',chev:'<path d="m6 9 6 6 6-6"/>'};
 const svg=n=>`<svg class="i" viewBox="0 0 24 24">${IC[n]}</svg>`;
@@ -11,9 +11,7 @@ const log=t=>{buf.out+=esc(t)+'\n';if(ptab=='out')showPanel()};
 const flash=t=>{$('#s2').textContent=t;setTimeout(()=>{if($('#s2').textContent==t)$('#s2').textContent=''},2500)};
 const saveCfg=()=>inv('save_config',{json:JSON.stringify(cfg)}).catch(()=>{});
 const fileIcon=(n,sz)=>`<img class="fi" alt="" src="${iconPath(n,cfg.iconStyle,iconColor(cfg.theme))}"${sz?` width="${sz}" height="${sz}"`:''}>`;
-const FC={src:'#ff6b6b',assets:'#35b7a3',lib:'#6bd968',components:'#4fc1ff',docs:'#e8a33d',styles:'#c586c0',images:'#35b7a3',public:'#4fc1ff',node_modules:'#7a7a85',dist:'#7a7a85',target:'#7a7a85',config:'#e8a33d',scripts:'#6bd968',tests:'#6bd968'};
-const PAL=['#e8a33d','#4fc1ff','#6bd968','#c586c0','#ff6b6b','#35b7a3'];
-const folderIcon=n=>`<svg class="i" viewBox="0 0 24 24" style="width:16px;height:16px;fill:${FC[n.toLowerCase()]||PAL[[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%6]};stroke:none">${IC.folder}</svg>`;
+const folderIcon=(open,sz)=>`<img class="fi" alt="" src="${folderPath(open,cfg.iconStyle,iconColor(cfg.theme))}"${sz?` width="${sz}" height="${sz}"`:''}>`;
 function ask(l,v=''){return new Promise(r=>{const m=$('#mod'),i=$('#mi');$('#ml').textContent=l;i.value=v;m.style.display='grid';i.focus();i.select();const done=x=>{m.style.display='none';i.onkeydown=null;r(x)};i.onkeydown=e=>{if(e.key=='Enter')done(i.value.trim());if(e.key=='Escape')done(null)}})}
 
 /* ---------- Zoom e layout (0.40) ---------- */
@@ -53,7 +51,7 @@ async function closeTab(p){if(!p)return;const d=docs[p];if(d&&d.dirty){const r=a
 const RAIL=[['exp','folder','Explorer'],['search','search','Busca no projeto (versão 2.10)',1],['git','git','Git (versão 3.00)',1],['run','play','Execução de scripts (versão 2.60)',1],['ext','plug','Extensões (versão 7.00)',1]];
 function renderRail(){const a=$('#act');a.innerHTML='';RAIL.forEach(([id,ic,t,off])=>{const b=document.createElement('button');b.innerHTML=svg(ic);b.title=t;b.setAttribute('aria-label',t);if(off)b.style.opacity=.35;b.classList.toggle('on',side==id);b.onclick=()=>{if(off)return flash(t);side=id;cfg.sideOpen=true;applyLayout();renderRail();renderSide()};a.appendChild(b)});
  const s=document.createElement('div');s.className='sp';a.appendChild(s);const g=document.createElement('button');g.innerHTML=svg('gear');g.title='Configurações';g.setAttribute('aria-label','Configurações');g.classList.toggle('on',side=='set');g.onclick=()=>{side=side=='set'?'exp':'set';cfg.sideOpen=true;applyLayout();renderRail();renderSide()};a.appendChild(g)}
-function tree(p,d){return(dirs[p]||[]).map(e=>{const pad=`style="padding-left:${8+d*12}px"`;if(e.is_dir){const o=openD[e.path];return`<div class="it" ${pad} data-d="${esc(e.path)}"><span class="ch">${o?'⌄':'›'}</span>${folderIcon(e.name)} ${esc(e.name)}</div>`+(o?tree(e.path,d+1):'')}return`<div class="it ${active==e.path?'on':''}" ${pad} data-p="${esc(e.path)}"><span class="ch"></span>${fileIcon(e.name)} ${esc(e.name)}${docs[e.path]&&docs[e.path].dirty?' ●':''}</div>`}).join('')}
+function tree(p,d){return(dirs[p]||[]).map(e=>{const pad=`style="padding-left:${8+d*12}px"`;if(e.is_dir){const o=openD[e.path];return`<div class="it" ${pad} data-d="${esc(e.path)}"><span class="ch">${o?'⌄':'›'}</span>${folderIcon(!!o)} ${esc(e.name)}</div>`+(o?tree(e.path,d+1):'')}return`<div class="it ${active==e.path?'on':''}" ${pad} data-p="${esc(e.path)}"><span class="ch"></span>${fileIcon(e.name)} ${esc(e.name)}${docs[e.path]&&docs[e.path].dirty?' ●':''}</div>`}).join('')}
 const shd=(k,t,extra='')=>`<div class="sh" data-s="${k}"><span>${sec[k]?'⌄':'›'}</span>${t}<span class="sp"></span>${extra}</div>`;
 function renderSide(){const s=$('#side');
  if(side=='set'){s.innerHTML=`<div class="eh">CONFIGURAÇÕES</div><div class="pad">Tema<br><select id="th"><option value="dark">Escuro</option><option value="light">Claro</option></select><br><br>Estilo dos ícones<br><select id="is">${ESTILOS.map(k=>`<option value="${k}">${esc(UDSIconIndex.estilos[k])}</option>`).join('')}</select><br><br>Tamanho da fonte do editor: <b id="fv">${cfg.fs}</b><br><input type="range" id="fs" min="10" max="24" value="${cfg.fs}" style="width:100%"><br><br>Zoom: <b>${Math.round(cfg.zoom*100)}%</b><br><button id="z1">−</button> <button id="z2">＋</button> <button id="z0">100%</button><br><br><button id="rs">Restaurar padrões</button><br><br><span id="pp"></span></div>`;
