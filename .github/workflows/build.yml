@@ -16,7 +16,6 @@ jobs:
         include:
           - { os: windows-latest, platform: windows }
           - { os: ubuntu-22.04, platform: linux }
-          - { os: macos-latest, platform: macos }
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
@@ -33,9 +32,11 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.1-dev build-essential libssl-dev libxdo-dev libayatana-appindicator3-dev librsvg2-dev
       - run: npm install
-      - name: Gerar ícones
+      - name: Testes da interface
+        run: npm test
+      - name: Gerar ícones do programa
         run: npx tauri icon app-icon.png
-      - name: Testes
+      - name: Testes do núcleo
         run: cargo test --manifest-path src-tauri/Cargo.toml
       - name: Compilar (sem instalador)
         run: npx tauri build --no-bundle
@@ -44,7 +45,9 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: uds-${{ matrix.platform }}
-          path: dist-portable/*.zip
+          path: |
+            dist-portable/*.zip
+            dist-portable/*.sha256
 
   release:
     needs: build
@@ -57,5 +60,7 @@ jobs:
           merge-multiple: true
       - uses: softprops/action-gh-release@v2
         with:
-          files: zips/*.zip
+          files: |
+            zips/*.zip
+            zips/*.sha256
           generate_release_notes: true

@@ -1,6 +1,6 @@
 [package]
 name = "UniversalDevelopmentStudio"
-version = "1.0.2"
+version = "1.1.0"
 edition = "2021"
 description = "Ambiente universal e portátil para desenvolvimento, edição e visualização de arquivos."
 

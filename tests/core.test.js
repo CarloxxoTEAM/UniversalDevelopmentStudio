@@ -37,3 +37,28 @@ test('ícones de pasta: fechada e aberta existem nos 2 estilos e nas 2 cores',()
  for(const e of C.ESTILOS)for(const cor of ['preto','branco'])for(const aberta of [false,true])assert.ok(fs.existsSync(path.join(ICON_DIR,C.folderPath(aberta,e,cor))),`pasta ${e} ${cor} ${aberta}`);
  assert.equal(C.folderPath(true,'estilo2','preto'),'icones/estilo2/00_pastas/preto/pasta-aberta.png');assert.equal(C.folderPath(false),'icones/estilo1/00_pastas/branco/pasta.png')});
 test('GameMaker (.gml) tem ícone nos 2 estilos',()=>{assert.match(C.iconPath('obj_player.gml'),/12_extras\/branco\/gml\.png$/);assert.match(C.iconPath('x.gml','estilo2','preto'),/estilo2\/12_extras\/preto\/gml\.png$/)});
+
+// ---- Temas (1.10) ----
+const THEMES_DIR=path.join(__dirname,'..','themes');
+const ok=o=>C.validarTema(o);
+const tema=(extra={})=>({formato:1,id:'meu-tema',nome:'Meu tema',tipo:'escuro',cores:{destaque:'#ff0000'},...extra});
+test('tema válido recebe as cores que faltam do tipo escolhido',()=>{
+ const r=ok(tema());assert.equal(r.ok,true);assert.equal(r.tema.cores.destaque,'#ff0000');assert.equal(r.tema.cores.texto,C.BASE_TEMAS.escuro.texto);
+ assert.equal(ok(tema({tipo:'claro',cores:{}})).tema.cores.editor,C.BASE_TEMAS.claro.editor)});
+test('tema sem id, nome ou tipo válidos é recusado com o motivo',()=>{
+ assert.match(ok(tema({id:'Meu Tema'})).erro,/id/);assert.match(ok(tema({id:undefined})).erro,/id/);assert.match(ok(tema({nome:''})).erro,/nome/);assert.match(ok(tema({tipo:'azul'})).erro,/tipo/);assert.match(ok(tema({formato:2})).erro,/formato/)});
+test('cor inválida recusa o tema; cor desconhecida só gera aviso',()=>{
+ assert.match(ok(tema({cores:{destaque:'vermelho'}})).erro,/destaque/);assert.match(ok(tema({cores:{destaque:'url(x)'}})).erro,/destaque/);
+ const r=ok(tema({cores:{inventada:'#fff',destaque:'#abc'}}));assert.equal(r.ok,true);assert.match(r.avisos[0],/inventada/);assert.equal(r.tema.cores.destaque,'#abc');assert.equal(r.tema.cores.inventada,undefined)});
+test('aceita #rgb, #rrggbb e #rrggbbaa',()=>{for(const c of['#fff','#FFAA00','#ffaa0080'])assert.equal(ok(tema({cores:{destaque:c}})).ok,true)});
+test('lerTema trata JSON quebrado e valores que não são objeto',()=>{assert.match(C.lerTema('{ nada').erro,/JSON inválido/);assert.equal(C.lerTema('[]').ok,false);assert.equal(C.lerTema('null').ok,false)});
+test('cssVars troca cada chave pela variável CSS correspondente',()=>{const v=C.cssVars(ok(tema()).tema);assert.equal(v['--ac'],'#ff0000');assert.equal(Object.keys(v).length,Object.keys(C.THEME_KEYS).length)});
+test('temaModo liga o tipo do tema ao modo claro/escuro (cor dos ícones)',()=>{assert.equal(C.temaModo({tipo:'claro'}),'light');assert.equal(C.temaModo({tipo:'escuro'}),'dark');assert.equal(C.iconColor(C.temaModo({tipo:'claro'})),'preto')});
+test('todo tema da pasta themes/ do projeto é válido e tem id igual ao nome da pasta',()=>{
+ const pastas=fs.readdirSync(THEMES_DIR,{withFileTypes:true}).filter(d=>d.isDirectory());assert.ok(pastas.length>=3);
+ for(const d of pastas){const r=C.lerTema(fs.readFileSync(path.join(THEMES_DIR,d.name,'theme.json'),'utf8'));assert.equal(r.ok,true,d.name+': '+r.erro);assert.equal(r.tema.id,d.name);assert.deepEqual(r.avisos,[])}});
+test('os temas embutidos existem como pastas e coincidem com o fallback',()=>{
+ for(const e of C.TEMAS_EMBUTIDOS){const r=C.lerTema(fs.readFileSync(path.join(THEMES_DIR,e.id,'theme.json'),'utf8'));assert.deepEqual(r.tema.cores,e.cores)}});
+test('as cores padrão do CSS e do fallback não divergem',()=>{
+ const css=fs.readFileSync(path.join(__dirname,'..','src','styles.css'),'utf8'),dark=css.match(/:root\{([^}]*)\}/)[1];
+ for(const [k,v] of Object.entries(C.BASE_TEMAS.escuro))assert.ok(dark.includes(C.THEME_KEYS[k]+':'+v),`CSS escuro difere em ${k}`)});

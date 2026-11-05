@@ -15,12 +15,13 @@
 | `scripts/package.py` | Monta a pasta portátil e o ZIP. |
 | `scripts/gerar_icone.py` | Gera os ícones de um tipo de arquivo novo e os ícones de pasta. |
 | `.github/workflows/build.yml` | Compila, testa, empacota e publica em Releases ao criar uma tag `vX.Y.Z`. |
+| `themes/` | Temas (`theme.json`) e o guia para criar o seu. Fica ao lado do executável e vai no ZIP portátil. |
 | `assets-design/` | Logo, capturas do design e o material de origem dos ícones. |
 | `ReadMe/` | Estes guias. |
 | `portable/` | Criada ao lado do executável: configurações, notas e dados do WebView. |
 
 ## Como a interface fala com o núcleo
-A interface chama o núcleo com `invoke("nome_do_comando", {...})`. Cada comando é uma função Rust marcada com `#[tauri::command]` em `src-tauri/src/main.rs`: `list_dir`, `read_file`, `write_file`, `create_dir`, `rename_path`, `delete_path`, `load_config`, `save_config` e `portable_path`.
+A interface chama o núcleo com `invoke("nome_do_comando", {...})`. Cada comando é uma função Rust marcada com `#[tauri::command]` em `src-tauri/src/main.rs`: `list_dir`, `read_file`, `write_file`, `create_dir`, `rename_path`, `delete_path`, `load_config`, `save_config`, `portable_path` e `themes_path`.
 
 ## Portabilidade
 O executável cria `portable/config/settings.json` ao lado dele. No Windows, o WebView2 também guarda seus dados em `portable/webview/`. Requisito: WebView2 Runtime (já vem no Windows 10 e 11 atualizados). Para levar o ambiente a outro computador, copie a pasta inteira.

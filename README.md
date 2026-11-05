@@ -6,7 +6,7 @@ O UDS é um ambiente **universal e portátil** para desenvolvimento, edição e 
 
 A interface segue o estilo dos editores modernos, com explorador de arquivos à esquerda, abas e editor no centro, painel inferior e, à direita, um **bloco de notas por projeto**.
 
-**Versão atual:** 1.0.2 · **Plataforma:** Windows (Linux e macOS nas etapas 9.00 em diante) · **Licença:** MIT
+**Versão atual:** 1.1.0 · **Plataforma:** Windows (Linux e macOS nas etapas 9.00 em diante) · **Licença:** MIT
 
 ## O que já funciona
 - Abrir uma pasta do computador e navegar pelos arquivos.
@@ -14,7 +14,8 @@ A interface segue o estilo dos editores modernos, com explorador de arquivos à 
 - Abas e editor de texto com numeração de linhas e destaque de sintaxe.
 - Visualizador de imagens (PNG, JPG, GIF, WEBP, BMP, ICO, SVG) com zoom, rotação e ajuste.
 - **Ícones para mais de 200 extensões**, em 2 estilos (preto e branco, de acordo com o tema), e **ícones de pasta** (fechada e aberta).
-- Temas claro e escuro, tamanho da fonte e zoom.
+- **Temas lidos de arquivos `theme.json`** (escuro, claro e um exemplo), com recarga na hora; você cria o seu seguindo o guia em `themes/`.
+- Tamanho da fonte e zoom.
 - Bloco de notas por projeto, com vínculo a arquivos.
 - Modo portátil: configurações e notas ficam na pasta `portable/`.
 
@@ -39,7 +40,9 @@ Tudo isso está no menu que abre ao clicar no **logo do UDS** (canto superior es
 | Salvar | Salva todos os arquivos alterados (marcados com ●) | `Ctrl+S` |
 | Reabrir como texto | Abre como texto um arquivo que o UDS tratou como binário ou imagem | |
 | Fechar aba | Fecha a aba; se houver alterações, pergunta se salva | |
-| Alternar tema claro/escuro | Troca o tema; os ícones mudam de cor junto | |
+| Alternar tema claro/escuro | Alterna entre o tema claro e o escuro padrão; os ícones mudam de cor junto | |
+| Recarregar temas | Lê de novo a pasta `themes/` (use depois de criar ou editar um tema) | |
+| Abrir pasta de temas | Abre a pasta `themes/` no explorador, para editar os `theme.json` | |
 | Barra lateral / Painel inferior / Notas | Mostra ou esconde cada área (também pelos 3 botões no canto superior direito) | |
 | Aumentar / Diminuir zoom | Muda o tamanho de toda a interface | `Ctrl +` / `Ctrl -` |
 | Zoom padrão | Volta a 100% (clicar em "100%" no topo também) | `Ctrl 0` |
@@ -52,7 +55,7 @@ Tudo isso está no menu que abre ao clicar no **logo do UDS** (canto superior es
 - Botão ⋯ no topo do explorador: novo arquivo, nova pasta, atualizar.
 - Notas: **＋ Nova nota** cria; duplo clique no título renomeia; **＋ Vincular arquivo atual** adiciona um atalho `@arquivo` que abre o arquivo ao clicar; botão direito no atalho remove o vínculo.
 
-**Configurações** (ícone de engrenagem): tema, **estilo dos ícones** (Estilo 1 padrão ou Estilo 2), tamanho da fonte, zoom e *Restaurar padrões*.
+**Configurações** (ícone de engrenagem): tema (lista todos os temas da pasta `themes/`, com *Recarregar* e *Abrir pasta*), **estilo dos ícones** (Estilo 1 padrão ou Estilo 2), tamanho da fonte, zoom e *Restaurar padrões*.
 
 ## Comandos para desenvolver
 Requisitos: [Node.js 20+](https://nodejs.org), [Rust](https://rustup.rs) e os [pré-requisitos do Tauri](https://tauri.app/start/prerequisites/).
@@ -67,9 +70,12 @@ Requisitos: [Node.js 20+](https://nodejs.org), [Rust](https://rustup.rs) e os [p
 | `npm run build` | Compila o executável em `src-tauri/target/release/` |
 | `python scripts/gerar_icone.py SIGLA nome 12_extras` | Gera os 4 ícones (2 estilos, preto e branco) de um tipo de arquivo novo. Exemplo: `GML gml`. Precisa de `pip install pillow` |
 | `python scripts/package.py windows` | Depois do build: monta a pasta portátil e o ZIP em `dist-portable/` |
-| `git tag v1.0.2` e `git push origin v1.0.2` | Publica uma versão: o GitHub Actions compila, testa, gera o ZIP e o coloca em **Releases** |
+| `git tag v1.1.0` e `git push origin v1.1.0` | Publica uma versão: o GitHub Actions compila, testa, gera o ZIP e o coloca em **Releases** |
 
-## Guias na pasta `ReadMe/`
+## Guias
+**Como criar um tema:** [`themes/COMO-CRIAR-UM-TEMA.md`](themes/COMO-CRIAR-UM-TEMA.md)
+
+**Na pasta `ReadMe/`:**
 | Arquivo | Conteúdo |
 |---|---|
 | [`ReadMe/icones.md`](ReadMe/icones.md) | Os 2 estilos de ícone, preto e branco por tema, como adicionar ou trocar ícones e a lista completa por extensão |
@@ -93,12 +99,12 @@ Cada etapa só avança quando a anterior funciona. `[x]` = pronta, `[ ]` = a faz
 - [x] 0.70 - Visualizador de imagens
 - [x] 0.80 - Visualizadores como módulos
 - [x] 0.90 - Modo portátil e ZIP automático (GitHub Actions)
-- [ ] 1.00 - Primeira release oficial (Windows)
+- [x] 1.00 - Primeira release oficial (Windows)
 - [ ] ✚ 1.05 - Tela de loading personalizada, no estilo da abertura do After Effects
-- [ ] ✚ 1.06 - Reduzir o aviso do Windows (assinatura de código gratuita para open source)
+- [ ] ✚ 1.06 - Reduzir o aviso do Windows (assinatura de código gratuita para open source). Já feito: hash SHA-256 dos ZIPs e propriedades do .exe. Falta: o pedido de assinatura
 
 **VISUALIZAR**
-- [ ] 1.10 - Temas claro e escuro, lidos de um theme.json
+- [x] 1.10 - Temas claro e escuro, lidos de um theme.json
 - [ ] 1.20 - Identificação de arquivos pelo conteúdo
 - [ ] 1.30 - Áudio
 - [ ] 1.40 - Vídeo

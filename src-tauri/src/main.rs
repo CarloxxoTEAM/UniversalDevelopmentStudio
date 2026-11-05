@@ -29,6 +29,27 @@ fn portable_dir() -> PathBuf {
         .unwrap_or_else(|| PathBuf::from("portable"))
 }
 
+/// Pasta `themes/` ao lado do executável. Em desenvolvimento (`npm run dev`) o executável fica em
+/// src-tauri/target/debug, então procura nas pastas acima até achar a `themes/` do projeto.
+fn themes_dir() -> PathBuf {
+    let mut d = std::env::current_exe()
+        .ok()
+        .and_then(|p| p.parent().map(|x| x.to_path_buf()))
+        .unwrap_or_else(|| PathBuf::from("."));
+    let padrao = d.join("themes");
+    if cfg!(debug_assertions) {
+        for _ in 0..6 {
+            if d.join("themes").is_dir() {
+                return d.join("themes");
+            }
+            if !d.pop() {
+                break;
+            }
+        }
+    }
+    padrao
+}
+
 /// Identificação de imagens pelo conteúdo (magic numbers).
 fn sniff(b: &[u8]) -> Option<(&'static str, &'static str)> {
     if b.starts_with(&[0x89, b'P', b'N', b'G']) {
@@ -155,6 +176,11 @@ fn save_config(json: String) -> Result<(), String> {
 }
 
 #[tauri::command]
+fn themes_path() -> String {
+    themes_dir().to_string_lossy().to_string()
+}
+
+#[tauri::command]
 fn portable_path() -> String {
     portable_dir().to_string_lossy().to_string()
 }
@@ -170,7 +196,7 @@ fn main() {
         .plugin(tauri_plugin_dialog::init())
         .invoke_handler(tauri::generate_handler![
             list_dir, read_file, write_file, create_dir, rename_path, delete_path,
-            load_config, save_config, portable_path
+            load_config, save_config, portable_path, themes_path
         ])
         .run(tauri::generate_context!())
         .expect("erro ao iniciar o UDS");

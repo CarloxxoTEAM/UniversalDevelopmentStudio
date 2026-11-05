@@ -2,6 +2,26 @@
 
 Cada versão lista o que mudou. A versão mais nova fica no topo. Os números de etapa (0.10, 1.20...) são os do roteiro no `README.md`.
 
+## 1.1.0 — Novembro de 2026 — Temas (etapa 1.10)
+**Novo**
+- **Temas lidos de arquivos `theme.json`**: cada tema é uma pasta dentro de `themes/`, ao lado do executável. Vêm 3: `UDS Escuro`, `UDS Claro` e `Exemplo Oceano`.
+- Lista de temas em *Configurações*, com os botões **Recarregar** e **Abrir pasta**. Também em *Exibir → Recarregar temas* e *Abrir pasta de temas*.
+- **Recarga na hora**: ao salvar (Ctrl+S) um `theme.json` aberto no próprio UDS, as cores mudam sem reiniciar.
+- **Validação**: um tema com erro é ignorado e o motivo aparece na aba Output. Cores que faltam vêm do tema padrão do mesmo tipo. Os temas `UDS Escuro` e `UDS Claro` existem mesmo se a pasta `themes/` for apagada.
+- O tipo do tema (`escuro` ou `claro`) define a cor dos ícones: branco no escuro, preto no claro.
+- Guia `themes/COMO-CRIAR-UM-TEMA.md` com os campos, a tabela de cores e as mensagens de erro.
+- O tema escolhido é salvo em `portable/config/settings.json`.
+- `scripts/package.py` agora gera um arquivo `.sha256` com o hash de cada ZIP (parte da etapa 1.06) e inclui a pasta `themes/` no pacote.
+- Nome do programa, versão e direitos autorais nas propriedades do `.exe`.
+
+**Melhorado**
+- 27 testes automáticos (novos: validação de temas, cores inválidas, `id` igual ao nome da pasta, todos os temas do projeto e consistência entre o CSS e os temas embutidos).
+
+**Robô de build (`.github/workflows/build.yml`)**
+- Roda `npm test` antes de compilar.
+- Os arquivos `.sha256` vão junto dos ZIPs nas releases.
+- Sem o macOS, que falhava por falta de máquina no GitHub (volta na etapa de pacotes para outros sistemas).
+
 ## 1.0.2 — Novembro de 2026 — Ícones de pasta e GameMaker
 **Novo**
 - **Ícones de pasta**, fechada e aberta, nos 2 estilos e em preto e branco. No explorador, as pastas são brancas no tema escuro e pretas no claro, e mudam para "aberta" ao expandir.
@@ -45,7 +65,7 @@ Cada versão lista o que mudou. A versão mais nova fica no topo. Os números de
 - **0.70** Visualizador de imagens (zoom, rotação, ajuste e fundo xadrez para transparência).
 - **0.80** Visualizadores como módulos (`src/visualizadores/`).
 - **0.90** Modo portátil (`portable/`) e ZIP automático pelo GitHub Actions.
-- **1.00** Primeira release oficial para Windows: pendente até a publicação da tag.
+- **1.00** Primeira release oficial para Windows, publicada.
 
 ## Como registrar uma nova versão
 1. Aumente o número em `package.json`, `src-tauri/Cargo.toml`, `src-tauri/tauri.conf.json` e na constante `VERSION` de `src/app.js`.

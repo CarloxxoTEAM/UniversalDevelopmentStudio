@@ -12,7 +12,7 @@ pkg = out / name
 shutil.rmtree(out, ignore_errors=True)
 pkg.mkdir(parents=True)
 shutil.copy2(exe, pkg / exe.name)
-for d in ["portable", "plugins", "languages", "projects", "ReadMe"]:
+for d in ["portable", "plugins", "languages", "projects", "themes", "ReadMe"]:
     if (root / d).exists():
         shutil.copytree(root / d, pkg / d)
 for f in ["README.md", "LICENSE"]:
@@ -26,4 +26,8 @@ with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
             info = zipfile.ZipInfo.from_file(p, p.relative_to(out).as_posix())
             info.compress_type = zipfile.ZIP_DEFLATED
             z.writestr(info, p.read_bytes())
+import hashlib
+digest = hashlib.sha256(zip_path.read_bytes()).hexdigest()
+(out / (zip_path.name + ".sha256")).write_text(f"{digest}  {zip_path.name}\n", encoding="utf-8")
 print("Pacote:", zip_path)
+print("SHA-256:", digest)

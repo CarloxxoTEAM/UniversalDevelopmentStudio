@@ -25,7 +25,7 @@ Para trocar o logo do programa, substitua `app-icon.png` (quadrado, pelo menos 5
 | Destaque azul (seleção, abas) | `#2f6df0` |
 | Degradê de destaque (item ativo, "Nova nota") | `#ff8a3d` → `#ff3d6e` |
 
-As cores ficam no início de `src/styles.css`, como variáveis (`--bg0`, `--ac`...), com uma versão para o tema claro.
+As cores agora vêm dos temas em `themes/*/theme.json` (veja `themes/COMO-CRIAR-UM-TEMA.md`). Os valores acima são os do tema `UDS Escuro`. O `src/styles.css` guarda uma cópia como padrão inicial, e um teste automático garante que ela não diverge do tema.
 
 ## Nome e slogan
 Universal Development Studio (UDS) · *One Studio. Unlimited Possibilities.*
