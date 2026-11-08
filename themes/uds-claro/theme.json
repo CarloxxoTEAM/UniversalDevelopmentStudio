@@ -1,0 +1,26 @@
+{
+  "formato": 1,
+  "id": "uds-claro",
+  "nome": "UDS Claro",
+  "autor": "UDS",
+  "versao": "1.0.0",
+  "tipo": "claro",
+  "cores": {
+    "barra-superior": "#ececef",
+    "painel": "#f5f5f7",
+    "editor": "#ffffff",
+    "borda": "#dcdce1",
+    "texto": "#2b2b33",
+    "texto-secundario": "#7a7a85",
+    "destaque": "#1f5fe0",
+    "selecao": "#d4e2fb",
+    "hover": "#e8e8ec",
+    "degrade-inicio": "#ff8a3d",
+    "degrade-fim": "#ff3d6e",
+    "sintaxe-palavra-chave": "#af00db",
+    "sintaxe-texto": "#a31515",
+    "sintaxe-comentario": "#008000",
+    "sintaxe-numero": "#098658",
+    "sintaxe-tag": "#0000ff"
+  }
+}

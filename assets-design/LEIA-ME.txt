@@ -1,0 +1,11 @@
+logo-uds.png                         Logo do UDS (1024x1024, fundo transparente)
+logo-uds-nome.png                    Logo com o nome e o slogan
+design-uds-tema-escuro.png           Tela base, tema escuro, ícones Estilo 1 (padrão)
+design-uds-tema-claro.png            Tema claro (ícones pretos)
+design-uds-icones-estilo2.png        Tela com os ícones do Estilo 2
+design-uds-visualizador-imagem.png   Visualizador de imagens
+icones-base/                         Modelos vazios (SVG), regras de desenho e fonte dos ícones de arquivo
+design-uds-tema-exemplo-oceano.png    Tema de exemplo (Exemplo Oceano) escolhido em Configurações
+design-uds-configuracoes.png         Caixa flutuante de Configurações (aba Aparência)
+design-uds-tipos-de-arquivo.png      Aba Tipos de arquivo
+design-uds-audio.png                 Visualizador de áudio (capa, forma de onda, controles e dados técnicos)

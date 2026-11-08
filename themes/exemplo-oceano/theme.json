@@ -1,0 +1,26 @@
+{
+  "formato": 1,
+  "id": "exemplo-oceano",
+  "nome": "Exemplo Oceano",
+  "autor": "UDS",
+  "versao": "1.0.0",
+  "tipo": "escuro",
+  "cores": {
+    "barra-superior": "#06121a",
+    "painel": "#0a1a24",
+    "editor": "#08161f",
+    "borda": "#14303f",
+    "texto": "#cfe3ee",
+    "texto-secundario": "#6b8a9a",
+    "destaque": "#1fb6c9",
+    "selecao": "#0f3a4a",
+    "hover": "#0f2733",
+    "degrade-inicio": "#2dd4bf",
+    "degrade-fim": "#3b82f6",
+    "sintaxe-palavra-chave": "#7dd3fc",
+    "sintaxe-texto": "#fbbf77",
+    "sintaxe-comentario": "#4b7f6e",
+    "sintaxe-numero": "#a7f3d0",
+    "sintaxe-tag": "#38bdf8"
+  }
+}
