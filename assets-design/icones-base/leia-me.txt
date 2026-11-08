@@ -1,5 +1,0 @@
-Icons Base (SVG, 100x100, importar no Figma)
-estilo1: arquivo com contorno 6px e dobra. O texto fica centralizado ~y=64, em DejaVu Sans Bold (até 30px).
- Para o recorte atrás do texto, apague o contorno atrás do texto (margem de 4px).
-estilo2: retângulo arredondado (x4 y16 92x68, raio 10); texto centralizado, em DejaVu Sans Bold (até 36px).
-Fonte: DejaVu Sans Bold (principal) e DejaVu Sans Condensed Bold (usada em rótulos longos).
