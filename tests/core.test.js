@@ -23,10 +23,10 @@ test('iconPath usa o ícone vazio para extensão desconhecida e estilo inválido
  assert.equal(C.iconPath('a.xyz'),'icones/vazio/estilo1_vazio_branco.svg');assert.equal(C.iconPath('a.xyz','estilo2','preto'),'icones/vazio/estilo2_vazio_preto.svg');assert.match(C.iconPath('a.js','nada'),/estilo1/)});
 test('todo ícone do índice existe nos 2 estilos e nas 2 cores',()=>{
  for(const [ext,[cat,nome]] of Object.entries(IDX.map))for(const e of C.ESTILOS)for(const cor of ['preto','branco'])assert.ok(fs.existsSync(path.join(ICON_DIR,C.iconPath('x.'+ext,e,cor))),`faltando: ${ext} ${e} ${cor}`)});
-test('nenhum ícone fica sem uso (exceto os reservados)',()=>{
+test('nenhum ícone fica sem uso (exceto os que só a detecção por conteúdo usa)',()=>{
  const usados=new Set(Object.values(IDX.map).map(m=>m[1])),reais=new Set();
  for(const cat of fs.readdirSync(path.join(ICON_DIR,'icones','estilo1')).filter(c=>c!=='00_pastas'))for(const f of fs.readdirSync(path.join(ICON_DIR,'icones','estilo1',cat,'preto')))reais.add(f.replace('.png',''));
- assert.equal(reais.size,146);for(const n of reais)if(!IDX.reservados.includes(n))assert.ok(usados.has(n),'sem extensão: '+n)});
+ assert.equal(reais.size,146);for(const n of reais)if(!(n in IDX.porNome))assert.ok(usados.has(n),'sem extensão: '+n)});
 test('os dois estilos e as duas cores têm exatamente os mesmos arquivos',()=>{
  const lista=(e,c)=>fs.readdirSync(path.join(ICON_DIR,'icones',e)).flatMap(cat=>fs.readdirSync(path.join(ICON_DIR,'icones',e,cat,c)).map(f=>cat+'/'+f)).sort().join();
  const ref=lista('estilo1','preto');for(const e of C.ESTILOS)for(const c of ['preto','branco'])assert.equal(lista(e,c),ref,e+' '+c)});
@@ -62,3 +62,11 @@ test('os temas embutidos existem como pastas e coincidem com o fallback',()=>{
 test('as cores padrão do CSS e do fallback não divergem',()=>{
  const css=fs.readFileSync(path.join(__dirname,'..','src','styles.css'),'utf8'),dark=css.match(/:root\{([^}]*)\}/)[1];
  for(const [k,v] of Object.entries(C.BASE_TEMAS.escuro))assert.ok(dark.includes(C.THEME_KEYS[k]+':'+v),`CSS escuro difere em ${k}`)});
+
+// ---- Lista de tipos de arquivo (tela de configurações) ----
+test('listarTipos tem um tipo por ícone, com todas as extensões',()=>{
+ const L=C.listarTipos(),por=n=>L.find(x=>x.nome===n);
+ assert.equal(L.length,new Set(L.map(x=>x.nome)).size);assert.ok(L.length>=146);
+ assert.deepEqual(por('html').exts,['htm','html']);assert.deepEqual(por('jpg').exts,['jpeg','jpg']);assert.deepEqual(por('gml').exts,['gml']);
+ assert.equal(por('mysql').soConteudo,true);assert.deepEqual(por('mysql').exts,[]);
+ for(const x of L)assert.ok(C.CATEGORIAS[x.cat],'categoria sem nome: '+x.cat)});

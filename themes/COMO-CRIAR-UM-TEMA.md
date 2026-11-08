@@ -13,11 +13,11 @@ themes/
 A pasta `themes/` fica ao lado do `UniversalDevelopmentStudio.exe`, e vai dentro do ZIP portátil.
 
 ## Criar o seu primeiro tema (5 passos, dá para fazer dentro do próprio UDS)
-1. Abra **Configurações** (engrenagem) e clique em **Abrir pasta** logo abaixo do campo *Tema*. A pasta `themes/` aparece no explorador.
+1. Abra **Configurações** (engrenagem ou menu do logo) e, na aba *Aparência*, clique em **Abrir pasta de temas**. A caixa fecha e a pasta `themes/` aparece no explorador.
 2. Copie a pasta `exemplo-oceano` e dê a cópia um nome novo, só com letras minúsculas, números e hífen. Exemplo: `meu-tema`.
 3. Abra o `theme.json` da cópia e troque `"id"` para o mesmo nome da pasta (`"meu-tema"`) e `"nome"` para o que vai aparecer na lista.
 4. Mude as cores que quiser e aperte **Ctrl+S**. Se o tema estiver ativo, **as cores mudam na hora**, a cada vez que você salva.
-5. Em *Configurações → Tema*, escolha o seu tema na lista. Se ele não aparecer, clique em **Recarregar** (ou use *Exibir → Recarregar temas*) e olhe a aba **Output**, que explica o que está errado.
+5. Em *Configurações → Aparência → Tema*, escolha o seu tema na lista. Se ele não aparecer, clique em **Recarregar** (ou use *Exibir → Recarregar temas*) e olhe a aba **Output**, que explica o que está errado.
 
 ## O arquivo `theme.json`
 ```json

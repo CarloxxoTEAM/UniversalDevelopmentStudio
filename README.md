@@ -6,13 +6,16 @@ O UDS é um ambiente **universal e portátil** para desenvolvimento, edição e 
 
 A interface segue o estilo dos editores modernos, com explorador de arquivos à esquerda, abas e editor no centro, painel inferior e, à direita, um **bloco de notas por projeto**.
 
-**Versão atual:** 1.1.0 · **Plataforma:** Windows (Linux e macOS nas etapas 9.00 em diante) · **Licença:** MIT
+**Versão atual:** 1.3.0 · **Plataforma:** Windows (Linux e macOS nas etapas 9.00 em diante) · **Licença:** MIT
 
 ## O que já funciona
 - Abrir uma pasta do computador e navegar pelos arquivos.
 - Criar, renomear e excluir arquivos e pastas.
 - Abas e editor de texto com numeração de linhas e destaque de sintaxe.
 - Visualizador de imagens (PNG, JPG, GIF, WEBP, BMP, ICO, SVG) com zoom, rotação e ajuste.
+- **Player de áudio** (MP3, WAV, FLAC, OGG, Opus, AAC, M4A) com capa, etiquetas, forma de onda clicável, velocidade e dados técnicos (veja `ReadMe/audio.md`).
+- **Identificação de arquivos pelo conteúdo**: um PNG chamado `foto.txt`, um script sem extensão ou um PDF são reconhecidos ao abrir (veja `ReadMe/deteccao.md`).
+- **Configurações em uma caixa flutuante** (engrenagem ou menu do logo), com a lista de **Tipos de arquivo**.
 - **Ícones para mais de 200 extensões**, em 2 estilos (preto e branco, de acordo com o tema), e **ícones de pasta** (fechada e aberta).
 - **Temas lidos de arquivos `theme.json`** (escuro, claro e um exemplo), com recarga na hora; você cria o seu seguindo o guia em `themes/`.
 - Tamanho da fonte e zoom.
@@ -46,7 +49,11 @@ Tudo isso está no menu que abre ao clicar no **logo do UDS** (canto superior es
 | Barra lateral / Painel inferior / Notas | Mostra ou esconde cada área (também pelos 3 botões no canto superior direito) | |
 | Aumentar / Diminuir zoom | Muda o tamanho de toda a interface | `Ctrl +` / `Ctrl -` |
 | Zoom padrão | Volta a 100% (clicar em "100%" no topo também) | `Ctrl 0` |
-| Sobre o UDS | Mostra versão e slogan na aba Output | |
+| **Configurações…** | Abre a caixa flutuante de configurações (tema, ícones, zoom, fonte, tipos de arquivo, atalhos) | `Ctrl+,` |
+| Tipos de arquivo… | Abre a caixa direto na lista de tipos de arquivo, com ícone, nome e extensões | |
+| Sobre o UDS | Abre a caixa na aba Sobre (versão, licença, pastas usadas) | |
+
+**Player de áudio** (com o player em foco): `Espaço` toca/pausa, `←` `→` voltam/avançam 5 s, `↑` `↓` mudam o volume, `M` silencia. Clique na forma de onda para ir a um ponto.
 
 **Outros atalhos e gestos**
 - `Ctrl` + roda do mouse: zoom da interface.
@@ -55,7 +62,11 @@ Tudo isso está no menu que abre ao clicar no **logo do UDS** (canto superior es
 - Botão ⋯ no topo do explorador: novo arquivo, nova pasta, atualizar.
 - Notas: **＋ Nova nota** cria; duplo clique no título renomeia; **＋ Vincular arquivo atual** adiciona um atalho `@arquivo` que abre o arquivo ao clicar; botão direito no atalho remove o vínculo.
 
-**Configurações** (ícone de engrenagem): tema (lista todos os temas da pasta `themes/`, com *Recarregar* e *Abrir pasta*), **estilo dos ícones** (Estilo 1 padrão ou Estilo 2), tamanho da fonte, zoom e *Restaurar padrões*.
+**Configurações** (engrenagem no canto inferior esquerdo, ou *Configurações…* no menu do logo): uma caixa flutuante que dá para arrastar, redimensionar e deixar aberta enquanto você trabalha. `Esc` fecha. Abas:
+- **Aparência:** tema (com *Recarregar* e *Abrir pasta de temas*), estilo dos ícones (Estilo 1 padrão ou Estilo 2), zoom e *Restaurar padrões*.
+- **Editor:** tamanho da fonte.
+- **Tipos de arquivo:** lista de tipos com ícone, nome e extensões, e filtro.
+- **Atalhos**, **Extensões** e **Sobre:** informações (a personalização chega nas etapas 4.70 e 6.00 em diante).
 
 ## Comandos para desenvolver
 Requisitos: [Node.js 20+](https://nodejs.org), [Rust](https://rustup.rs) e os [pré-requisitos do Tauri](https://tauri.app/start/prerequisites/).
@@ -64,13 +75,15 @@ Requisitos: [Node.js 20+](https://nodejs.org), [Rust](https://rustup.rs) e os [p
 |---|---|
 | `npm install` | Baixa as ferramentas de compilação (Tauri CLI) |
 | `npm run icons` | Gera o ícone do **programa** (`.ico`, `.icns`, `.png`) a partir de `app-icon.png`. Não tem relação com os ícones de arquivo |
-| `npm test` | Roda os testes da interface, inclusive a conferência dos ícones |
+| `npm test` | Roda os testes da interface: ícones, temas e identificação de arquivos pelo conteúdo |
+| `python tests/gerar_amostras_audio.py` | Gera os áudios reais de amostra e o gabarito do ffprobe usados nos testes de áudio. Precisa de `ffmpeg`, `ffprobe` e `pip install pillow` |
+| `python tests/gerar_amostras.py` | Gera os arquivos reais de amostra usados nos testes de detecção. Precisa de `pip install pillow` |
 | `cargo test --manifest-path src-tauri/Cargo.toml` | Roda os testes do núcleo em Rust |
 | `npm run dev` | Abre o UDS em modo de desenvolvimento |
 | `npm run build` | Compila o executável em `src-tauri/target/release/` |
 | `python scripts/gerar_icone.py SIGLA nome 12_extras` | Gera os 4 ícones (2 estilos, preto e branco) de um tipo de arquivo novo. Exemplo: `GML gml`. Precisa de `pip install pillow` |
 | `python scripts/package.py windows` | Depois do build: monta a pasta portátil e o ZIP em `dist-portable/` |
-| `git tag v1.1.0` e `git push origin v1.1.0` | Publica uma versão: o GitHub Actions compila, testa, gera o ZIP e o coloca em **Releases** |
+| `git tag v1.3.0` e `git push origin v1.3.0` | Publica uma versão: o GitHub Actions compila, testa, gera o ZIP e o coloca em **Releases** |
 
 ## Guias
 **Como criar um tema:** [`themes/COMO-CRIAR-UM-TEMA.md`](themes/COMO-CRIAR-UM-TEMA.md)
@@ -79,6 +92,8 @@ Requisitos: [Node.js 20+](https://nodejs.org), [Rust](https://rustup.rs) e os [p
 | Arquivo | Conteúdo |
 |---|---|
 | [`ReadMe/icones.md`](ReadMe/icones.md) | Os 2 estilos de ícone, preto e branco por tema, como adicionar ou trocar ícones e a lista completa por extensão |
+| [`ReadMe/audio.md`](ReadMe/audio.md) | O player de áudio: controles, formatos, etiquetas lidas, limites e testes |
+| [`ReadMe/deteccao.md`](ReadMe/deteccao.md) | Como o UDS descobre o tipo de um arquivo pelo conteúdo, formatos reconhecidos e limites |
 | [`ReadMe/icones-personalizados.md`](ReadMe/icones-personalizados.md) | Como um tipo de arquivo ganha ícone para sempre, pacotes de ícones e a área "Tipos de Arquivos" |
 | [`ReadMe/ideias.md`](ReadMe/ideias.md) | Ideias e melhorias organizadas por versão |
 | [`ReadMe/atualizacoes.md`](ReadMe/atualizacoes.md) | O que mudou em cada versão |
@@ -105,12 +120,12 @@ Cada etapa só avança quando a anterior funciona. `[x]` = pronta, `[ ]` = a faz
 
 **VISUALIZAR**
 - [x] 1.10 - Temas claro e escuro, lidos de um theme.json
-- [ ] 1.20 - Identificação de arquivos pelo conteúdo
-- [ ] 1.30 - Áudio
+- [x] 1.20 - Identificação de arquivos pelo conteúdo
+- [x] 1.30 - Áudio
 - [ ] 1.40 - Vídeo
 - [ ] 1.50 - Modelos 3D (com biblioteca pronta)
 - [ ] 1.60 - Abrir como... e associações de arquivo
-- [ ] ✚ 1.65 - Janela separada de Configurações e "Sobre", com a área "Tipos de Arquivos" (lista, editar e criar tipo, ex.: .gml GameMaker)
+- [ ] ✚ 1.65 - Área "Tipos de Arquivos": criar e editar tipos (ex.: .gml GameMaker). Já pronto na 1.2.0: a caixa flutuante de Configurações e a lista de tipos
 - [ ] ✚ 1.66 - Pacotes de ícones em pastas, lidos como temas (variações preto e branco automáticas)
 - [ ] 1.70 - Markdown e PDF
 - [ ] 1.80 - CSV e JSON em tabela

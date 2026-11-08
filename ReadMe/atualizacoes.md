@@ -2,6 +2,41 @@
 
 Cada versão lista o que mudou. A versão mais nova fica no topo. Os números de etapa (0.10, 1.20...) são os do roteiro no `README.md`.
 
+## 1.3.0 — Novembro de 2026 — Áudio (etapa 1.30)
+**Novo**
+- **Visualizador de áudio**, o segundo módulo de visualização (`src/visualizadores/audio.js`): toca MP3, WAV, FLAC, OGG, Opus, AAC e M4A na própria janela.
+- **Forma de onda** clicável: a parte já tocada usa a cor de destaque do tema.
+- **Controles:** tocar/pausar, posição, volume, mudo, velocidade (0,5× a 2×) e repetir, mais atalhos de teclado (`Espaço`, `←` `→`, `↑` `↓`, `M`). O volume é lembrado.
+- **Capa, título, artista, álbum, ano, gênero e faixa**, e uma tabela de **dados técnicos** (codec, duração, taxa de amostragem, canais, bits, taxa de bits, tamanho).
+- **Leitor de etiquetas** (`src/audiometa.js`): ID3v1/v2.2/v2.3/v2.4 (UTF-8 e UTF-16), FLAC, OGG Vorbis, Opus, M4A e WAV, inclusive capas.
+- A música **continua tocando** (mesmo ponto, velocidade e volume) quando a tela é redesenhada, por exemplo ao trocar o tema.
+- Formatos que o sistema não toca (WMA, AIFF, MIDI...) mostram um aviso e as informações do arquivo.
+- Guia `ReadMe/audio.md`.
+
+**Melhorado**
+- 60 testes automáticos. Os novos comparam o leitor com o **ffprobe** em 9 arquivos de áudio reais e conferem arquivos truncados e corrompidos.
+- Arquivos acima de 40 MB tocam normalmente; só a forma de onda e as etiquetas ficam desativadas.
+
+## 1.2.0 — Novembro de 2026 — Identificação pelo conteúdo e caixa de configurações (etapa 1.20)
+**Novo**
+- **Identificação de arquivos pelo conteúdo**: ao abrir um arquivo, o UDS lê os primeiros bytes e descobre o tipo real, para mais de 60 formatos (imagens, áudio, vídeo, PDF, ZIP e derivados, fontes, executáveis, bancos de dados, 3D e código). Veja `ReadMe/deteccao.md`.
+- Ícone da aba e do explorador pelo tipo real, realce de sintaxe de scripts sem extensão (`#!`), e aviso na barra de status quando a extensão não combina com o conteúdo.
+- Arquivos que o UDS ainda não sabe mostrar (PDF, ZIP, fontes...) mostram o formato identificado e a etapa do visualizador, em vez de texto ilegível.
+- Os ícones **Lottie** e **MySQL**, antes reservados, agora são usados pela detecção.
+- **Caixa flutuante de Configurações**: abre pela engrenagem, por *Configurações…* no menu do logo (primeiro item) ou por `Ctrl+,`. Pode ser arrastada e redimensionada, fica aberta enquanto você trabalha e fecha com `Esc`. Abas: Aparência, Editor, **Tipos de arquivo**, Atalhos, Extensões e Sobre.
+- Aba **Tipos de arquivo**: uma linha por tipo, com ícone, nome e extensões, e filtro (`html (.htm, .html)`). Criar tipos novos fica para a etapa 1.65.
+- **Nova engrenagem** no canto inferior esquerdo.
+- Guia `ReadMe/deteccao.md`.
+
+**Corrigido**
+- **"Abrir pasta de temas" não mostrava nada**: o painel de Configurações continuava na barra lateral e escondia o explorador. Agora a caixa fecha e o explorador mostra a pasta. Se a pasta de temas não for encontrada, o programa avisa na barra de status e na aba Output.
+- Abrir uma pasta sempre volta ao explorador.
+- Arquivos com bytes nulos no início (como um MP3 sem etiquetas legíveis) não abrem mais como texto.
+
+**Melhorado**
+- 46 testes automáticos (novos: detecção com arquivos reais de amostra, falsos positivos em texto comum e em todos os arquivos do projeto, e a lista de tipos).
+- O núcleo Rust devolve os primeiros 512 bytes de cada arquivo (com teste).
+
 ## 1.1.0 — Novembro de 2026 — Temas (etapa 1.10)
 **Novo**
 - **Temas lidos de arquivos `theme.json`**: cada tema é uma pasta dentro de `themes/`, ao lado do executável. Vêm 3: `UDS Escuro`, `UDS Claro` e `Exemplo Oceano`.

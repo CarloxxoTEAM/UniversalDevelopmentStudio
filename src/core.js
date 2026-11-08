@@ -19,6 +19,17 @@ function iconPath(name,estilo='estilo1',cor='branco'){
 function folderPath(aberta,estilo='estilo1',cor='branco'){
  if(!ESTILOS.includes(estilo))estilo='estilo1';if(cor!=='preto')cor='branco';
  const [c,n]=aberta?IDX.pastas.aberta:IDX.pastas.fechada;return `icones/${estilo}/${c}/${cor}/${n}.png`}
+// ícone pelo nome do arquivo de ícone (ex.: 'mysql', 'png'), usado quando o tipo vem da detecção pelo conteúdo
+const NOME_CAT={};for(const [,[c,n]] of Object.entries(IDX.map))NOME_CAT[n]=c;Object.assign(NOME_CAT,IDX.porNome||{});
+function iconPathByName(nome,estilo='estilo1',cor='branco'){
+ if(!ESTILOS.includes(estilo))estilo='estilo1';if(cor!=='preto')cor='branco';
+ return NOME_CAT[nome]?`icones/${estilo}/${NOME_CAT[nome]}/${cor}/${nome}.png`:`icones/vazio/${estilo}_vazio_${cor}.svg`}
+const CATEGORIAS={'00_pastas':'Pastas','01_marcacao_configuracao':'Marcação, configuração e estilização','02_programacao_scripts':'Linguagens de programação, scripts e runtime','03_audio':'Áudio','04_video_animacao':'Vídeo e animação','05_imagens':'Imagens vetoriais e bitmap','06_modelos_3d_cad':'Modelos 3D, CAD e animação 3D','07_banco_de_dados':'Banco de dados','08_fontes_tipograficas':'Fontes tipográficas','09_documentos':'Documentos e leitura','10_compactados_discos':'Compactados e imagens de disco','11_executaveis_pacotes':'Executáveis, pacotes e arquivos compilados','12_extras':'Extras'};
+// lista de tipos de arquivo para a tela de configurações: um tipo por ícone, com todas as extensões que o usam
+function listarTipos(){const m=new Map();
+ for(const [ext,[c,n]] of Object.entries(IDX.map)){if(!m.has(n))m.set(n,{nome:n,cat:c,exts:[]});m.get(n).exts.push(ext)}
+ for(const [n,c] of Object.entries(IDX.porNome||{}))if(!m.has(n))m.set(n,{nome:n,cat:c,exts:[],soConteudo:true});
+ return [...m.values()].map(t=>({...t,exts:t.exts.sort()})).sort((a,b)=>a.cat.localeCompare(b.cat)||a.nome.localeCompare(b.nome))}
 const iconColor=theme=>theme==='light'?'preto':'branco';
 
 // ---- Temas (1.10): lidos de themes/<pasta>/theme.json ----
@@ -60,6 +71,6 @@ function highlight(s,ext){
   re=new RegExp('('+cm+')|("(?:\\\\.|[^"\\\\\\n])*"|\'(?:\\\\.|[^\'\\\\\\n])*\'|`[^`]*`)|\\b('+KW+')\\b|\\b(\\d+\\.?\\d*)\\b','g')}
  let o='',i=0,m;while((m=re.exec(s))){if(m[0]==='')break;o+=esc(s.slice(i,m.index))+`<i class="${pick(m)}">${esc(m[0])}</i>`;i=re.lastIndex}
  return o+esc(s.slice(i))}
-const api={esc,base,par,join,extOf,langOf,iconPath,folderPath,iconExt,iconColor,THEME_KEYS,BASE_TEMAS,TEMAS_EMBUTIDOS,validarTema,lerTema,cssVars,temaModo,ESTILOS,highlight};
+const api={esc,base,par,join,extOf,langOf,iconPath,iconPathByName,folderPath,CATEGORIAS,listarTipos,iconExt,iconColor,THEME_KEYS,BASE_TEMAS,TEMAS_EMBUTIDOS,validarTema,lerTema,cssVars,temaModo,ESTILOS,highlight};
 if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.UDSCore=api;
 })(typeof window!=='undefined'?window:globalThis);

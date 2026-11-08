@@ -20,7 +20,7 @@
 **Exemplo já pronto: GameMaker.** A extensão `.gml` (GameMaker Language) já vem registrada, com ícone nos 2 estilos e nas 2 cores. Se você usa outra extensão para o mesmo tipo (por exemplo `.glm`), acrescente `"glm":["12_extras","gml"]`.
 
 **Na versão 1.65 (planejada).** Sem mexer em código nem recompilar:
-1. *Configurações → Tipos de Arquivos → Criar tipo de arquivo*.
+1. *Configurações → Tipos de arquivo → Criar tipo de arquivo* (a lista de tipos já existe desde a 1.2.0; o botão de criar chega na 1.65).
 2. Preencher: **extensões** (`.gml`), **nome** (*GameMaker*) e **ícone**: escolher uma imagem, ou digitar a sigla (`GML`) para o UDS desenhar nos 2 estilos.
 3. O UDS gera sozinho as variações preto e branco e salva o tipo em `portable/config/tipos.json`. A partir daí, todo arquivo com essa extensão usa o ícone, em qualquer pasta, mesmo depois de reiniciar.
 
@@ -58,8 +58,8 @@ Regras:
 - Tipos que o pacote não definir usam os ícones padrão do UDS.
 - Um pacote com erro é ignorado e o motivo aparece na aba **Output**; o programa continua funcionando.
 
-## Área "Tipos de Arquivos" (planejada para a 1.65)
-Uma linha por tipo, com o ícone, o nome e as extensões:
+## Área "Tipos de arquivo"
+**Já disponível (1.2.0):** em *Configurações → Tipos de arquivo* (ou menu do logo → *Tipos de arquivo…*), com filtro. **Planejado (1.65):** editar as linhas e criar tipos. Cada linha mostra o ícone, o nome e as extensões:
 
 ```
 [ícone HTML]   HTML        (.html, .htm)

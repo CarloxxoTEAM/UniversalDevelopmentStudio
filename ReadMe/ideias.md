@@ -10,8 +10,8 @@ Aqui ficam as ideias que ainda não estão prontas. Cada uma tem uma etapa no ro
 | 4 | Personalização dos ícones de arquivo e variações automáticas | **1.65** e **1.66** | Planejada (os ícones preto e branco, nos 2 estilos, já existem) |
 | 5 | Cores das pastas | **4.30** | Parcial: pastas brancas no tema escuro e pretas no claro, **prontas na 1.0.2**. Cor individual: planejada |
 | 6 | Tirar o aviso de vírus do Windows | **1.06** | Planejada (veja abaixo) |
-| 7 | Configurações e "Sobre" em uma segunda janela | **1.65** | Planejada |
-| 8 | Área "Tipos de Arquivos" nas configurações | **1.65** | Planejada |
+| 7 | Configurações e "Sobre" em uma caixa separada | — | **Pronta na 1.2.0**, como caixa flutuante (engrenagem, menu do logo e `Ctrl+,`) |
+| 8 | Área "Tipos de Arquivos" nas configurações | **1.65** | A lista já está pronta (1.2.0). Falta criar e editar tipos |
 
 ## 1. Tela de loading (1.05)
 Referência: a tela de abertura do Adobe After Effects (painel escuro retangular, nome do programa em destaque, arte à direita, créditos pequenos e uma linha de status como *Initializing…*).
@@ -71,15 +71,15 @@ O aviso *"O Windows protegeu seu PC"* (SmartScreen) aparece porque o executável
 
 Até lá, o usuário clica em *Mais informações* e depois em *Executar assim mesmo*, como está no `README.md`.
 
-## 7. Segunda janela para Configurações e "Sobre" (1.65)
-Hoje as configurações ficam na barra lateral. Na 1.65, *Configurações* e *Sobre o UDS* passam a abrir uma **janela própria**, separada da principal, que pode ficar ao lado do editor. Mudanças feitas nela (tema, ícones, fonte) valem na janela principal na hora.
+## 7. Configurações e "Sobre" em uma caixa separada (pronta na 1.2.0)
+A engrenagem, o item *Configurações…* do menu do logo e o atalho `Ctrl+,` abrem uma **caixa flutuante**: pode ser arrastada, redimensionada e fica aberta enquanto você trabalha, então as mudanças de tema e de ícones aparecem na tela principal na hora. Tem as abas Aparência, Editor, Tipos de arquivo, Atalhos, Extensões e Sobre; novas configurações entram como novas abas ou seções. Uma janela do sistema operacional, fora da janela principal, não é necessária por enquanto.
 
-## 8. Área "Tipos de Arquivos" (1.65)
-Dentro das configurações, uma lista com uma linha por tipo, mostrando o ícone, o nome e as extensões:
+## 8. Área "Tipos de Arquivos" (lista pronta; criação na 1.65)
+**Pronto (1.2.0):** em *Configurações → Tipos de arquivo*, uma lista com uma linha por tipo, mostrando o ícone, o nome e as extensões, com filtro:
 
 ```
 [ícone HTML]   HTML        (.html, .htm)
 [ícone CSS]    CSS         (.css)
 [ícone GML]    GameMaker   (.gml)
 ```
-Cada linha pode ser editada, e há um botão **Criar tipo de arquivo**. Veja o passo a passo em [`icones-personalizados.md`](icones-personalizados.md).
+**Falta (1.65):** editar cada linha e um botão **Criar tipo de arquivo**. Veja o passo a passo em [`icones-personalizados.md`](icones-personalizados.md).

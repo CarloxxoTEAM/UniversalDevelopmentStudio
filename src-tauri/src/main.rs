@@ -19,6 +19,8 @@ struct FileInfo {
     mime: String,
     text: String,
     size: u64,
+    /// Primeiros bytes do arquivo (até 512), usados pela interface para identificar o formato pelo conteúdo.
+    head: Vec<u8>,
 }
 
 /// Pasta `portable/` ao lado do executável: configurações e dados do WebView ficam aqui.
@@ -92,17 +94,28 @@ fn read_file_impl(path: &str, force_text: bool) -> Result<FileInfo, String> {
     let mut f = fs::File::open(p).map_err(|e| e.to_string())?;
     let n = f.read(&mut head).map_err(|e| e.to_string())?;
     head.truncate(n);
-    let binary = |size| FileInfo { kind: "binary".into(), mime: "application/octet-stream".into(), text: String::new(), size };
+    let mk = |kind: &str, mime: &str, text: String| FileInfo {
+        kind: kind.into(),
+        mime: mime.into(),
+        text,
+        size,
+        head: head.clone(),
+    };
+    let binary = || mk("binary", "application/octet-stream", String::new());
     if !force_text {
         if let Some((k, m)) = sniff(&head) {
-            return Ok(FileInfo { kind: k.into(), mime: m.into(), text: String::new(), size });
+            return Ok(mk(k, m, String::new()));
         }
+    }
+    // Bytes nulos no início indicam arquivo binário (como o Git faz), mesmo que o resto pareça UTF-8.
+    if !force_text && head.contains(&0) {
+        return Ok(binary());
     }
     if size > 5_000_000 {
         return if force_text {
             Err("Arquivo grande demais para o editor (limite de 5 MB).".into())
         } else {
-            Ok(binary(size))
+            Ok(binary())
         };
     }
     let bytes = fs::read(p).map_err(|e| e.to_string())?;
@@ -110,18 +123,13 @@ fn read_file_impl(path: &str, force_text: bool) -> Result<FileInfo, String> {
         Ok(t) => {
             let is_svg = !force_text && t.chars().take(600).collect::<String>().contains("<svg");
             if is_svg {
-                Ok(FileInfo { kind: "image".into(), mime: "image/svg+xml".into(), text: String::new(), size })
+                Ok(mk("image", "image/svg+xml", String::new()))
             } else {
-                Ok(FileInfo { kind: "text".into(), mime: "text/plain".into(), text: t, size })
+                Ok(mk("text", "text/plain", t))
             }
         }
-        Err(e) if force_text => Ok(FileInfo {
-            kind: "text".into(),
-            mime: "text/plain".into(),
-            text: String::from_utf8_lossy(e.as_bytes()).to_string(),
-            size,
-        }),
-        Err(_) => Ok(binary(size)),
+        Err(e) if force_text => Ok(mk("text", "text/plain", String::from_utf8_lossy(e.as_bytes()).to_string())),
+        Err(_) => Ok(binary()),
     }
 }
 
@@ -221,6 +229,29 @@ mod tests {
     #[test]
     fn texto_comum_nao_e_imagem() {
         assert_eq!(sniff(b"console.log('oi')"), None);
+    }
+
+    #[test]
+    fn devolve_os_primeiros_bytes_do_arquivo() {
+        let d = tmp("head");
+        let f = d.join("a.bin");
+        let dados: Vec<u8> = (0..=255u8).cycle().take(1000).collect();
+        fs::write(&f, &dados).unwrap();
+        let info = read_file_impl(f.to_str().unwrap(), false).unwrap();
+        assert_eq!(info.head.len(), 512);
+        assert_eq!(&info.head[..], &dados[..512]);
+        let curto = d.join("b.txt");
+        fs::write(&curto, "abc").unwrap();
+        assert_eq!(read_file_impl(curto.to_str().unwrap(), false).unwrap().head, b"abc".to_vec());
+    }
+
+    #[test]
+    fn arquivo_com_bytes_nulos_e_binario() {
+        let d = tmp("nul");
+        let f = d.join("x.dat");
+        fs::write(&f, b"ID3\x03\x00abc").unwrap();
+        assert_eq!(read_file_impl(f.to_str().unwrap(), false).unwrap().kind, "binary");
+        assert_eq!(read_file_impl(f.to_str().unwrap(), true).unwrap().kind, "text");
     }
 
     #[test]

@@ -49,6 +49,7 @@ Cada PNG tem **100 × 100 px** com fundo transparente. O nome do arquivo é o no
 As pastas do explorador usam `00_pastas/pasta.png` (fechada) e `pasta-aberta.png` (quando está expandida). Seguem o tema, como os demais: **brancas no tema escuro e pretas no tema claro**, no estilo escolhido. Cor individual por pasta está planejada (etapa 4.30, em `ideias.md`).
 
 ## Como o UDS escolhe o ícone
+0. Se o arquivo já foi aberto, o tipo descoberto **pelo conteúdo** vale mais que a extensão (veja `deteccao.md`). Nos passos abaixo, o UDS só olha a extensão, como faz no explorador.
 
 1. Pega a extensão do arquivo, em minúsculas (`Foto.JPEG` vira `jpeg`; `.tar.gz` é tratado como um todo).
 2. Procura a extensão no `map` de `src/icones/indice.js`. Várias extensões podem usar o mesmo ícone (`.jpg` e `.jpeg` usam `jpg.png`; `.yml` e `.yaml` usam `yaml.png`).
@@ -292,4 +293,4 @@ Em `assets-design/icones-base/` ficam os modelos vazios em SVG (100 × 100), as 
 | `pasta.png` | Pasta fechada |
 | `pasta-aberta.png` | Pasta aberta (expandida no explorador) |
 
-Os ícones marcados como *reservados* já existem, mas não têm extensão própria. Serão usados quando o UDS passar a identificar arquivos pelo conteúdo (etapa 1.20 do roteiro).
+Os ícones marcados como *reservados* não têm extensão própria. O do **MySQL** é usado quando um arquivo começa com `-- MySQL dump`, e o do **Lottie** quando um `.json` tem camadas de animação (veja `deteccao.md`).
