@@ -4,7 +4,7 @@ Aqui ficam as ideias que ainda não estão prontas. Cada uma tem uma etapa no ro
 
 | # | Ideia | Etapa | Situação |
 |---|---|---|---|
-| 1 | Tela de loading personalizada | **1.05** | Planejada |
+| 1 | Tela de loading personalizada | **1.05** | **Pronta na 1.4.1**, como painel dentro da janela. Falta a janela separada e sem bordas (veja abaixo) |
 | 2 | Página inicial: projetos recentes e fixados, com a escolha do modo | **4.05** | Planejada, ampliada (veja nº 10 e 11). A tela inicial atual já tem *Abrir pasta*, *Abrir arquivo* e recentes, de forma simples |
 | 3 | Abas e painéis redimensionáveis, com tamanhos salvos | **4.10** | Planejada |
 | 4 | Personalização dos ícones de arquivo e variações automáticas | **1.65** e **1.66** | Planejada (os ícones preto e branco, nos 2 estilos, já existem) |
@@ -20,14 +20,11 @@ Aqui ficam as ideias que ainda não estão prontas. Cada uma tem uma etapa no ro
 | 14 | Editor de vídeo (FFmpeg) e Modo Vídeo | **2.80** | Planejada (mesma proposta). Precisa de decisão sobre o FFmpeg |
 
 ## 1. Tela de loading (1.05)
-Referência: a tela de abertura do Adobe After Effects (painel escuro retangular, nome do programa em destaque, arte à direita, créditos pequenos e uma linha de status como *Initializing…*).
+**Pronto (1.4.1):** painel de abertura com o logo montando, o nome em degradê, a linha de status com as etapas reais, a barra de progresso, a versão e a frase *One Studio. Unlimited Possibilities.* Some sozinha, pode ser pulada e desligada. Veja [`loading.md`](loading.md).
 
-Versão do UDS: uma janela pequena, sem bordas, que aparece enquanto o programa carrega.
-- Logo do UDS e nome em destaque, com o degradê laranja → rosa da identidade visual.
-- Animação suave (o cubo do logo montando, barra de progresso fina e transições com fade).
-- Linha de status com o que está acontecendo: *Carregando configurações…*, *Lendo ícones…*, *Abrindo o último projeto…*.
-- Versão do programa no canto e a frase *One Studio. Unlimited Possibilities.*
-- Some sozinha quando a janela principal estiver pronta.
+**Ainda não:**
+- **Janelinha separada, sem bordas**, que aparece antes da janela principal (como a abertura do Adobe After Effects). Precisa de mudanças no Rust e nas permissões da janela; só vale fazer depois de o build no Windows estar confirmado.
+- A mensagem *Abrindo o último projeto…*, quando o UDS reabrir o último projeto sozinho (4.05).
 
 ## 2. Tela de projetos e caminhos rápidos (4.05)
 - Seção simples com atalhos para os projetos e pastas abertos recentemente (hoje a tela inicial já lista as recentes).

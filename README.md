@@ -6,7 +6,7 @@ O UDS é um ambiente **universal e portátil** para desenvolvimento, edição e 
 
 A interface segue o estilo dos editores modernos, com explorador de arquivos à esquerda, abas e editor no centro, painel inferior e, à direita, um **bloco de notas por projeto**.
 
-**Versão atual:** 1.4.0 · **Plataforma:** Windows (Linux e macOS nas etapas 9.00 em diante) · **Licença:** MIT
+**Versão atual:** 1.4.1 · **Plataforma:** Windows (Linux e macOS nas etapas 9.00 em diante) · **Licença:** MIT
 
 ## O que já funciona
 - Abrir uma pasta do computador e navegar pelos arquivos.
@@ -15,6 +15,7 @@ A interface segue o estilo dos editores modernos, com explorador de arquivos à 
 - Visualizador de imagens (PNG, JPG, GIF, WEBP, BMP, ICO, SVG) com zoom, rotação e ajuste.
 - **Lista completa de formatos** com o que cada um faz hoje (seção "Formatos de arquivo").
 - **Player de áudio** (MP3, WAV, FLAC, OGG, Opus, AAC, M4A) com capa, etiquetas, forma de onda clicável, velocidade e dados técnicos (veja `ReadMe/audio.md`).
+- **Tela de loading** na abertura: painel com o logo montando, o que está sendo carregado e uma barra de progresso. Some sozinha, com clique ou com `Esc`, e pode ser desligada em *Configurações → Aparência* (veja `ReadMe/loading.md`).
 - **Player de vídeo** (MP4, WebM, MKV, MOV e 3GP, conforme os codecs do sistema) com controles, passo por quadro, tela cheia e dados técnicos: codec, resolução, fps, taxa de bits e rotação (veja `ReadMe/video.md`).
 - **Identificação de arquivos pelo conteúdo**: um PNG chamado `foto.txt`, um script sem extensão ou um PDF são reconhecidos ao abrir (veja `ReadMe/deteccao.md`).
 - **Configurações em uma caixa flutuante** (engrenagem ou menu do logo), com a lista de **Tipos de arquivo**.
@@ -85,7 +86,7 @@ Requisitos: [Node.js 20+](https://nodejs.org), [Rust](https://rustup.rs) e os [p
 | `npm run build` | Compila o executável em `src-tauri/target/release/` |
 | `python scripts/gerar_icone.py SIGLA nome 12_extras` | Gera os 4 ícones (2 estilos, preto e branco) de um tipo de arquivo novo. Exemplo: `GML gml`. Precisa de `pip install pillow` |
 | `python scripts/package.py windows` | Depois do build: monta a pasta portátil e o ZIP em `dist-portable/` |
-| `git tag v1.4.0` e `git push origin v1.4.0` | Publica uma versão: o GitHub Actions compila, testa, gera o ZIP e o coloca em **Releases** |
+| `git tag v1.4.1` e `git push origin v1.4.1` | Publica uma versão: o GitHub Actions compila, testa, gera o ZIP e o coloca em **Releases** |
 
 ## Guias
 **Como criar um tema:** [`themes/COMO-CRIAR-UM-TEMA.md`](themes/COMO-CRIAR-UM-TEMA.md)
@@ -95,6 +96,7 @@ Requisitos: [Node.js 20+](https://nodejs.org), [Rust](https://rustup.rs) e os [p
 |---|---|
 | [`ReadMe/icones.md`](ReadMe/icones.md) | Os 2 estilos de ícone, preto e branco por tema, como adicionar ou trocar ícones e a lista completa por extensão |
 | [`ReadMe/audio.md`](ReadMe/audio.md) | O player de áudio: controles, formatos, etiquetas lidas, limites e testes |
+| [`ReadMe/loading.md`](ReadMe/loading.md) | A tela de loading: o que mostra, como pular ou desligar, limites e testes |
 | [`ReadMe/video.md`](ReadMe/video.md) | O player de vídeo: controles, formatos, dados técnicos lidos, limites e testes |
 | [`ReadMe/proposta-modos-editores.md`](ReadMe/proposta-modos-editores.md) | Proposta (ainda não feita): página inicial, modos de trabalho, Visualizar, Markdown e editores de áudio e vídeo |
 | [`ReadMe/deteccao.md`](ReadMe/deteccao.md) | Como o UDS descobre o tipo de um arquivo pelo conteúdo, formatos reconhecidos e limites |
@@ -274,7 +276,7 @@ Cada etapa só avança quando a anterior funciona. `[x]` = pronta, `[ ]` = a faz
 - [x] 0.80 - Visualizadores como módulos
 - [x] 0.90 - Modo portátil e ZIP automático (GitHub Actions)
 - [x] 1.00 - Primeira release oficial (Windows)
-- [ ] ✚ 1.05 - Tela de loading personalizada, no estilo da abertura do After Effects (recomendada antes da página inicial, 4.05)
+- [x] ✚ 1.05 - Tela de loading personalizada, no estilo da abertura do After Effects (feita na 1.4.1 como painel dentro da janela principal; a janela separada e sem bordas fica para depois do teste no Windows)
 - [ ] ✚ 1.06 - Reduzir o aviso do Windows (assinatura de código gratuita para open source). Já feito: hash SHA-256 dos ZIPs e propriedades do .exe. Falta: o pedido de assinatura
 
 **VISUALIZAR**

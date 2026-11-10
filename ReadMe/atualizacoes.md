@@ -2,6 +2,26 @@
 
 Cada versão lista o que mudou. A versão mais nova fica no topo. Os números de etapa (0.10, 1.20...) são os do roteiro no `README.md`.
 
+## 1.4.1 — Novembro de 2026 — Tela de loading (etapa 1.05)
+**Novo**
+- **Tela de loading** na abertura (`src/loading.js`): painel escuro no estilo das telas de abertura de programas de criação, com o logo do UDS se montando (o cubo é desenhado traço a traço), o nome em degradê, a frase *One Studio. Unlimited Possibilities.*, a versão e uma **barra de progresso**.
+- A linha de status mostra o que o programa está carregando de verdade: *Carregando as configurações…*, *Lendo os temas…* e *Montando a interface…*.
+- **Dura pelo menos 1,3 s** (para a animação ser lida) e **no máximo 8 s** (se algo travar, libera o programa). Se o carregamento falhar, ela também some.
+- **Pular:** clique, `Esc`, `Enter` ou `Espaço`.
+- **Desligar:** *Configurações → Aparência → Tela de loading → Mostrar ao iniciar*. Quando desligada, a tela não pisca no começo.
+- Respeita **"reduzir movimento"** do sistema e é anunciada para leitores de tela.
+- **Guia novo:** `ReadMe/loading.md`.
+
+**Limites**
+- É um painel **dentro da janela principal**. A janelinha separada e sem bordas citada na ideia original exige mudanças no Rust e nas permissões da janela, e se falhasse a janela principal poderia abrir invisível. Fica para depois de o build no Windows ser confirmado.
+- A mensagem *Abrindo o último projeto…* chega com a página inicial (4.05), quando o UDS passar a reabrir o último projeto.
+
+**Melhorado**
+- 85 testes automáticos (6 novos de loading). `node tests/loading.navegador.js` abre o **app real** em um Chromium (com o núcleo Tauri simulado) e confere etapas, tempo mínimo, pular, desligar, falha e limite de segurança.
+
+**Ainda a confirmar no Windows**
+- O build da 1.4.1, e a pendência da 1.4.0: se MP4 (H.264/AAC), MOV e MKV tocam no WebView2.
+
 ## 1.4.0 — Novembro de 2026 — Vídeo (etapa 1.40)
 **Novo**
 - **Visualizador de vídeo**, o terceiro módulo de visualização (`src/visualizadores/video.js`): toca MP4, WebM, MKV, MOV e 3GP na própria janela, conforme os codecs do sistema.

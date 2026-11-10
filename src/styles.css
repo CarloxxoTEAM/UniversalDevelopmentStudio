@@ -138,3 +138,27 @@ select{background:var(--bg0);border:1px solid var(--bd);border-radius:6px;paddin
 .vd-tela:fullscreen{max-height:none;border:0;border-radius:0}.vd-tela:fullscreen video{max-height:100vh;width:100%;height:100%}
 .vd-msg{display:none;position:absolute;inset:0;align-items:center;justify-content:center;color:#fff;background:rgba(0,0,0,.65);text-align:center;padding:16px}
 #vd-sk{flex:1;min-width:140px}
+
+/* Tela de loading (1.05): identidade fixa da marca (painel escuro + degradê laranja → rosa), igual em qualquer tema */
+#uds-splash{position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:radial-gradient(1200px 700px at 50% 38%,#17121a 0,#09090b 62%);color:#e9e9ee;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;opacity:1;transition:opacity .38s ease}
+#uds-splash.sp-sai{opacity:0;pointer-events:none}#uds-splash.sp-rapido{transition-duration:.12s}
+.sp-card{display:flex;gap:36px;align-items:center;width:min(660px,92vw);padding:38px 40px;border:1px solid #26232d;border-radius:16px;background:#0e0d12;box-shadow:0 0 0 1px #00000066,0 30px 80px #000000aa,0 0 90px #ff3d6e1f;animation:sp-entra .6s cubic-bezier(.2,.8,.2,1) both}
+.sp-marca{flex:none;filter:drop-shadow(0 8px 26px #ff3d6e55)}
+.sp-tile{transform-origin:60px 60px;animation:sp-tile .7s cubic-bezier(.2,.9,.25,1.2) both}
+.sp-f{stroke-dasharray:100;stroke-dashoffset:100;fill:#ffffff00;animation:sp-traco .55s ease forwards,sp-preenche .5s ease forwards}
+.sp-f1{animation-delay:.35s,.85s}.sp-f2{animation-delay:.55s,1.0s}.sp-f3{animation-delay:.75s,1.15s}
+.sp-txt{flex:1;min-width:0;display:flex;flex-direction:column;min-height:132px}
+.sp-nome{font-size:24px;font-weight:700;letter-spacing:.2px;line-height:1.2;background:linear-gradient(90deg,#fff 0,#fff 55%,#ffb48c 100%);-webkit-background-clip:text;background-clip:text;color:transparent;animation:sp-sobe .6s .25s ease both}
+.sp-lema{margin-top:6px;font-size:13px;color:#8d8a98;animation:sp-sobe .6s .4s ease both}
+.sp-fim{margin-top:auto;padding-top:22px;animation:sp-sobe .6s .55s ease both}
+.sp-st{font-size:12.5px;color:#c8c5d2;min-height:18px;margin-bottom:8px}
+.sp-trilho{height:3px;border-radius:3px;background:#24212b;overflow:hidden}
+.sp-bar{height:100%;width:100%;transform-origin:left center;transform:scaleX(0);background:linear-gradient(90deg,#ff8a3d,#ff3d6e);border-radius:3px;transition:transform .45s cubic-bezier(.3,.7,.2,1);box-shadow:0 0 12px #ff3d6e88}
+.sp-rod{display:flex;justify-content:space-between;gap:10px;margin-top:10px;font-size:11px;color:#6b6874}
+@keyframes sp-entra{from{opacity:0;transform:translateY(10px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes sp-tile{from{opacity:0;transform:scale(.7) rotate(-8deg)}to{opacity:1;transform:none}}
+@keyframes sp-traco{to{stroke-dashoffset:0}}
+@keyframes sp-preenche{to{fill:#ffffff26}}
+@keyframes sp-sobe{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.sp-card,.sp-tile,.sp-nome,.sp-lema,.sp-fim{animation:none}.sp-f{animation:none;stroke-dashoffset:0;fill:#ffffff26}.sp-bar,#uds-splash{transition-duration:.01s}}
+@media (max-width:560px){.sp-card{flex-direction:column;text-align:center;padding:28px 22px}.sp-rod{flex-direction:column;align-items:center}}

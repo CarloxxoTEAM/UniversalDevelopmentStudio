@@ -20,12 +20,13 @@ Este arquivo tem duas partes: **Ajustes depois da 1.4.0** (o que mudou desde que
 | Versão | Conteúdo | Etapas |
 |---|---|---|
 | **1.4.0** | Vídeo (**publicada**) | 1.40 |
-| **1.4.1** | Página inicial + Modos de trabalho (Universal e Texto) + Visualizar | ✚ 4.05, ✚ 4.02, ✚ 1.45 |
-| **1.4.2** | Markdown em 2 modos + prévia ao vivo no Modo Texto | 1.70 (parte Markdown) |
-| **1.4.3** | Editor de áudio + Modo Áudio | ✚ 2.70 |
-| **1.4.4** | Editor de vídeo (FFmpeg) + Modo Vídeo | ✚ 2.80 |
+| **1.4.1** | Tela de loading (**feita**, aguardando publicação) | 1.05 |
+| **1.4.2** | Página inicial + Modos de trabalho (Universal e Texto) + Visualizar | ✚ 4.05, ✚ 4.02, ✚ 1.45 |
+| **1.4.3** | Markdown em 2 modos + prévia ao vivo no Modo Texto | 1.70 (parte Markdown) |
+| **1.4.4** | Editor de áudio + Modo Áudio | ✚ 2.70 |
+| **1.4.5** | Editor de vídeo (FFmpeg) + Modo Vídeo | ✚ 2.80 |
 
-- A **1.05 (loading)** continua recomendada antes da página inicial, para a sequência *loading → página inicial* já nascer completa.
+- A **1.05 (loading)** foi feita antes da página inicial, como recomendado, então a sequência *loading → página inicial* já nasce completa.
 
 ### 3. Respostas da seção 6 ("Confirmar no código"), já conferidas
 | Pergunta | O que o código mostra |
