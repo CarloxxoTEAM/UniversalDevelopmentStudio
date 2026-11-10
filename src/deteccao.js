@@ -19,7 +19,7 @@ function ftyp(b){const br=asc(b,8,12);
  if(MP4B.avif.includes(br))return D('avif','AVIF','i','avif','image/avif');
  if(br==='crx ')return D('raw','RAW (Canon CR3)','i','raw','image/x-canon-cr3',{compat:['cr3']});
  if(br==='qt  ')return D('mov','QuickTime (MOV)','v','mov','video/quicktime',{vis:null});
- if(br==='M4A '||br==='M4B ')return D('m4a','M4A','a','m4a','audio/mp4',{});
+ if(br==='M4A '||br==='M4B ')return D('m4a','M4A','a','m4a','audio/mp4',{compat:['m4b','alac']});
  if(br.startsWith('3g'))return D('3gp','3GP','v','3gp','video/3gpp',{compat:['3g2'],vis:null});
  return D('mp4','MP4','v','mp4','video/mp4',{vis:null,compat:['m4v','mov','m4a','3gp']})}
 function zip(b){const nl=b[26]|(b[27]<<8),nome=asc(b,30,30+nl);

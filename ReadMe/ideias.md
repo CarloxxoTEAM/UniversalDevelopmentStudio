@@ -5,14 +5,19 @@ Aqui ficam as ideias que ainda não estão prontas. Cada uma tem uma etapa no ro
 | # | Ideia | Etapa | Situação |
 |---|---|---|---|
 | 1 | Tela de loading personalizada | **1.05** | Planejada |
-| 2 | Tela de projetos e caminhos rápidos | **4.05** | Planejada (a tela inicial já tem *Abrir pasta*, *Abrir arquivo* e recentes, de forma simples) |
+| 2 | Página inicial: projetos recentes e fixados, com a escolha do modo | **4.05** | Planejada, ampliada (veja nº 10 e 11). A tela inicial atual já tem *Abrir pasta*, *Abrir arquivo* e recentes, de forma simples |
 | 3 | Abas e painéis redimensionáveis, com tamanhos salvos | **4.10** | Planejada |
 | 4 | Personalização dos ícones de arquivo e variações automáticas | **1.65** e **1.66** | Planejada (os ícones preto e branco, nos 2 estilos, já existem) |
 | 5 | Cores das pastas | **4.30** | Parcial: pastas brancas no tema escuro e pretas no claro, **prontas na 1.0.2**. Cor individual: planejada |
 | 6 | Tirar o aviso de vírus do Windows | **1.06** | Planejada (veja abaixo) |
 | 7 | Configurações e "Sobre" em uma caixa separada | — | **Pronta na 1.2.0**, como caixa flutuante (engrenagem, menu do logo e `Ctrl+,`) |
 | 8 | Área "Tipos de Arquivos" nas configurações | **1.65** | A lista já está pronta (1.2.0). Falta criar e editar tipos |
-| 9 | Vídeo, complementos: capturar quadro (PNG), legendas, duração de MP4 fragmentado | **1.45** | Planejada (veja abaixo) |
+| 9 | Vídeo, complementos: capturar quadro (PNG), legendas, duração de MP4 fragmentado | **1.46** | Planejada (veja abaixo) |
+| 10 | Modos de trabalho (Universal, Texto, Áudio, Vídeo) | **4.02** | Planejada. Proposta completa em [`proposta-modos-editores.md`](proposta-modos-editores.md) |
+| 11 | Visualizar (prévia flutuante pelo botão direito) | **1.45** | Planejada (mesma proposta) |
+| 12 | Markdown em 2 modos, com prévia ao vivo | **1.70** (parte Markdown) | Planejada (mesma proposta) |
+| 13 | Editor de áudio e Modo Áudio | **2.70** | Planejada (mesma proposta) |
+| 14 | Editor de vídeo (FFmpeg) e Modo Vídeo | **2.80** | Planejada (mesma proposta). Precisa de decisão sobre o FFmpeg |
 
 ## 1. Tela de loading (1.05)
 Referência: a tela de abertura do Adobe After Effects (painel escuro retangular, nome do programa em destaque, arte à direita, créditos pequenos e uma linha de status como *Initializing…*).
@@ -85,10 +90,20 @@ A engrenagem, o item *Configurações…* do menu do logo e o atalho `Ctrl+,` ab
 ```
 **Falta (1.65):** editar cada linha e um botão **Criar tipo de arquivo**. Veja o passo a passo em [`icones-personalizados.md`](icones-personalizados.md).
 
-## 9. Vídeo, complementos (1.45)
+## 9. Vídeo, complementos (1.46)
 Ideias que apareceram ao fazer o visualizador de vídeo (1.40) e ficaram de fora para a etapa continuar pequena:
 - **Capturar o quadro atual como PNG.** Precisa de um comando novo no núcleo Rust para gravar arquivos binários (hoje `write_file` só grava texto), então fica para uma etapa em que o build possa ser verificado logo em seguida.
 - **Legendas** `.srt` e `.vtt` ao lado do vídeo (mesmo nome), com botão para ligar e desligar.
 - **Duração de MP4 fragmentado** (`moof`): hoje o painel mostra a duração que o player informa; ler os fragmentos daria o valor também para fps e taxa de bits.
 - **Miniaturas na barra de posição** e marcadores de capítulos (MP4/MKV).
 - **Lembrar a posição** de cada vídeo entre sessões (hoje só dura enquanto a aba está aberta).
+
+## 10 a 14. Modos de trabalho, Visualizar, Markdown e editores (4.02, 1.45, 1.70, 2.70 e 2.80)
+A proposta completa, com as versões sugeridas, o que será reaproveitado do código atual, as decisões que dependem de você e as regras de não regressão, está em [`proposta-modos-editores.md`](proposta-modos-editores.md). Em resumo:
+- **Página inicial (4.05):** depois do loading, uma tela com projetos recentes (fixáveis, voltando no modo em que foram usados) e 4 cartões de função (*Universal*, *Texto*, *Áudio*, *Vídeo*).
+- **Modos de trabalho (4.02):** cada modo mostra só o painel e os botões da sua função. O *Universal* é o UDS de hoje, sem mudança. `Ctrl+1` a `Ctrl+4` trocam de modo, sem perder abas nem alterações.
+- **Visualizar (1.45):** item novo no botão direito do explorador; abre uma prévia flutuante reaproveitando os visualizadores que já existem.
+- **Markdown (1.70, parte):** modos Código, Visualização e Dividido, como no GitHub, com conversor embutido (nada de internet).
+- **Editor de áudio (2.70):** cortar, recortar e remover trecho; salvar sempre como **cópia** em WAV.
+- **Editor de vídeo (2.80):** corte com FFmpeg, também sempre como cópia. O original nunca é alterado.
+- **Decisões abertas:** FFmpeg dentro do ZIP, formato de saída do áudio, biblioteca de Markdown, modo padrão do `.md`, modo ao abrir um recente, nomes e atalhos dos modos, posição dos cartões, janela flutuante ou painel fixo (seção 5 da proposta).

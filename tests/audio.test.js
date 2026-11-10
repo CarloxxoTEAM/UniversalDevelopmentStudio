@@ -50,3 +50,9 @@ test('arquivos truncados, vazios ou corrompidos nunca derrubam o leitor',()=>{
   for(const n of[0,1,3,4,7,8,11,12,27,64,100,333,1000,2500,Math.floor(b.length/2),b.length-1]){const r=M.lerMetadados(b.subarray(0,Math.min(n,b.length)));assert.equal(typeof r,'object');assert.ok('formato' in r)}
   const lixo=b.slice();for(let i=12;i<Math.min(lixo.length,600);i+=5)lixo[i]=(lixo[i]*31+7)&255;const r=M.lerMetadados(lixo);assert.ok('formato' in r)}
  assert.deepEqual(M.lerMetadados(new Uint8Array(0)),{formato:null});assert.deepEqual(M.lerMetadados(null),{formato:null});assert.equal(M.lerMetadados(Uint8Array.from([1,2,3,4,5,6,7,8,9,10])).formato,null)});
+
+test('arquivo .alac ou .m4b com contêiner M4A não gera aviso de extensão errada',()=>{
+ const fs=require('node:fs'),path=require('node:path'),DET=require('../src/deteccao.js');
+ const head=[...fs.readFileSync(path.join(__dirname,'amostras','audio','com-capa.m4a')).subarray(0,512)];
+ for(const nome of ['a.alac','a.m4b','a.m4a']){const r=DET.identificar({nome,head});assert.equal(r.formato.id,'m4a',nome);assert.equal(r.conflito,false,nome)}
+ assert.equal(DET.identificar({nome:'a.mp3',head}).conflito,true)});

@@ -15,9 +15,10 @@ Cada versão lista o que mudou. A versão mais nova fica no topo. Os números de
 - **M2TS não era reconhecido pelo conteúdo** (o pacote BDAV tem 192 bytes e a assinatura conferia os offsets errados). Agora é reconhecido, e as extensões `.ts` e `.mts` não geram mais o aviso de conflito.
 - **Extensões equivalentes sem aviso falso:** `.3g2` (3GP), `.mkv` com conteúdo WebM e `.webm`/`.mka`.
 - O **seletor de velocidade** do player de áudio (e do novo de vídeo) mostrava a primeira opção em vez de 1× ao abrir.
+- Arquivo **`.alac`** (ou `.m4b`) com contêiner M4A gerava o aviso falso de "extensão não confere". Agora as extensões equivalentes são aceitas.
 
 **Melhorado**
-- 78 testes automáticos (12 novos de vídeo). O leitor é comparado com o **ffprobe** em 21 vídeos reais gerados pelo ffmpeg (MP4 com `moov` no fim e com *faststart*, HEVC, fragmentado, MOV, ProRes, 3GP, WebM VP8/VP9, MKV H.264/AV1, AVI, FLV, OGV, MPEG, TS, WMV). Também há teste de um arquivo de 400 MB simulado (só lê o `moov`) e de arquivos truncados e corrompidos.
+- 79 testes automáticos (13 novos: 12 de vídeo e 1 de extensões do M4A). O leitor é comparado com o **ffprobe** em 21 vídeos reais gerados pelo ffmpeg (MP4 com `moov` no fim e com *faststart*, HEVC, fragmentado, MOV, ProRes, 3GP, WebM VP8/VP9, MKV H.264/AV1, AVI, FLV, OGV, MPEG, TS, WMV). Também há teste de um arquivo de 400 MB simulado (só lê o `moov`) e de arquivos truncados e corrompidos.
 - Teste opcional em **navegador real**: `node tests/video.navegador.js` abre cada formato no visualizador (Chromium via Playwright), confere o painel técnico com o ffprobe, toca WebM de verdade e testa controles, passo por quadro, velocidade, volume, teclado, aviso para formatos que o sistema não toca e leitura sem `Range`.
 
 **Ainda a confirmar no Windows**

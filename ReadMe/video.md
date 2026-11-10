@@ -52,7 +52,7 @@ Com o player em foco (clique nele uma vez):
 - **MP4 fragmentado** (gravações em *streaming*): a duração mostrada vem do player; fps e taxa de bits ficam em branco.
 - WebM/MKV: o UDS lê o início do arquivo (até 4 MB). Arquivos que guardam as informações depois disso (raros) mostram só o que o player informar.
 - O passo por quadro usa o fps do arquivo (30 se ele não informar); em vídeo de fps variável é uma aproximação.
-- Legendas, miniaturas e captura de quadro não existem ainda (etapa 1.45 do roteiro).
+- Legendas, miniaturas e captura de quadro não existem ainda (etapa 1.46 do roteiro).
 - Ao trocar o tema ou o zoom com um vídeo tocando, ele **continua** do mesmo ponto, com a mesma velocidade e volume. Trocar de aba **para** o vídeo.
 
 ## Como funciona por dentro

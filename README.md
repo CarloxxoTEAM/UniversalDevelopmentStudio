@@ -96,6 +96,7 @@ Requisitos: [Node.js 20+](https://nodejs.org), [Rust](https://rustup.rs) e os [p
 | [`ReadMe/icones.md`](ReadMe/icones.md) | Os 2 estilos de ícone, preto e branco por tema, como adicionar ou trocar ícones e a lista completa por extensão |
 | [`ReadMe/audio.md`](ReadMe/audio.md) | O player de áudio: controles, formatos, etiquetas lidas, limites e testes |
 | [`ReadMe/video.md`](ReadMe/video.md) | O player de vídeo: controles, formatos, dados técnicos lidos, limites e testes |
+| [`ReadMe/proposta-modos-editores.md`](ReadMe/proposta-modos-editores.md) | Proposta (ainda não feita): página inicial, modos de trabalho, Visualizar, Markdown e editores de áudio e vídeo |
 | [`ReadMe/deteccao.md`](ReadMe/deteccao.md) | Como o UDS descobre o tipo de um arquivo pelo conteúdo, formatos reconhecidos e limites |
 | [`ReadMe/icones-personalizados.md`](ReadMe/icones-personalizados.md) | Como um tipo de arquivo ganha ícone para sempre, pacotes de ícones e a área "Tipos de Arquivos" |
 | [`ReadMe/ideias.md`](ReadMe/ideias.md) | Ideias e melhorias organizadas por versão |
@@ -273,7 +274,7 @@ Cada etapa só avança quando a anterior funciona. `[x]` = pronta, `[ ]` = a faz
 - [x] 0.80 - Visualizadores como módulos
 - [x] 0.90 - Modo portátil e ZIP automático (GitHub Actions)
 - [x] 1.00 - Primeira release oficial (Windows)
-- [ ] ✚ 1.05 - Tela de loading personalizada, no estilo da abertura do After Effects
+- [ ] ✚ 1.05 - Tela de loading personalizada, no estilo da abertura do After Effects (recomendada antes da página inicial, 4.05)
 - [ ] ✚ 1.06 - Reduzir o aviso do Windows (assinatura de código gratuita para open source). Já feito: hash SHA-256 dos ZIPs e propriedades do .exe. Falta: o pedido de assinatura
 
 **VISUALIZAR**
@@ -281,12 +282,13 @@ Cada etapa só avança quando a anterior funciona. `[x]` = pronta, `[ ]` = a faz
 - [x] 1.20 - Identificação de arquivos pelo conteúdo
 - [x] 1.30 - Áudio
 - [x] 1.40 - Vídeo
-- [ ] ✚ 1.45 - Vídeo, complementos: capturar um quadro como PNG, legendas (.srt e .vtt) e duração de MP4 fragmentado
+- [ ] ✚ 1.45 - Visualizar: item **Visualizar** no botão direito de qualquer arquivo ou pasta, que abre uma prévia flutuante (imagem, áudio, vídeo, texto, pastas) sem abrir aba. Proposta em [`ReadMe/proposta-modos-editores.md`](ReadMe/proposta-modos-editores.md)
+- [ ] ✚ 1.46 - Vídeo, complementos: capturar um quadro como PNG, legendas (.srt e .vtt) e duração de MP4 fragmentado
 - [ ] 1.50 - Modelos 3D (com biblioteca pronta)
 - [ ] 1.60 - Abrir como... e associações de arquivo
 - [ ] ✚ 1.65 - Área "Tipos de Arquivos": criar e editar tipos (ex.: .gml GameMaker). Já pronto na 1.2.0: a caixa flutuante de Configurações e a lista de tipos
 - [ ] ✚ 1.66 - Pacotes de ícones em pastas, lidos como temas (variações preto e branco automáticas)
-- [ ] 1.70 - Markdown e PDF
+- [ ] 1.70 - Markdown e PDF (✚ a parte do Markdown pode vir antes: leitura formatada como no GitHub, em modos Código, Visualização e Dividido, com prévia ao vivo)
 - [ ] 1.80 - CSV e JSON em tabela
 - [ ] 1.90 - ZIP aberto como pasta
 - [ ] 2.00 - Tela dividida
@@ -298,12 +300,15 @@ Cada etapa só avança quando a anterior funciona. `[x]` = pronta, `[ ]` = a faz
 - [ ] 2.40 - Salvamento automático e recuperação de sessão
 - [ ] 2.50 - Terminal integrado
 - [ ] 2.60 - Execução de scripts
+- [ ] ✚ 2.70 - Editor de áudio (cortar, recortar, remover trecho, salvar como cópia) e **Modo Áudio**
+- [ ] ✚ 2.80 - Editor de vídeo (corte com FFmpeg, salvar como cópia) e **Modo Vídeo**
 - [ ] 3.00 - Git (status, commit e histórico)
 - [ ] 3.50 - Comparar arquivos lado a lado
 
 **PROJETOS E PERSONALIZAÇÃO** (criar um doc na pasta de temas explicando como criar o seu próprio, e um tema de exemplo)
 - [ ] 4.00 - Vários projetos e configurações por projeto
-- [ ] ✚ 4.05 - Tela de projetos com atalhos para projetos e pastas recentes
+- [ ] ✚ 4.02 - **Modos de trabalho**: Universal (o UDS de hoje), Texto, Áudio e Vídeo; cada um mostra só o painel e os botões da sua função
+- [ ] ✚ 4.05 - **Página inicial** (depois do loading): projetos recentes e fixados, que voltam no modo em que foram usados, e a escolha do modo
 - [ ] ✚ 4.10 - Abas e painéis redimensionáveis, com os tamanhos salvos
 - [ ] 4.20 - Espaços de trabalho salvos
 - [ ] ✚ 4.30 - Cor individual das pastas (botão direito), salva em XML
