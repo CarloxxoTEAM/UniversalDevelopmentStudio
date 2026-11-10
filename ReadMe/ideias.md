@@ -12,6 +12,7 @@ Aqui ficam as ideias que ainda não estão prontas. Cada uma tem uma etapa no ro
 | 6 | Tirar o aviso de vírus do Windows | **1.06** | Planejada (veja abaixo) |
 | 7 | Configurações e "Sobre" em uma caixa separada | — | **Pronta na 1.2.0**, como caixa flutuante (engrenagem, menu do logo e `Ctrl+,`) |
 | 8 | Área "Tipos de Arquivos" nas configurações | **1.65** | A lista já está pronta (1.2.0). Falta criar e editar tipos |
+| 9 | Vídeo, complementos: capturar quadro (PNG), legendas, duração de MP4 fragmentado | **1.45** | Planejada (veja abaixo) |
 
 ## 1. Tela de loading (1.05)
 Referência: a tela de abertura do Adobe After Effects (painel escuro retangular, nome do programa em destaque, arte à direita, créditos pequenos e uma linha de status como *Initializing…*).
@@ -83,3 +84,11 @@ A engrenagem, o item *Configurações…* do menu do logo e o atalho `Ctrl+,` ab
 [ícone GML]    GameMaker   (.gml)
 ```
 **Falta (1.65):** editar cada linha e um botão **Criar tipo de arquivo**. Veja o passo a passo em [`icones-personalizados.md`](icones-personalizados.md).
+
+## 9. Vídeo, complementos (1.45)
+Ideias que apareceram ao fazer o visualizador de vídeo (1.40) e ficaram de fora para a etapa continuar pequena:
+- **Capturar o quadro atual como PNG.** Precisa de um comando novo no núcleo Rust para gravar arquivos binários (hoje `write_file` só grava texto), então fica para uma etapa em que o build possa ser verificado logo em seguida.
+- **Legendas** `.srt` e `.vtt` ao lado do vídeo (mesmo nome), com botão para ligar e desligar.
+- **Duração de MP4 fragmentado** (`moof`): hoje o painel mostra a duração que o player informa; ler os fragmentos daria o valor também para fps e taxa de bits.
+- **Miniaturas na barra de posição** e marcadores de capítulos (MP4/MKV).
+- **Lembrar a posição** de cada vídeo entre sessões (hoje só dura enquanto a aba está aberta).

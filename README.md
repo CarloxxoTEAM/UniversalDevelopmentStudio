@@ -2,11 +2,11 @@
 
 *One Studio. Unlimited Possibilities.*
 
-O UDS é um ambiente **universal e portátil** para desenvolvimento, edição e visualização de arquivos. Em uma única janela, você abre uma pasta, edita código e vê imagens (e, nas próximas versões, áudio, vídeo, modelos 3D, PDF e mais). Ele roda direto de uma pasta ou pendrive, sem instalação, e guarda tudo ao lado do executável.
+O UDS é um ambiente **universal e portátil** para desenvolvimento, edição e visualização de arquivos. Em uma única janela, você abre uma pasta, edita código e vê imagens (e, nas próximas versões, modelos 3D, PDF e mais). Ele roda direto de uma pasta ou pendrive, sem instalação, e guarda tudo ao lado do executável.
 
 A interface segue o estilo dos editores modernos, com explorador de arquivos à esquerda, abas e editor no centro, painel inferior e, à direita, um **bloco de notas por projeto**.
 
-**Versão atual:** 1.3.1 · **Plataforma:** Windows (Linux e macOS nas etapas 9.00 em diante) · **Licença:** MIT
+**Versão atual:** 1.4.0 · **Plataforma:** Windows (Linux e macOS nas etapas 9.00 em diante) · **Licença:** MIT
 
 ## O que já funciona
 - Abrir uma pasta do computador e navegar pelos arquivos.
@@ -15,6 +15,7 @@ A interface segue o estilo dos editores modernos, com explorador de arquivos à 
 - Visualizador de imagens (PNG, JPG, GIF, WEBP, BMP, ICO, SVG) com zoom, rotação e ajuste.
 - **Lista completa de formatos** com o que cada um faz hoje (seção "Formatos de arquivo").
 - **Player de áudio** (MP3, WAV, FLAC, OGG, Opus, AAC, M4A) com capa, etiquetas, forma de onda clicável, velocidade e dados técnicos (veja `ReadMe/audio.md`).
+- **Player de vídeo** (MP4, WebM, MKV, MOV e 3GP, conforme os codecs do sistema) com controles, passo por quadro, tela cheia e dados técnicos: codec, resolução, fps, taxa de bits e rotação (veja `ReadMe/video.md`).
 - **Identificação de arquivos pelo conteúdo**: um PNG chamado `foto.txt`, um script sem extensão ou um PDF são reconhecidos ao abrir (veja `ReadMe/deteccao.md`).
 - **Configurações em uma caixa flutuante** (engrenagem ou menu do logo), com a lista de **Tipos de arquivo**.
 - **Ícones para mais de 200 extensões**, em 2 estilos (preto e branco, de acordo com o tema), e **ícones de pasta** (fechada e aberta).
@@ -84,7 +85,7 @@ Requisitos: [Node.js 20+](https://nodejs.org), [Rust](https://rustup.rs) e os [p
 | `npm run build` | Compila o executável em `src-tauri/target/release/` |
 | `python scripts/gerar_icone.py SIGLA nome 12_extras` | Gera os 4 ícones (2 estilos, preto e branco) de um tipo de arquivo novo. Exemplo: `GML gml`. Precisa de `pip install pillow` |
 | `python scripts/package.py windows` | Depois do build: monta a pasta portátil e o ZIP em `dist-portable/` |
-| `git tag v1.3.1` e `git push origin v1.3.1` | Publica uma versão: o GitHub Actions compila, testa, gera o ZIP e o coloca em **Releases** |
+| `git tag v1.4.0` e `git push origin v1.4.0` | Publica uma versão: o GitHub Actions compila, testa, gera o ZIP e o coloca em **Releases** |
 
 ## Guias
 **Como criar um tema:** [`themes/COMO-CRIAR-UM-TEMA.md`](themes/COMO-CRIAR-UM-TEMA.md)
@@ -94,6 +95,7 @@ Requisitos: [Node.js 20+](https://nodejs.org), [Rust](https://rustup.rs) e os [p
 |---|---|
 | [`ReadMe/icones.md`](ReadMe/icones.md) | Os 2 estilos de ícone, preto e branco por tema, como adicionar ou trocar ícones e a lista completa por extensão |
 | [`ReadMe/audio.md`](ReadMe/audio.md) | O player de áudio: controles, formatos, etiquetas lidas, limites e testes |
+| [`ReadMe/video.md`](ReadMe/video.md) | O player de vídeo: controles, formatos, dados técnicos lidos, limites e testes |
 | [`ReadMe/deteccao.md`](ReadMe/deteccao.md) | Como o UDS descobre o tipo de um arquivo pelo conteúdo, formatos reconhecidos e limites |
 | [`ReadMe/icones-personalizados.md`](ReadMe/icones-personalizados.md) | Como um tipo de arquivo ganha ícone para sempre, pacotes de ícones e a área "Tipos de Arquivos" |
 | [`ReadMe/ideias.md`](ReadMe/ideias.md) | Ideias e melhorias organizadas por versão |
@@ -121,7 +123,7 @@ O UDS mostra um **ícone** para todos os formatos desta lista, nos 2 estilos e e
 | Marcação, configuração e estilização | 14 | 14 | 0 | 0 |
 | Linguagens de programação, scripts e runtime | 33 | 30 | 2 | 1 |
 | Áudio | 13 | 7 | 6 | 0 |
-| Vídeo e animação | 13 | 1 | 12 | 0 |
+| Vídeo e animação | 13 | 6 | 7 | 0 |
 | Imagens vetoriais e bitmap | 16 | 8 | 6 | 2 |
 | Modelos 3D, CAD e animação 3D | 22 | 11 | 5 | 6 |
 | Banco de dados | 5 | 1 | 3 | 1 |
@@ -129,7 +131,7 @@ O UDS mostra um **ícone** para todos os formatos desta lista, nos 2 estilos e e
 | Documentos e leitura | 11 | 2 | 8 | 1 |
 | Compactados e imagens de disco | 9 | 0 | 7 | 2 |
 | Executáveis, pacotes e arquivos compilados | 13 | 0 | 12 | 1 |
-| **Total** | **154** | **74** | **66** | **14** |
+| **Total** | **154** | **79** | **61** | **14** |
 
 ### Marcação, configuração e estilização (texto, 0.60 — feito)
 
@@ -164,15 +166,20 @@ WMA (.wma) · AIFF (.aiff, .aif) · ALAC (.alac) · MIDI (.mid, .midi) · AMR (.
 
 > Etiquetas, capa e dados técnicos são lidos em MP3, FLAC, OGG, Opus, M4A e WAV. A reprodução depende dos codecs do sistema: MP3, WAV, FLAC, OGG e Opus foram testados tocando de verdade; AAC e M4A dependem dos codecs do Windows (WebView2). Um conversor para os formatos que o sistema não toca está previsto nos plugins.
 
-### Vídeo e animação (1.40)
+### Vídeo e animação (1.40 — feito)
+
+✅ **Abrem hoje no visualizador de vídeo (o sistema toca, conforme os codecs):**  
+MP4 (.mp4, .m4v) · MKV (.mkv) · MOV (.mov) · WebM (.webm) · 3GP (.3gp)
 
 ✅ **Abrem hoje, como texto (editor com realce de sintaxe):**  
 Lottie / BodyMovin (.json)
 
-🔎 **Reconhecidos pelo conteúdo, com ícone (ainda sem visualizador):**  
-MP4 (.mp4, .m4v) · MKV (.mkv) · AVI (.avi) · MOV (.mov) · WebM (.webm) · WMV (.wmv) · FLV (.flv, .f4v) · MPEG / MPG (.mpeg, .mpg) · 3GP (.3gp) · OGV (.ogv) · M2TS (.m2ts) · VOB (.vob)
+⚠️ **Abrem no visualizador, mas o sistema não toca (mostra as informações do arquivo):**  
+AVI (.avi) · WMV (.wmv) · FLV (.flv, .f4v) · MPEG / MPG (.mpeg, .mpg) · OGV (.ogv) · M2TS (.m2ts) · VOB (.vob)
 
-> O Lottie abre hoje como texto e é reconhecido pelo conteúdo. A extensão `.ts` continua sendo TypeScript; vídeo MPEG-TS é reconhecido pelo conteúdo.
+> Os dados técnicos (contêiner, codecs, resolução, fps, duração, taxa de bits, rotação, título) são lidos em MP4/MOV/3GP, WebM/MKV, AVI, FLV e OGV; em MPEG, M2TS, VOB e WMV aparecem só o formato, o tamanho e o que o player informar. A reprodução depende do WebView2: **WebM foi testado tocando de verdade** (Chromium); MP4 com H.264/AAC é o caso mais comum no Windows, mas ainda **precisa ser confirmado no Windows**. HEVC (H.265) depende da extensão de vídeo do Windows. OGV (Theora) abre, mas o Chromium recente toca só o áudio: o player avisa "sem imagem". Um conversor para os formatos que o sistema não toca está previsto nos plugins.
+>
+> O Lottie abre como texto e é reconhecido pelo conteúdo. A extensão `.ts` continua sendo TypeScript; vídeo MPEG-TS é reconhecido pelo conteúdo e abre aqui mesmo com a extensão `.ts` ou `.mts`.
 
 ### Imagens vetoriais e bitmap (0.70 para os formatos comuns — feito)
 
@@ -273,7 +280,8 @@ Cada etapa só avança quando a anterior funciona. `[x]` = pronta, `[ ]` = a faz
 - [x] 1.10 - Temas claro e escuro, lidos de um theme.json
 - [x] 1.20 - Identificação de arquivos pelo conteúdo
 - [x] 1.30 - Áudio
-- [ ] 1.40 - Vídeo
+- [x] 1.40 - Vídeo
+- [ ] ✚ 1.45 - Vídeo, complementos: capturar um quadro como PNG, legendas (.srt e .vtt) e duração de MP4 fragmentado
 - [ ] 1.50 - Modelos 3D (com biblioteca pronta)
 - [ ] 1.60 - Abrir como... e associações de arquivo
 - [ ] ✚ 1.65 - Área "Tipos de Arquivos": criar e editar tipos (ex.: .gml GameMaker). Já pronto na 1.2.0: a caixa flutuante de Configurações e a lista de tipos

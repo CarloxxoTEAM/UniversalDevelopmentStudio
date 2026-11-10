@@ -1,0 +1,494 @@
+{
+ "av1.mkv": {
+  "duracao": 1.0,
+  "tags": {
+   "encoder": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "av1",
+   "largura": 160,
+   "altura": 120,
+   "fps": 25.0,
+   "perfil": "Main",
+   "nivel": 0,
+   "rotacao": 0,
+   "bitrate": 0
+  },
+  "audio": null,
+  "bitrate": 42632
+ },
+ "celular.3gp": {
+  "duracao": 1.0,
+  "tags": {
+   "major_brand": "3gp4",
+   "minor_version": "512",
+   "compatible_brands": "3gp4isomiso2"
+  },
+  "video": {
+   "codec": "h263",
+   "largura": 176,
+   "altura": 144,
+   "fps": 15.0,
+   "perfil": null,
+   "nivel": -99,
+   "rotacao": 0,
+   "bitrate": 240088
+  },
+  "audio": {
+   "codec": "aac",
+   "canais": 1,
+   "taxa": 8000,
+   "bitrate": 13482
+  },
+  "bitrate": 266856
+ },
+ "flv-h264.flv": {
+  "duracao": 1.022999,
+  "tags": {
+   "encoder": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "h264",
+   "largura": 160,
+   "altura": 120,
+   "fps": 25.0,
+   "perfil": "Constrained Baseline",
+   "nivel": 11,
+   "rotacao": 0,
+   "bitrate": 0
+  },
+  "audio": {
+   "codec": "aac",
+   "canais": 1,
+   "taxa": 44100,
+   "bitrate": 96000
+  },
+  "bitrate": 218760
+ },
+ "fragmentado.mp4": {
+  "duracao": 1.023281,
+  "tags": {
+   "major_brand": "isom",
+   "minor_version": "512",
+   "compatible_brands": "isomiso6iso2avc1mp41",
+   "encoder": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "h264",
+   "largura": 160,
+   "altura": 120,
+   "fps": 24.431210871888837,
+   "perfil": "Constrained Baseline",
+   "nivel": 11,
+   "rotacao": 0,
+   "bitrate": 107966
+  },
+  "audio": {
+   "codec": "aac",
+   "canais": 2,
+   "taxa": 44100,
+   "bitrate": 96253
+  },
+  "bitrate": 220889
+ },
+ "girado.mp4": {
+  "duracao": 1.0,
+  "tags": {
+   "major_brand": "isom",
+   "minor_version": "512",
+   "compatible_brands": "isomiso2avc1mp41",
+   "title": "Vídeo de Teste",
+   "encoder": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "h264",
+   "largura": 160,
+   "altura": 120,
+   "fps": 25.0,
+   "perfil": "Constrained Baseline",
+   "nivel": 11,
+   "rotacao": 90,
+   "bitrate": 110480
+  },
+  "audio": {
+   "codec": "aac",
+   "canais": 2,
+   "taxa": 44100,
+   "bitrate": 96253
+  },
+  "bitrate": 225704
+ },
+ "h264-aac-faststart.mp4": {
+  "duracao": 1.0,
+  "tags": {
+   "major_brand": "isom",
+   "minor_version": "512",
+   "compatible_brands": "isomiso2avc1mp41",
+   "creation_time": "2026-03-04T05:06:07.000000Z",
+   "title": "Vídeo de Teste",
+   "encoder": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "h264",
+   "largura": 320,
+   "altura": 180,
+   "fps": 30.0,
+   "perfil": "Constrained Baseline",
+   "nivel": 13,
+   "rotacao": 0,
+   "bitrate": 174816
+  },
+  "audio": {
+   "codec": "aac",
+   "canais": 2,
+   "taxa": 44100,
+   "bitrate": 96253
+  },
+  "bitrate": 291856
+ },
+ "h264-aac-moov-no-fim.mp4": {
+  "duracao": 1.0,
+  "tags": {
+   "major_brand": "isom",
+   "minor_version": "512",
+   "compatible_brands": "isomiso2avc1mp41",
+   "creation_time": "2026-03-04T05:06:07.000000Z",
+   "title": "Vídeo de Teste",
+   "encoder": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "h264",
+   "largura": 160,
+   "altura": 120,
+   "fps": 25.0,
+   "perfil": "Constrained Baseline",
+   "nivel": 11,
+   "rotacao": 0,
+   "bitrate": 110480
+  },
+  "audio": {
+   "codec": "aac",
+   "canais": 2,
+   "taxa": 44100,
+   "bitrate": 96253
+  },
+  "bitrate": 225704
+ },
+ "h264-aac.mkv": {
+  "duracao": 1.023,
+  "tags": {
+   "title": "Vídeo MKV",
+   "encoder": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "h264",
+   "largura": 160,
+   "altura": 120,
+   "fps": 25.0,
+   "perfil": "Constrained Baseline",
+   "nivel": 11,
+   "rotacao": 0,
+   "bitrate": 0
+  },
+  "audio": {
+   "codec": "aac",
+   "canais": 2,
+   "taxa": 44100,
+   "bitrate": 0
+  },
+  "bitrate": 214420
+ },
+ "h264-sem-audio.mp4": {
+  "duracao": 1.0,
+  "tags": {
+   "major_brand": "isom",
+   "minor_version": "512",
+   "compatible_brands": "isomiso2avc1mp41",
+   "encoder": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "h264",
+   "largura": 128,
+   "altura": 96,
+   "fps": 24.0,
+   "perfil": "Constrained Baseline",
+   "nivel": 10,
+   "rotacao": 0,
+   "bitrate": 85888
+  },
+  "audio": null,
+  "bitrate": 93464
+ },
+ "hevc.mp4": {
+  "duracao": 1.0,
+  "tags": {
+   "major_brand": "isom",
+   "minor_version": "512",
+   "compatible_brands": "isomiso2mp41",
+   "encoder": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "hevc",
+   "largura": 160,
+   "altura": 120,
+   "fps": 25.0,
+   "perfil": "Main",
+   "nivel": 30,
+   "rotacao": 0,
+   "bitrate": 35688
+  },
+  "audio": {
+   "codec": "aac",
+   "canais": 2,
+   "taxa": 44100,
+   "bitrate": 96253
+  },
+  "bitrate": 171704
+ },
+ "mjpeg-pcm.avi": {
+  "duracao": 1.0,
+  "tags": {
+   "software": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "mjpeg",
+   "largura": 96,
+   "altura": 64,
+   "fps": 10.0,
+   "perfil": "Baseline",
+   "nivel": -99,
+   "rotacao": 0,
+   "bitrate": 258364
+  },
+  "audio": {
+   "codec": "pcm_s16le",
+   "canais": 1,
+   "taxa": 44100,
+   "bitrate": 705600
+  },
+  "bitrate": 1028448
+ },
+ "mpeg2.mpg": {
+  "duracao": 1.018778,
+  "tags": {},
+  "video": {
+   "codec": "mpeg2video",
+   "largura": 160,
+   "altura": 120,
+   "fps": 25.0,
+   "perfil": "Main",
+   "nivel": 8,
+   "rotacao": 0,
+   "bitrate": 0
+  },
+  "audio": {
+   "codec": "mp2",
+   "canais": 1,
+   "taxa": 44100,
+   "bitrate": 384000
+  },
+  "bitrate": 659362
+ },
+ "mpeg4-mp3.avi": {
+  "duracao": 1.044898,
+  "tags": {
+   "software": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "mpeg4",
+   "largura": 160,
+   "altura": 120,
+   "fps": 25.0,
+   "perfil": "Simple Profile",
+   "nivel": 1,
+   "rotacao": 0,
+   "bitrate": 0
+  },
+  "audio": {
+   "codec": "mp3",
+   "canais": 1,
+   "taxa": 44100,
+   "bitrate": 96000
+  },
+  "bitrate": 402963
+ },
+ "mpegts.m2ts": {
+  "duracao": 1.023222,
+  "tags": {},
+  "video": {
+   "codec": "h264",
+   "largura": 160,
+   "altura": 120,
+   "fps": 25.0,
+   "perfil": "Constrained Baseline",
+   "nivel": 11,
+   "rotacao": 0,
+   "bitrate": 0
+  },
+  "audio": {
+   "codec": "aac",
+   "canais": 2,
+   "taxa": 44100,
+   "bitrate": 96668
+  },
+  "bitrate": 288218
+ },
+ "prores.mov": {
+  "duracao": 1.0,
+  "tags": {
+   "major_brand": "qt  ",
+   "minor_version": "512",
+   "compatible_brands": "qt  ",
+   "encoder": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "prores",
+   "largura": 160,
+   "altura": 120,
+   "fps": 25.0,
+   "perfil": "LT",
+   "nivel": -99,
+   "rotacao": 0,
+   "bitrate": 1462872
+  },
+  "audio": null,
+  "bitrate": 1469608
+ },
+ "quicktime.mov": {
+  "duracao": 1.0,
+  "tags": {
+   "major_brand": "qt  ",
+   "minor_version": "512",
+   "compatible_brands": "qt  ",
+   "encoder": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "h264",
+   "largura": 160,
+   "altura": 120,
+   "fps": 25.0,
+   "perfil": "Constrained Baseline",
+   "nivel": 11,
+   "rotacao": 0,
+   "bitrate": 110480
+  },
+  "audio": {
+   "codec": "aac",
+   "canais": 2,
+   "taxa": 44100,
+   "bitrate": 96253
+  },
+  "bitrate": 225800
+ },
+ "theora-vorbis.ogv": {
+  "duracao": 1.0,
+  "tags": {},
+  "video": {
+   "codec": "theora",
+   "largura": 160,
+   "altura": 120,
+   "fps": 25.0,
+   "perfil": null,
+   "nivel": -99,
+   "rotacao": 0,
+   "bitrate": 0
+  },
+  "audio": {
+   "codec": "vorbis",
+   "canais": 1,
+   "taxa": 44100,
+   "bitrate": 80000
+  },
+  "bitrate": 214448
+ },
+ "transporte.ts": {
+  "duracao": 1.023222,
+  "tags": {},
+  "video": {
+   "codec": "h264",
+   "largura": 160,
+   "altura": 120,
+   "fps": 25.0,
+   "perfil": "Constrained Baseline",
+   "nivel": 11,
+   "rotacao": 0,
+   "bitrate": 0
+  },
+  "audio": {
+   "codec": "aac",
+   "canais": 2,
+   "taxa": 44100,
+   "bitrate": 96668
+  },
+  "bitrate": 273395
+ },
+ "vp8-vorbis.webm": {
+  "duracao": 1.003,
+  "tags": {
+   "encoder": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "vp8",
+   "largura": 192,
+   "altura": 108,
+   "fps": 30.0,
+   "perfil": "0",
+   "nivel": -99,
+   "rotacao": 0,
+   "bitrate": 0
+  },
+  "audio": {
+   "codec": "vorbis",
+   "canais": 2,
+   "taxa": 44100,
+   "bitrate": 0
+  },
+  "bitrate": 157790
+ },
+ "vp9-opus.webm": {
+  "duracao": 1.008,
+  "tags": {
+   "encoder": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "vp9",
+   "largura": 160,
+   "altura": 120,
+   "fps": 25.0,
+   "perfil": "Profile 1",
+   "nivel": -99,
+   "rotacao": 0,
+   "bitrate": 0
+  },
+  "audio": {
+   "codec": "opus",
+   "canais": 1,
+   "taxa": 48000,
+   "bitrate": 0
+  },
+  "bitrate": 175476
+ },
+ "wmv2.wmv": {
+  "duracao": 1.092,
+  "tags": {
+   "encoder": "Lavf60.16.100"
+  },
+  "video": {
+   "codec": "wmv2",
+   "largura": 160,
+   "altura": 120,
+   "fps": 25.0,
+   "perfil": null,
+   "nivel": -99,
+   "rotacao": 0,
+   "bitrate": 0
+  },
+  "audio": {
+   "codec": "wmav2",
+   "canais": 1,
+   "taxa": 44100,
+   "bitrate": 128000
+  },
+  "bitrate": 381692
+ }
+}

@@ -47,7 +47,7 @@ UDS.registerViewer({id:'audio',nome:'Áudio',
   function cabecalho(){const sem=nomeArq.replace(/\.[^.]+$/,'');$('#au-t').textContent=meta.titulo||sem;$('#au-s').textContent=[meta.artista,meta.album].filter(Boolean).join(' · ')||(det?det.nome:'');$('#au-h').textContent=[meta.ano,meta.genero,meta.faixa&&'faixa '+meta.faixa].filter(Boolean).join(' · ');
    const c=$('#au-capa');if(meta.capa&&!capaUrl){capaUrl=URL.createObjectURL(new Blob([meta.capa.dados],{type:meta.capa.mime}));c.innerHTML=`<img alt="Capa do álbum" src="${capaUrl}">`}else if(!meta.capa)c.innerHTML='<span>♪</span>'}
   // ---- início ----
-  vol(est.volume!=null?est.volume:(ctx.cfg&&ctx.cfg.audioVol!=null?ctx.cfg.audioVol:.8));au.muted=!!est.mudo;vol(au.volume);if(est.velocidade){au.playbackRate=est.velocidade;$('#au-vl').value=est.velocidade}if(est.repetir)$('#au-lp').click();
+  vol(est.volume!=null?est.volume:(ctx.cfg&&ctx.cfg.audioVol!=null?ctx.cfg.audioVol:.8));au.muted=!!est.mudo;vol(au.volume);$('#au-vl').value='1';if(est.velocidade){au.playbackRate=est.velocidade;$('#au-vl').value=est.velocidade}if(est.repetir)$('#au-lp').click();
   au.src=ctx.url(p);if(est.velocidade)au.defaultPlaybackRate=au.playbackRate=est.velocidade;cabecalho();tec();desenha();
   (async()=>{
    if(d.audio){meta=d.audio.meta;picos=d.audio.picos;durOnda=d.audio.dur||0;cabecalho();tec();desenha();return}

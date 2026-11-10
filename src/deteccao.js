@@ -18,10 +18,10 @@ function ftyp(b){const br=asc(b,8,12);
  if(MP4B.heic.includes(br))return D('heic','HEIC / HEIF','i','heic','image/heic');
  if(MP4B.avif.includes(br))return D('avif','AVIF','i','avif','image/avif');
  if(br==='crx ')return D('raw','RAW (Canon CR3)','i','raw','image/x-canon-cr3',{compat:['cr3']});
- if(br==='qt  ')return D('mov','QuickTime (MOV)','v','mov','video/quicktime',{vis:'1.40'});
+ if(br==='qt  ')return D('mov','QuickTime (MOV)','v','mov','video/quicktime',{vis:null});
  if(br==='M4A '||br==='M4B ')return D('m4a','M4A','a','m4a','audio/mp4',{});
- if(br.startsWith('3g'))return D('3gp','3GP','v','3gp','video/3gpp',{vis:'1.40'});
- return D('mp4','MP4','v','mp4','video/mp4',{vis:'1.40',compat:['m4v','mov','m4a','3gp']})}
+ if(br.startsWith('3g'))return D('3gp','3GP','v','3gp','video/3gpp',{compat:['3g2'],vis:null});
+ return D('mp4','MP4','v','mp4','video/mp4',{vis:null,compat:['m4v','mov','m4a','3gp']})}
 function zip(b){const nl=b[26]|(b[27]<<8),nome=asc(b,30,30+nl);
  if(nome==='mimetype'){const i=30+nl+(b[28]|(b[29]<<8)),mt=asc(b,i,i+70);
   if(mt.startsWith('application/epub+zip'))return D('epub','EPUB','t','epub','application/epub+zip');
@@ -42,7 +42,7 @@ const BIN=[
  b=>(A(b,0,'GIF87a')||A(b,0,'GIF89a'))&&D('gif','GIF','i','gif','image/gif'),
  b=>A(b,0,'RIFF')&&A(b,8,'WEBP')&&D('webp','WebP','i','webp','image/webp'),
  b=>A(b,0,'RIFF')&&A(b,8,'WAVE')&&D('wav','WAV','a','wav','audio/wav',{}),
- b=>A(b,0,'RIFF')&&A(b,8,'AVI ')&&D('avi','AVI','v','avi','video/x-msvideo',{vis:'1.40'}),
+ b=>A(b,0,'RIFF')&&A(b,8,'AVI ')&&D('avi','AVI','v','avi','video/x-msvideo',{vis:null}),
  b=>A(b,0,'BM')&&b.length>14&&b[6]===0&&b[7]===0&&b[8]===0&&b[9]===0&&[12,40,52,56,64,108,124].includes(b[14])&&D('bmp','BMP','i','bmp','image/bmp'),
  b=>b[0]===0&&b[1]===0&&b[2]===1&&b[3]===0&&b[4]>0&&b[5]===0&&b[9]===0&&b.length>=22&&D('ico','ICO','i','ico','image/x-icon'),
  b=>((A(b,0,'II')&&b[2]===42&&b[3]===0)||(A(b,0,'MM')&&b[2]===0&&b[3]===42))&&D('tiff','TIFF','i','tiff','image/tiff',{compat:['tif','cr2','dng','nef','arw','raw']}),
@@ -51,17 +51,17 @@ const BIN=[
  b=>(A(b,0,'%!PS-Adobe')||(b[0]===0xC5&&b[1]===0xD0&&b[2]===0xD3&&b[3]===0xC6))&&D('eps','EPS','i','eps','application/postscript'),
  b=>A(b,4,'ftyp')&&ftyp(b),
  b=>A(b,0,'fLaC')&&(b[4]===0||b[4]===0x80)&&D('flac','FLAC','a','flac','audio/flac',{}),
- b=>A(b,0,'OggS')&&(has(b.slice(0,64),'OpusHead')?D('opus','Opus','a','opus','audio/ogg',{}):has(b.slice(0,64),'theora')?D('ogv','Ogg Vídeo','v','ogv','video/ogg',{vis:'1.40'}):D('ogg','Ogg Vorbis','a','ogg','audio/ogg',{compat:['oga']})),
+ b=>A(b,0,'OggS')&&(has(b.slice(0,64),'OpusHead')?D('opus','Opus','a','opus','audio/ogg',{}):has(b.slice(0,64),'theora')?D('ogv','Ogg Vídeo','v','ogv','video/ogg',{vis:null}):D('ogg','Ogg Vorbis','a','ogg','audio/ogg',{compat:['oga']})),
  b=>A(b,0,'MThd')&&D('midi','MIDI','a','midi','audio/midi',{compat:['mid']}),
  b=>A(b,0,'#!AMR')&&D('amr','AMR','a','amr','audio/amr'),
  b=>A(b,0,'FORM')&&(A(b,8,'AIFF')||A(b,8,'AIFC'))&&D('aiff','AIFF','a','aiff','audio/aiff',{compat:['aif']}),
- b=>b[0]===0x30&&b[1]===0x26&&b[2]===0xB2&&b[3]===0x75&&D('wmv','Windows Media (WMA/WMV)','v','wmv','video/x-ms-wmv',{compat:['wma'],vis:'1.40'}),
+ b=>b[0]===0x30&&b[1]===0x26&&b[2]===0xB2&&b[3]===0x75&&D('wmv','Windows Media (WMA/WMV)','v','wmv','video/x-ms-wmv',{compat:['wma'],vis:null}),
  b=>b[0]===0xFF&&(b[1]&0xF6)===0xF0&&D('aac','AAC','a','aac','audio/aac',{}),
  b=>((A(b,0,'ID3')&&b[3]<5)||(b[0]===0xFF&&(b[1]&0xE0)===0xE0&&((b[1]>>1)&3)!==0&&(b[2]>>4)!==0xF))&&D('mp3','MP3','a','mp3','audio/mpeg',{}),
- b=>b[0]===0x1A&&b[1]===0x45&&b[2]===0xDF&&b[3]===0xA3&&(has(b.slice(0,64),'webm')?D('webm','WebM','v','webm','video/webm',{vis:'1.40'}):D('mkv','Matroska (MKV)','v','mkv','video/x-matroska',{vis:'1.40'})),
- b=>A(b,0,'FLV\x01')&&D('flv','FLV','v','flv','video/x-flv',{vis:'1.40'}),
- b=>b[0]===0&&b[1]===0&&b[2]===1&&(b[3]===0xBA||b[3]===0xB3)&&D('mpeg','MPEG (MPG / VOB)','v','mpeg','video/mpeg',{vis:'1.40',compat:['mpg','vob']}),
- b=>b.length>=377&&((b[0]===0x47&&b[188]===0x47&&b[376]===0x47)||(b[4]===0x47&&b[192]===0x47&&b[380]===0x47))&&D('m2ts','MPEG Transport Stream','v','m2ts','video/mp2t',{vis:'1.40'}),
+ b=>b[0]===0x1A&&b[1]===0x45&&b[2]===0xDF&&b[3]===0xA3&&(has(b.slice(0,64),'webm')?D('webm','WebM','v','webm','video/webm',{compat:['mkv'],vis:null}):D('mkv','Matroska (MKV)','v','mkv','video/x-matroska',{compat:['webm','mka'],vis:null})),
+ b=>A(b,0,'FLV\x01')&&D('flv','FLV','v','flv','video/x-flv',{vis:null}),
+ b=>b[0]===0&&b[1]===0&&b[2]===1&&(b[3]===0xBA||b[3]===0xB3)&&D('mpeg','MPEG (MPG / VOB)','v','mpeg','video/mpeg',{vis:null,compat:['mpg','vob']}),
+ b=>b.length>=389&&((b[0]===0x47&&b[188]===0x47&&b[376]===0x47)||(b[4]===0x47&&b[196]===0x47&&b[388]===0x47))&&D('m2ts','MPEG Transport Stream','v','m2ts','video/mp2t',{compat:['ts','mts'],vis:null}),
  b=>A(b,0,'PK')&&b[2]===3&&b[3]===4&&zip(b),
  b=>A(b,0,'PK')&&b[2]===5&&b[3]===6&&D('zip','ZIP (vazio)','z','zip','application/zip',{compat:ZIPFAM}),
  b=>A(b,0,'Rar!\x1A\x07')&&D('rar','RAR','z','rar'),

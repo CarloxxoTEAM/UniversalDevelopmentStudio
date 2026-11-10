@@ -23,6 +23,8 @@ Quando a extensão combina com o conteúdo (por exemplo `.jpeg` com um JPEG, ou 
 | Imagem | PNG, JPEG, GIF, WebP, BMP, ICO, TIFF, PSD, EPS, HEIC, AVIF, e RAW de câmeras (CR2, DNG, NEF, ARW, CR3), além de `.ai`, que é um PDF por dentro |
 | Áudio | MP3, WAV, FLAC, AAC, OGG, Opus, M4A, MIDI, AMR, AIFF |
 | Vídeo | MP4, MOV, 3GP, AVI, MKV, WebM, FLV, MPEG, MPEG-TS, WMV/WMA, OGV |
+
+> **1.4.0:** o MPEG-TS no formato BDAV (`.m2ts`, pacotes de 192 bytes) não era reconhecido, porque a assinatura conferia os offsets de 188 bytes. Corrigido, e `.ts`/`.mts` com esse conteúdo não geram mais aviso de conflito. Os vídeos agora abrem no visualizador (`video.md`).
 | Documento | PDF, EPUB, OpenDocument (ODT, ODS, ODP), Office em ZIP (DOCX, XLSX, PPTX), Office antigo (OLE) |
 | Compactado | ZIP, RAR, 7z, GZip, BZip2, TAR |
 | Fonte | TTF, OTF, WOFF, WOFF2, EOT |

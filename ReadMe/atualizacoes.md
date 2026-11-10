@@ -2,6 +2,27 @@
 
 Cada versão lista o que mudou. A versão mais nova fica no topo. Os números de etapa (0.10, 1.20...) são os do roteiro no `README.md`.
 
+## 1.4.0 — Novembro de 2026 — Vídeo (etapa 1.40)
+**Novo**
+- **Visualizador de vídeo**, o terceiro módulo de visualização (`src/visualizadores/video.js`): toca MP4, WebM, MKV, MOV e 3GP na própria janela, conforme os codecs do sistema.
+- **Controles:** tocar/pausar (também com um clique no vídeo), posição, **passo por quadro** (`,` e `.`), volume, mudo, velocidade (0,25× a 2×), repetir e **tela cheia** (botão, `F` ou duplo clique). Atalhos: `Espaço`, `←` `→` (5 s; com `Shift`, 10 s), `↑` `↓`, `M`, `L`. Posição, volume e velocidade são mantidos ao trocar de tema ou de aba.
+- **Dados técnicos** em três blocos (arquivo, vídeo, áudio): contêiner, duração, tamanho, taxa de bits total, título, data de criação, codec com perfil e nível (ex.: *H.264 · High · nível 4.0*), resolução, fps, taxa de bits por faixa, **rotação** (vídeos de celular), codec de áudio, taxa de amostragem e canais.
+- **Leitor de metadados** (`src/videometa.js`): MP4/M4V/MOV/3GP (inclusive com o `moov` no fim do arquivo e MP4 fragmentado), WebM/MKV, AVI, FLV e OGV. Ele lê **só trechos** do arquivo (pedidos com `Range`), então um vídeo de vários GB não é carregado na memória. Se o sistema ignorar o `Range`, lê o começo em fluxo e cancela.
+- **Avisos claros:** se o sistema não toca o formato (AVI, WMV, FLV, MPEG…), o player avisa e as informações continuam na tela; se toca só o áudio (OGV/Theora), mostra "Sem imagem".
+- **Guia novo:** `ReadMe/video.md`.
+
+**Corrigido**
+- **M2TS não era reconhecido pelo conteúdo** (o pacote BDAV tem 192 bytes e a assinatura conferia os offsets errados). Agora é reconhecido, e as extensões `.ts` e `.mts` não geram mais o aviso de conflito.
+- **Extensões equivalentes sem aviso falso:** `.3g2` (3GP), `.mkv` com conteúdo WebM e `.webm`/`.mka`.
+- O **seletor de velocidade** do player de áudio (e do novo de vídeo) mostrava a primeira opção em vez de 1× ao abrir.
+
+**Melhorado**
+- 78 testes automáticos (12 novos de vídeo). O leitor é comparado com o **ffprobe** em 21 vídeos reais gerados pelo ffmpeg (MP4 com `moov` no fim e com *faststart*, HEVC, fragmentado, MOV, ProRes, 3GP, WebM VP8/VP9, MKV H.264/AV1, AVI, FLV, OGV, MPEG, TS, WMV). Também há teste de um arquivo de 400 MB simulado (só lê o `moov`) e de arquivos truncados e corrompidos.
+- Teste opcional em **navegador real**: `node tests/video.navegador.js` abre cada formato no visualizador (Chromium via Playwright), confere o painel técnico com o ffprobe, toca WebM de verdade e testa controles, passo por quadro, velocidade, volume, teclado, aviso para formatos que o sistema não toca e leitura sem `Range`.
+
+**Ainda a confirmar no Windows**
+- Se MP4 (H.264/AAC), MOV e MKV tocam no WebView2 e se o build da 1.4.0 fica verde. Os testes acima rodaram em Chromium, não no WebView2.
+
 ## 1.3.1 — Novembro de 2026 — Lista de formatos e ajustes na detecção
 **Novo**
 - **Seção "Formatos de arquivo" no README**: todos os 154 formatos do documento de formatos, agrupados por categoria, com o que cada um faz **hoje** (abre, é reconhecido pelo conteúdo ou só tem ícone) e a etapa do roteiro em que chega o restante. Tem legenda e um resumo com as contagens por categoria.
