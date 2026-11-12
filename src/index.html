@@ -34,6 +34,7 @@
 <div id="app">
  <header id="top">
   <img id="logo" src="logo.png" alt="Menu do UDS" title="Menu">
+  <button id="modo" aria-label="Modo de trabalho"></button>
   <button id="proj"></button>
   <div id="crumb"></div>
   <div class="sp"></div>
@@ -46,6 +47,7 @@
   <aside id="side"></aside>
   <div id="ctr">
    <div id="tabs"></div>
+   <div id="txbar"></div>
    <div id="view"></div>
    <div id="panel">
     <div id="ptabs"></div>
@@ -54,17 +56,26 @@
    </div>
   </div>
   <aside id="notes"></aside>
+  <div id="inicio" role="region" aria-label="Página inicial"></div>
  </div>
  <footer id="st"><span id="s1">UDS</span><span id="s2"></span><span id="s3"></span><span id="s4">UTF-8</span></footer>
 </div>
 <div id="drop"></div><div id="ctx"></div>
 <div id="cfgwin" role="dialog" aria-label="Configurações"><div class="ct"><b>Configurações</b><span class="sp"></span><button id="cfgx" aria-label="Fechar">✕</button></div><div class="cb"><nav id="cfgnav"></nav><div id="cfgbody"></div></div></div>
+<div id="prevwin" role="dialog" aria-label="Visualizar"><div class="ct"><button class="pv-volta" aria-label="Voltar" title="Voltar" style="display:none">◀</button><span class="pv-tit"></span><span class="pv-sub"></span><span class="sp"></span><button class="pv-abrir" title="Abrir em uma aba do UDS">Abrir no UDS</button><button class="pv-x" aria-label="Fechar" title="Fechar (Esc)">✕</button></div><div class="pv-corpo"></div></div>
 <div id="mod"><div><label id="ml"></label><input id="mi" spellcheck="false"></div></div>
 <script src="loading.js"></script>
 <script src="icones/indice.js"></script>
 <script src="core.js"></script>
 <script src="deteccao.js"></script>
 <script src="visualizadores/registro.js"></script>
+<script src="recentes.js"></script>
+<script src="modos/registro.js"></script>
+<script src="modos/universal.js"></script>
+<script src="modos/texto.js"></script>
+<script src="modos/futuros.js"></script>
+<script src="inicio.js"></script>
+<script src="visualizar.js"></script>
 <script src="audiometa.js"></script>
 <script src="videometa.js"></script>
 <script src="visualizadores/imagem.js"></script>

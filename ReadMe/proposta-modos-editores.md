@@ -1,12 +1,15 @@
 # Proposta: Página inicial, Modos de trabalho, Visualizar, Markdown e editores de áudio e vídeo
 
-**Situação:** aceita no roteiro (etapas ✚ 1.45, 1.70 parte Markdown, ✚ 2.70, ✚ 2.80, ✚ 4.02 e ✚ 4.05) e **ainda não implementada**. As decisões da seção 5 do texto original continuam abertas.
+**Situação:** a **1.4.2 já entregou** a página inicial (✚ 4.05), os modos Universal e Texto (✚ 4.02) e o Visualizar (✚ 1.45), usando os padrões sugeridos na seção 5. **Faltam** o Markdown em 2 modos (1.70, parte Markdown, versão 1.4.3), o editor de áudio (✚ 2.70, 1.4.4) e o editor de vídeo (✚ 2.80, 1.4.5), com os modos Áudio e Vídeo. As decisões da seção 5 que ainda valem para essas etapas continuam abertas (FFmpeg, formato de saída do áudio, biblioteca de Markdown, modo padrão do `.md`).
 
 Este arquivo tem duas partes: **Ajustes depois da 1.4.0** (o que mudou desde que a proposta foi escrita e as respostas do código) e o **texto original da proposta**, sem alterações. Onde os dois divergirem, vale a parte de ajustes.
 
 ---
 
 ## Ajustes depois da 1.4.0
+
+### 0. Decisões da seção 5 usadas na 1.4.2
+Como não houve resposta, a 1.4.2 usou os padrões sugeridos, todos fáceis de trocar: **ao abrir um recente, volta no último modo usado**; **nomes** Universal, Texto, Áudio e Vídeo, com `Ctrl+1` a `Ctrl+4`; **projetos recentes à esquerda e as funções à direita**; **Visualizar em janela flutuante** (encostada à direita), não em painel fixo.
 
 ### 1. O que já foi entregue
 - A proposta foi escrita sem o código-fonte e supunha que o **Visualizador de vídeo (1.40)** estaria dentro da versão 1.4.0 junto com a página inicial. Ele **já foi publicado na 1.4.0, sozinho** (veja `video.md` e `atualizacoes.md`). Então a lista da seção "1.4.0" do texto original passa a ter só: Página inicial, Modos de trabalho e Visualizar.
@@ -20,8 +23,8 @@ Este arquivo tem duas partes: **Ajustes depois da 1.4.0** (o que mudou desde que
 | Versão | Conteúdo | Etapas |
 |---|---|---|
 | **1.4.0** | Vídeo (**publicada**) | 1.40 |
-| **1.4.1** | Tela de loading (**feita**, aguardando publicação) | 1.05 |
-| **1.4.2** | Página inicial + Modos de trabalho (Universal e Texto) + Visualizar | ✚ 4.05, ✚ 4.02, ✚ 1.45 |
+| **1.4.1** | Tela de loading (**feita**) | 1.05 |
+| **1.4.2** | Página inicial + Modos de trabalho (Universal e Texto) + Visualizar (**feita**, aguardando publicação) | ✚ 4.05, ✚ 4.02, ✚ 1.45 |
 | **1.4.3** | Markdown em 2 modos + prévia ao vivo no Modo Texto | 1.70 (parte Markdown) |
 | **1.4.4** | Editor de áudio + Modo Áudio | ✚ 2.70 |
 | **1.4.5** | Editor de vídeo (FFmpeg) + Modo Vídeo | ✚ 2.80 |

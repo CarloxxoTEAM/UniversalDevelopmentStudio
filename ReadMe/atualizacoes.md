@@ -2,6 +2,30 @@
 
 Cada versão lista o que mudou. A versão mais nova fica no topo. Os números de etapa (0.10, 1.20...) são os do roteiro no `README.md`.
 
+## 1.4.2 — Novembro de 2026 — Página inicial, modos de trabalho e Visualizar (etapas 4.05, 4.02 e 1.45)
+**Novo**
+- **Página inicial** (`src/inicio.js`): projetos recentes e a escolha da função em uma tela só. Cada projeto volta **no modo em que foi usado**; dá para **fixar** (alfinete ou `P`), **remover** (botão direito ou `Delete`) e navegar por `↑` `↓` `Enter`. Pasta que sumiu fica esmaecida e riscada, e o programa avisa em vez de abrir. Volta por *Menu do logo → Arquivo → Página inicial*.
+- **Modos de trabalho** (`src/modos/`): **Universal** (o UDS de sempre, sem mudança, `Ctrl+1`) e **Texto** (`Ctrl+2`: só o editor, com linhas, palavras e caracteres ao vivo e botões de fonte; arquivos que não são texto pedem para trocar de modo). **Áudio** e **Vídeo** já aparecem como *em breve* (1.4.4 e 1.4.5). Seletor de modo na barra superior. **Trocar de modo só mexe no layout:** abas, pasta e alterações não salvas ficam como estão. Cada modo lembra os painéis que você deixou visíveis.
+- **Visualizar** (`src/visualizar.js`): item novo no topo do botão direito de qualquer arquivo ou pasta do explorador, que abre uma **prévia flutuante** sem abrir aba. Imagem, áudio e vídeo usam os mesmos visualizadores das abas; texto e código abrem em leitura; pasta mostra o conteúdo com miniaturas das imagens; os demais formatos mostram as informações. `Esc` fecha; *Abrir no UDS* abre em uma aba.
+- **Configurações → Início e modos:** mostrar a página inicial ao iniciar (ligado) e **reabrir direto o último projeto** (desligado). Com a segunda ligada, o loading mostra *Abrindo o último projeto…*.
+- Guias novos: `ReadMe/inicio-e-modos.md` e `ReadMe/visualizar.md`.
+
+**Alterado**
+- Os **recentes** agora guardam o modo, se está fixado e quando foi usado (`recentes` no `settings.json`). **A lista antiga é migrada sozinha** na primeira abertura. O limite de 12 vale só para os não fixados.
+
+**Corrigido**
+- Na barra de status, o indicador de **linha e coluna apagava os avisos rápidos** (como *Salvo.*) assim que você soltava uma tecla no editor. Agora o aviso dura os 2,5 s.
+
+**Melhorado**
+- 116 testes automáticos (31 novos). Novo `node tests/inicio.navegador.js` (opcional) roda o **app real** em Chromium, com o núcleo Tauri simulado lendo arquivos de verdade: migração, página inicial, teclado, fixar, remover, pasta sumida, troca de modo sem perder o que foi digitado, contagem ao digitar, Visualizar de texto, imagem, áudio, **vídeo tocando**, PDF e pasta, `Esc` na ordem certa, configurações e *reabrir o último projeto*.
+
+**Limites**
+- Nenhuma mudança no núcleo em Rust: a prévia de pasta mostra quantidade e tipo, ainda **sem tamanho e data** (precisa de um comando novo no Rust).
+- O modo Texto ainda sem quebra de linha e sem Markdown (etapa 1.70).
+
+**Ainda a confirmar no Windows**
+- O build da 1.4.2 e, das versões anteriores, se MP4 (H.264/AAC), MOV e MKV tocam no WebView2 e se o loading aparece.
+
 ## 1.4.1 — Novembro de 2026 — Tela de loading (etapa 1.05)
 **Novo**
 - **Tela de loading** na abertura (`src/loading.js`): painel escuro no estilo das telas de abertura de programas de criação, com o logo do UDS se montando (o cubo é desenhado traço a traço), o nome em degradê, a frase *One Studio. Unlimited Possibilities.*, a versão e uma **barra de progresso**.
@@ -14,10 +38,13 @@ Cada versão lista o que mudou. A versão mais nova fica no topo. Os números de
 
 **Limites**
 - É um painel **dentro da janela principal**. A janelinha separada e sem bordas citada na ideia original exige mudanças no Rust e nas permissões da janela, e se falhasse a janela principal poderia abrir invisível. Fica para depois de o build no Windows ser confirmado.
-- A mensagem *Abrindo o último projeto…* chega com a página inicial (4.05), quando o UDS passar a reabrir o último projeto.
+- A mensagem *Abrindo o último projeto…* chega com a página inicial (4.05) e só aparece quando a opção de reabrir o último projeto está ligada (feito na 1.4.2).
 
 **Melhorado**
 - 85 testes automáticos (6 novos de loading). `node tests/loading.navegador.js` abre o **app real** em um Chromium (com o núcleo Tauri simulado) e confere etapas, tempo mínimo, pular, desligar, falha e limite de segurança.
+
+**Documentação**
+- **Assinatura de código (1.06, preparação):** guia novo `ReadMe/assinatura.md` com os requisitos da SignPath Foundation conferidos no site deles, onde o UDS está em cada um, o texto do pedido em inglês e o roteiro para depois da aprovação. O README ganhou a seção *Política de assinatura de código*. **Hoje o `.exe` continua sem assinatura.**
 
 **Ainda a confirmar no Windows**
 - O build da 1.4.1, e a pendência da 1.4.0: se MP4 (H.264/AAC), MOV e MKV tocam no WebView2.

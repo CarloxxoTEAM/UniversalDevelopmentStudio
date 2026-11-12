@@ -25,9 +25,9 @@ const MOCK=(cfg,atraso,quebra)=>`window.__TAURI__={core:{convertFileSrc:p=>p,inv
    const vistos=new Set();for(let i=0;i<30;i++){vistos.add(await pg.$eval('#sp-st',e=>e.textContent));await pg.waitForTimeout(40)}
    console.log('etapas vistas:',[...vistos].join(' | '));
    assert.ok([...vistos].some(t=>/configura/i.test(t)),'etapa de configurações');assert.ok([...vistos].some(t=>/tema/i.test(t)),'etapa de temas');
-   assert.ok((await pg.$eval('#sp-ver',e=>e.textContent)).startsWith('Versão 1.4.1'),'versão no painel');
+   assert.ok((await pg.$eval('#sp-ver',e=>e.textContent)).startsWith('Versão 1.4.2'),'versão no painel');
    await gone(pg);const dt=Date.now()-t0;assert.ok(dt>=1200,'não pode sumir antes do mínimo: '+dt+' ms');assert.ok(dt<4500,'demorou demais: '+dt);
-   assert.equal(await pg.$eval('#top',e=>getComputedStyle(e).display!=='none'),true);assert.ok((await pg.$eval('#s1',e=>e.textContent)).includes('UDS 1.4.1'),'o app subiu');
+   assert.equal(await pg.$eval('#top',e=>getComputedStyle(e).display!=='none'),true);assert.ok((await pg.$eval('#s1',e=>e.textContent)).includes('UDS 1.4.2'),'o app subiu');
    assert.equal(await pg.$eval('#sp-bar',e=>e.style.transform),'scaleX(1)','barra completa');
    assert.deepEqual(pg.__erros,[],'erros: '+pg.__erros);console.log('ok aparece, mostra as etapas e some (',dt,'ms)');await pg.screenshot({path:'/tmp/loading-2-app.png'});await ctx.close()}
  // 1b) capturas em momentos fixos da animação (para conferir o visual)

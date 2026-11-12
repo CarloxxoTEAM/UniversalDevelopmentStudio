@@ -5,16 +5,16 @@ Aqui ficam as ideias que ainda não estão prontas. Cada uma tem uma etapa no ro
 | # | Ideia | Etapa | Situação |
 |---|---|---|---|
 | 1 | Tela de loading personalizada | **1.05** | **Pronta na 1.4.1**, como painel dentro da janela. Falta a janela separada e sem bordas (veja abaixo) |
-| 2 | Página inicial: projetos recentes e fixados, com a escolha do modo | **4.05** | Planejada, ampliada (veja nº 10 e 11). A tela inicial atual já tem *Abrir pasta*, *Abrir arquivo* e recentes, de forma simples |
+| 2 | Página inicial: projetos recentes e fixados, com a escolha do modo | **4.05** | **Pronta na 1.4.2** |
 | 3 | Abas e painéis redimensionáveis, com tamanhos salvos | **4.10** | Planejada |
 | 4 | Personalização dos ícones de arquivo e variações automáticas | **1.65** e **1.66** | Planejada (os ícones preto e branco, nos 2 estilos, já existem) |
 | 5 | Cores das pastas | **4.30** | Parcial: pastas brancas no tema escuro e pretas no claro, **prontas na 1.0.2**. Cor individual: planejada |
-| 6 | Tirar o aviso de vírus do Windows | **1.06** | Planejada (veja abaixo) |
+| 6 | Tirar o aviso de vírus do Windows | **1.06** | Em andamento: texto do pedido e política de assinatura prontos ([`assinatura.md`](assinatura.md)); falta você enviar o pedido |
 | 7 | Configurações e "Sobre" em uma caixa separada | — | **Pronta na 1.2.0**, como caixa flutuante (engrenagem, menu do logo e `Ctrl+,`) |
 | 8 | Área "Tipos de Arquivos" nas configurações | **1.65** | A lista já está pronta (1.2.0). Falta criar e editar tipos |
 | 9 | Vídeo, complementos: capturar quadro (PNG), legendas, duração de MP4 fragmentado | **1.46** | Planejada (veja abaixo) |
-| 10 | Modos de trabalho (Universal, Texto, Áudio, Vídeo) | **4.02** | Planejada. Proposta completa em [`proposta-modos-editores.md`](proposta-modos-editores.md) |
-| 11 | Visualizar (prévia flutuante pelo botão direito) | **1.45** | Planejada (mesma proposta) |
+| 10 | Modos de trabalho (Universal, Texto, Áudio, Vídeo) | **4.02** | **Universal e Texto prontos na 1.4.2**; Áudio e Vídeo chegam com os editores (13 e 14) |
+| 11 | Visualizar (prévia flutuante pelo botão direito) | **1.45** | **Pronta na 1.4.2** |
 | 12 | Markdown em 2 modos, com prévia ao vivo | **1.70** (parte Markdown) | Planejada (mesma proposta) |
 | 13 | Editor de áudio e Modo Áudio | **2.70** | Planejada (mesma proposta) |
 | 14 | Editor de vídeo (FFmpeg) e Modo Vídeo | **2.80** | Planejada (mesma proposta). Precisa de decisão sobre o FFmpeg |
@@ -67,10 +67,10 @@ O campo `FolderPath` é um acréscimo ao exemplo original: duas pastas diferente
 ## 6. Aviso do Windows (1.06)
 O aviso *"O Windows protegeu seu PC"* (SmartScreen) aparece porque o executável **não é assinado** e ainda não tem reputação. Não dá para removê-lo só com código. Os caminhos reais são:
 
-1. **Assinatura de código gratuita para projetos de código aberto.** A SignPath Foundation oferece isso mediante solicitação e aprovação do projeto. O UDS tem repositório público e licença MIT, o que se encaixa. O GitHub Actions pode assinar o `.exe` a cada release.
+1. **Assinatura de código gratuita para projetos de código aberto.** A SignPath Foundation oferece isso mediante solicitação e aprovação do projeto. O UDS tem repositório público e licença MIT, o que se encaixa. O GitHub Actions pode assinar o `.exe` a cada release. **Requisitos conferidos, texto do pedido em inglês e roteiro pós-aprovação: [`assinatura.md`](assinatura.md).** O ponto de maior risco é a reputação exigida para programas executáveis.
 2. **Reputação.** Mesmo assinado, o SmartScreen pode avisar nos primeiros downloads. A reputação cresce conforme mais pessoas baixam e executam o arquivo.
 3. **Enviar o arquivo à Microsoft** (*Submit a file for malware analysis*) quando o antivírus apontar falso positivo.
-4. **Boas práticas já adotadas:** código aberto, releases só pelo GitHub, build automático e público. Ainda a fazer: publicar o hash (SHA-256) de cada ZIP e preencher o nome e a versão nas propriedades do `.exe`.
+4. **Boas práticas já adotadas:** código aberto, releases só pelo GitHub, build automático e público. O hash (SHA-256) de cada ZIP e o nome e a versão nas propriedades do `.exe` já estão prontos; a política de assinatura já está no README.
 
 Até lá, o usuário clica em *Mais informações* e depois em *Executar assim mesmo*, como está no `README.md`.
 
@@ -104,3 +104,10 @@ A proposta completa, com as versões sugeridas, o que será reaproveitado do có
 - **Editor de áudio (2.70):** cortar, recortar e remover trecho; salvar sempre como **cópia** em WAV.
 - **Editor de vídeo (2.80):** corte com FFmpeg, também sempre como cópia. O original nunca é alterado.
 - **Decisões abertas:** FFmpeg dentro do ZIP, formato de saída do áudio, biblioteca de Markdown, modo padrão do `.md`, modo ao abrir um recente, nomes e atalhos dos modos, posição dos cartões, janela flutuante ou painel fixo (seção 5 da proposta).
+
+## 15. Complementos do Visualizar e dos modos (a partir da 1.4.2)
+Coisas que ficaram de fora da 1.4.2 de propósito (a versão não mexeu no núcleo em Rust, que eu não consigo compilar):
+- **Tamanho e data na prévia de pasta**, e um comando `path_exists` de verdade: precisam de comandos novos no Rust (`dir_summary`, `path_exists`). Só vale fazer junto com uma mudança que o robô do GitHub possa confirmar logo em seguida.
+- **Visualizar** também em *Editores abertos*, na busca e nos arquivos do terminal, e uma tecla de atalho (por exemplo `Espaço` no arquivo selecionado, como no Finder).
+- **Quebra de linha** no modo Texto (exige alinhar a numeração de linhas com linhas quebradas).
+- **Projetos recentes com várias pastas** (espaço de trabalho) e nomes personalizados.

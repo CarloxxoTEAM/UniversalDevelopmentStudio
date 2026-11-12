@@ -21,7 +21,7 @@ As mensagens são etapas **reais** do carregamento (não são enfeite): *Carrega
 
 ## Limites desta versão
 - É um **painel dentro da janela principal**, não uma janelinha separada sem bordas. Uma janela separada precisa de mudanças no núcleo em Rust e nas permissões, e se falhasse a janela principal poderia abrir invisível; por isso ficou para depois de confirmar o build no Windows.
-- Ainda não existe a mensagem *Abrindo o último projeto…*, porque o UDS ainda não reabre o último projeto sozinho (isso chega com a página inicial, etapa 4.05).
+- A mensagem *Abrindo o último projeto…* aparece só quando você liga *Reabrir direto o último projeto* em *Configurações → Início e modos* (desde a 1.4.2; veja `inicio-e-modos.md`).
 
 ## Como funciona por dentro
 1. `src/index.html` traz o painel (`#uds-splash`) **antes** do aplicativo, então ele já está na tela quando o resto carrega. Os estilos ficam no fim de `src/styles.css`.

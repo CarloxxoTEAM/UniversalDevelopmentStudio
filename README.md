@@ -6,7 +6,7 @@ O UDS é um ambiente **universal e portátil** para desenvolvimento, edição e 
 
 A interface segue o estilo dos editores modernos, com explorador de arquivos à esquerda, abas e editor no centro, painel inferior e, à direita, um **bloco de notas por projeto**.
 
-**Versão atual:** 1.4.1 · **Plataforma:** Windows (Linux e macOS nas etapas 9.00 em diante) · **Licença:** MIT
+**Versão atual:** 1.4.2 · **Plataforma:** Windows (Linux e macOS nas etapas 9.00 em diante) · **Licença:** MIT
 
 ## O que já funciona
 - Abrir uma pasta do computador e navegar pelos arquivos.
@@ -15,6 +15,7 @@ A interface segue o estilo dos editores modernos, com explorador de arquivos à 
 - Visualizador de imagens (PNG, JPG, GIF, WEBP, BMP, ICO, SVG) com zoom, rotação e ajuste.
 - **Lista completa de formatos** com o que cada um faz hoje (seção "Formatos de arquivo").
 - **Player de áudio** (MP3, WAV, FLAC, OGG, Opus, AAC, M4A) com capa, etiquetas, forma de onda clicável, velocidade e dados técnicos (veja `ReadMe/audio.md`).
+- **Página inicial** com os projetos recentes (fixáveis, que voltam no modo em que foram usados) e a escolha da função; **modos de trabalho** (Universal e Texto, com `Ctrl+1` e `Ctrl+2`; Áudio e Vídeo vêm com os editores); e **Visualizar**, uma prévia flutuante pelo botão direito de qualquer arquivo ou pasta, sem abrir aba (veja `ReadMe/inicio-e-modos.md` e `ReadMe/visualizar.md`).
 - **Tela de loading** na abertura: painel com o logo montando, o que está sendo carregado e uma barra de progresso. Some sozinha, com clique ou com `Esc`, e pode ser desligada em *Configurações → Aparência* (veja `ReadMe/loading.md`).
 - **Player de vídeo** (MP4, WebM, MKV, MOV e 3GP, conforme os codecs do sistema) com controles, passo por quadro, tela cheia e dados técnicos: codec, resolução, fps, taxa de bits e rotação (veja `ReadMe/video.md`).
 - **Identificação de arquivos pelo conteúdo**: um PNG chamado `foto.txt`, um script sem extensão ou um PDF são reconhecidos ao abrir (veja `ReadMe/deteccao.md`).
@@ -34,6 +35,17 @@ Os ícones de Busca, Git, Execução e Extensões e o painel Terminal já aparec
 
 Para atualizar, extraia a nova versão por cima, mantendo a pasta `portable/`. Requisito no Windows: WebView2 Runtime (já vem no Windows 10 e 11 atualizados). Se aparecer "O Windows protegeu seu PC", clique em *Mais informações* e depois em *Executar assim mesmo*, porque o programa ainda não tem assinatura digital.
 
+## Política de assinatura de código (Code signing policy)
+
+**Situação: pedido ainda não aprovado. Hoje os executáveis do UDS _não_ são assinados** (por isso o Windows mostra o aviso descrito em *Usar (portátil)*). Estamos preparando o pedido de assinatura gratuita para projetos de código aberto da SignPath Foundation. Quando for aprovado, esta seção passa a dizer: *"Free code signing provided by [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org)"*.
+
+- **O que será assinado:** só o executável `UniversalDevelopmentStudio.exe` do pacote portátil para Windows, publicado em **Releases**.
+- **Como:** o executável é compilado pelo GitHub Actions a partir deste repositório público, em máquinas do próprio GitHub. Somente o resultado dessa compilação é enviado para assinatura, e cada versão precisa de aprovação manual. A chave privada fica com a SignPath; o projeto não guarda chave nenhuma.
+- **Equipe e papéis** (projeto com um mantenedor): **Autor** (altera o código sem revisão), **Revisor** (revisa as contribuições de quem não tem acesso de escrita) e **Aprovador** (aprova cada pedido de assinatura): [SEU-USUARIO](https://github.com/SEU-USUARIO) <!-- troque SEU-USUARIO pelo seu usuário do GitHub antes de enviar o pedido -->. Toda contribuição externa (Pull Request) é revisada antes de entrar.
+- **Verificação:** cada ZIP em Releases tem um arquivo `.sha256` ao lado. Baixe só da página oficial de Releases deste repositório.
+- **Política de privacidade:** este programa não transfere nenhuma informação a outros sistemas em rede, a menos que o usuário peça especificamente. O UDS não tem telemetria, não procura atualizações sozinho e só lê e grava os arquivos que você abre; suas configurações ficam na pasta `portable/` ao lado do programa.
+- **Instalar e desinstalar:** não há instalador. Para remover, apague a pasta do programa. O UDS não altera as configurações do Windows.
+
 ## Comandos do programa
 Tudo isso está no menu que abre ao clicar no **logo do UDS** (canto superior esquerdo).
 
@@ -44,6 +56,9 @@ Tudo isso está no menu que abre ao clicar no **logo do UDS** (canto superior es
 | Novo arquivo | Cria um arquivo vazio na pasta do projeto e o abre | |
 | Nova pasta | Cria uma pasta no projeto | |
 | Salvar | Salva todos os arquivos alterados (marcados com ●) | `Ctrl+S` |
+| Página inicial | Volta à tela com os projetos recentes e a escolha da função | Menu do logo → Arquivo |
+| Trocar o modo de trabalho | Universal, Texto (Áudio e Vídeo em breve) | `Ctrl+1` a `Ctrl+4` |
+| Visualizar | Prévia flutuante de um arquivo ou pasta, sem abrir aba | Botão direito no explorador |
 | Reabrir como texto | Abre como texto um arquivo que o UDS tratou como binário ou imagem | |
 | Fechar aba | Fecha a aba; se houver alterações, pergunta se salva | |
 | Alternar tema claro/escuro | Alterna entre o tema claro e o escuro padrão; os ícones mudam de cor junto | |
@@ -86,7 +101,7 @@ Requisitos: [Node.js 20+](https://nodejs.org), [Rust](https://rustup.rs) e os [p
 | `npm run build` | Compila o executável em `src-tauri/target/release/` |
 | `python scripts/gerar_icone.py SIGLA nome 12_extras` | Gera os 4 ícones (2 estilos, preto e branco) de um tipo de arquivo novo. Exemplo: `GML gml`. Precisa de `pip install pillow` |
 | `python scripts/package.py windows` | Depois do build: monta a pasta portátil e o ZIP em `dist-portable/` |
-| `git tag v1.4.1` e `git push origin v1.4.1` | Publica uma versão: o GitHub Actions compila, testa, gera o ZIP e o coloca em **Releases** |
+| `git tag v1.4.2` e `git push origin v1.4.2` | Publica uma versão: o GitHub Actions compila, testa, gera o ZIP e o coloca em **Releases** |
 
 ## Guias
 **Como criar um tema:** [`themes/COMO-CRIAR-UM-TEMA.md`](themes/COMO-CRIAR-UM-TEMA.md)
@@ -96,6 +111,9 @@ Requisitos: [Node.js 20+](https://nodejs.org), [Rust](https://rustup.rs) e os [p
 |---|---|
 | [`ReadMe/icones.md`](ReadMe/icones.md) | Os 2 estilos de ícone, preto e branco por tema, como adicionar ou trocar ícones e a lista completa por extensão |
 | [`ReadMe/audio.md`](ReadMe/audio.md) | O player de áudio: controles, formatos, etiquetas lidas, limites e testes |
+| [`ReadMe/inicio-e-modos.md`](ReadMe/inicio-e-modos.md) | A página inicial, os projetos recentes e os modos de trabalho: como funcionam, atalhos, limites e como criar um modo novo |
+| [`ReadMe/visualizar.md`](ReadMe/visualizar.md) | O Visualizar: prévia flutuante pelo botão direito, o que mostra de cada tipo de arquivo, limites e testes |
+| [`ReadMe/assinatura.md`](ReadMe/assinatura.md) | Assinatura de código (SignPath Foundation): requisitos, texto do pedido em inglês, passos antes e depois da aprovação |
 | [`ReadMe/loading.md`](ReadMe/loading.md) | A tela de loading: o que mostra, como pular ou desligar, limites e testes |
 | [`ReadMe/video.md`](ReadMe/video.md) | O player de vídeo: controles, formatos, dados técnicos lidos, limites e testes |
 | [`ReadMe/proposta-modos-editores.md`](ReadMe/proposta-modos-editores.md) | Proposta (ainda não feita): página inicial, modos de trabalho, Visualizar, Markdown e editores de áudio e vídeo |
@@ -277,14 +295,14 @@ Cada etapa só avança quando a anterior funciona. `[x]` = pronta, `[ ]` = a faz
 - [x] 0.90 - Modo portátil e ZIP automático (GitHub Actions)
 - [x] 1.00 - Primeira release oficial (Windows)
 - [x] ✚ 1.05 - Tela de loading personalizada, no estilo da abertura do After Effects (feita na 1.4.1 como painel dentro da janela principal; a janela separada e sem bordas fica para depois do teste no Windows)
-- [ ] ✚ 1.06 - Reduzir o aviso do Windows (assinatura de código gratuita para open source). Já feito: hash SHA-256 dos ZIPs e propriedades do .exe. Falta: o pedido de assinatura
+- [ ] ✚ 1.06 - Reduzir o aviso do Windows (assinatura de código gratuita para open source). Já feito: hash SHA-256 dos ZIPs, propriedades do .exe, a política de assinatura no README e o texto do pedido (veja `ReadMe/assinatura.md`). Falta: você enviar o pedido e, depois da aprovação, ligar a assinatura no GitHub Actions
 
 **VISUALIZAR**
 - [x] 1.10 - Temas claro e escuro, lidos de um theme.json
 - [x] 1.20 - Identificação de arquivos pelo conteúdo
 - [x] 1.30 - Áudio
 - [x] 1.40 - Vídeo
-- [ ] ✚ 1.45 - Visualizar: item **Visualizar** no botão direito de qualquer arquivo ou pasta, que abre uma prévia flutuante (imagem, áudio, vídeo, texto, pastas) sem abrir aba. Proposta em [`ReadMe/proposta-modos-editores.md`](ReadMe/proposta-modos-editores.md)
+- [x] ✚ 1.45 - Visualizar: item **Visualizar** no botão direito de qualquer arquivo ou pasta, que abre uma prévia flutuante (imagem, áudio, vídeo, texto, pastas) sem abrir aba. Feito na 1.4.2 (veja `ReadMe/visualizar.md`)
 - [ ] ✚ 1.46 - Vídeo, complementos: capturar um quadro como PNG, legendas (.srt e .vtt) e duração de MP4 fragmentado
 - [ ] 1.50 - Modelos 3D (com biblioteca pronta)
 - [ ] 1.60 - Abrir como... e associações de arquivo
@@ -309,8 +327,8 @@ Cada etapa só avança quando a anterior funciona. `[x]` = pronta, `[ ]` = a faz
 
 **PROJETOS E PERSONALIZAÇÃO** (criar um doc na pasta de temas explicando como criar o seu próprio, e um tema de exemplo)
 - [ ] 4.00 - Vários projetos e configurações por projeto
-- [ ] ✚ 4.02 - **Modos de trabalho**: Universal (o UDS de hoje), Texto, Áudio e Vídeo; cada um mostra só o painel e os botões da sua função
-- [ ] ✚ 4.05 - **Página inicial** (depois do loading): projetos recentes e fixados, que voltam no modo em que foram usados, e a escolha do modo
+- [x] ✚ 4.02 - **Modos de trabalho**: Universal (o UDS de hoje), Texto, Áudio e Vídeo; cada um mostra só o painel e os botões da sua função. Feito na 1.4.2 para **Universal e Texto**; Áudio e Vídeo já aparecem como "em breve" e chegam com os editores (2.70 e 2.80)
+- [x] ✚ 4.05 - **Página inicial** (depois do loading): projetos recentes e fixados, que voltam no modo em que foram usados, e a escolha do modo. Feita na 1.4.2 (veja `ReadMe/inicio-e-modos.md`)
 - [ ] ✚ 4.10 - Abas e painéis redimensionáveis, com os tamanhos salvos
 - [ ] 4.20 - Espaços de trabalho salvos
 - [ ] ✚ 4.30 - Cor individual das pastas (botão direito), salva em XML

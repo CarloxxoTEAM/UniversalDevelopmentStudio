@@ -10,6 +10,10 @@
 | `src/core.js` | Funções puras (extensão, destaque de sintaxe, caminho do ícone). São as testadas em `tests/`. |
 | `src/deteccao.js` | Identificação de arquivos pelo conteúdo (módulo puro, testado). |
 | `src/audiometa.js` | Leitura de etiquetas e dados técnicos de áudio (módulo puro, testado com o ffprobe). |
+| `src/recentes.js` | Projetos recentes: migração, fixados, limite e tempo relativo (módulo puro, testado). |
+| `src/modos/` | Modos de trabalho: `registro.js` (troca de layout), `universal.js`, `texto.js`, `futuros.js` (Áudio e Vídeo "em breve"). Veja `inicio-e-modos.md`. |
+| `src/inicio.js` | Página inicial (recentes e cartões dos modos). |
+| `src/visualizar.js` | Visualizar: prévia flutuante de arquivos e pastas. Veja `visualizar.md`. |
 | `src/loading.js` | Tela de loading: etapas, tempo mínimo e limite, pular e desligar (veja `loading.md`). |
 | `src/videometa.js` | Leitura de dados técnicos de vídeo, por trechos do arquivo (módulo puro, testado com o ffprobe). |
 | `src/app.js` | Telas e comportamento: menus, explorador, abas, editor, notas, configurações. |
@@ -43,5 +47,5 @@ UDS.registerViewer({
 Depois inclua `<script src="visualizadores/meu-formato.js"></script>` no `src/index.html`. O núcleo não precisa mudar.
 
 ## Testes
-- `npm test` roda `tests/core.test.js` (funções puras, ícones, temas) e `tests/deteccao.test.js` (identificação pelo conteúdo) e `tests/audio.test.js` (áudio) `tests/video.test.js` (vídeo) e `tests/loading.test.js` (loading). `node tests/video.navegador.js` e `node tests/loading.navegador.js` são testes opcionais em Chromium real (precisam do Playwright); o do loading roda o `index.html` e o `app.js` de verdade, com o núcleo Tauri simulado.
+- `npm test` roda `tests/core.test.js` (funções puras, ícones, temas) e `tests/deteccao.test.js` (identificação pelo conteúdo) e `tests/audio.test.js` (áudio) `tests/video.test.js` (vídeo), `tests/loading.test.js` (loading), `tests/recentes.test.js`, `tests/modos.test.js` e `tests/visualizar.test.js`. `node tests/video.navegador.js`, `node tests/loading.navegador.js` e `node tests/inicio.navegador.js` são testes opcionais em Chromium real (precisam do Playwright); o do loading roda o `index.html` e o `app.js` de verdade, com o núcleo Tauri simulado.
 - `cargo test --manifest-path src-tauri/Cargo.toml` roda os testes do núcleo Rust.

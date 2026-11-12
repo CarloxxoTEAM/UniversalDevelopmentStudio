@@ -3,13 +3,14 @@ if(!window.__TAURI__){document.body.innerHTML='<p style="padding:20px">Abra o UD
 const T=window.__TAURI__,$=s=>document.querySelector(s);
 const {esc,base,par,join,extOf,langOf,iconPath,iconPathByName,folderPath,CATEGORIAS,listarTipos,iconColor,ESTILOS,highlight,lerTema,cssVars,temaModo,TEMAS_EMBUTIDOS,THEME_KEYS}=UDSCore;
 const inv=(c,a)=>T.core.invoke(c,a),url=p=>T.core.convertFileSrc(p);
-const VERSION='1.4.1';
+const VERSION='1.4.2';
 UDSLoading.versao(VERSION);
-let themes=[],themesDir='',root=null,cfg={theme:'dark',themeId:'uds-escuro',iconStyle:'estilo1',recent:[],fs:13,zoom:1,notes:{},activeNote:{},sideOpen:true,panelOpen:true,notesOpen:true},docs={},tabs=[],active=null,dirs={},openD={},side='exp',sec={opened:false,proj:true,outline:false,timeline:false},ptab='term',buf={term:'',prob:'',out:'',dbg:''};
+let themes=[],themesDir='',root=null,cfg={theme:'dark',themeId:'uds-escuro',iconStyle:'estilo1',recentes:[],modo:'universal',layouts:{},inicio:{mostrar:true,reabrir:false},fs:13,zoom:1,notes:{},activeNote:{},sideOpen:true,panelOpen:true,notesOpen:true},docs={},tabs=[],active=null,dirs={},openD={},side='exp',sec={opened:false,proj:true,outline:false,timeline:false},ptab='term',buf={term:'',prob:'',out:'',dbg:''};
 const IC={folder:'<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',search:'<circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>',git:'<circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="8" r="2.2"/><path d="M6 7.2v9.6M18 10.2c0 4-6 3-12 6"/>',play:'<path d="M7 4.5v15l12-7.5z"/>',plug:'<path d="M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4"/>',gear:'<path d=\"M19.06 10.56 L21.54 10.91 L21.54 13.09 L19.06 13.44 L18.65 14.76 L18.00 15.97 L19.51 17.98 L17.98 19.51 L15.97 18.00 L14.76 18.65 L13.44 19.06 L13.09 21.54 L10.91 21.54 L10.56 19.06 L9.24 18.65 L8.03 18.00 L6.02 19.51 L4.49 17.98 L6.00 15.97 L5.35 14.76 L4.94 13.44 L2.46 13.09 L2.46 10.91 L4.94 10.56 L5.35 9.24 L6.00 8.03 L4.49 6.02 L6.02 4.49 L8.03 6.00 L9.24 5.35 L10.56 4.94 L10.91 2.46 L13.09 2.46 L13.44 4.94 L14.76 5.35 L15.97 6.00 L17.98 4.49 L19.51 6.02 L18.00 8.03 L18.65 9.24Z\"/><circle cx=\"12\" cy=\"12\" r=\"3.2\"/>',l1:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/>',l2:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 15h18"/>',l3:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/>',chev:'<path d="m6 9 6 6 6-6"/>'};
-const svg=n=>`<svg class="i" viewBox="0 0 24 24">${IC[n]}</svg>`;
+const svg=n=>`<svg class="i" viewBox="0 0 24 24">${IC[n]}</svg>`,svgRaw=p=>`<svg class="i" viewBox="0 0 24 24" aria-hidden="true">${p}</svg>`;
 const log=t=>{buf.out+=esc(t)+'\n';if(ptab=='out')showPanel()};
-const flash=t=>{$('#s2').textContent=t;setTimeout(()=>{if($('#s2').textContent==t)$('#s2').textContent=''},2500)};
+let flashAte=0;
+const flash=t=>{flashAte=Date.now()+2500;$('#s2').textContent=t;setTimeout(()=>{if($('#s2').textContent==t)$('#s2').textContent=''},2500)};
 const saveCfg=()=>inv('save_config',{json:JSON.stringify(cfg)}).catch(()=>{});
 const fileIcon=(n,sz,d)=>{const i=d&&d.det&&d.det.icone;const src=i?iconPathByName(i,cfg.iconStyle,iconColor(cfg.theme)):iconPath(n,cfg.iconStyle,iconColor(cfg.theme));return`<img class="fi" alt="" src="${src}"${sz?` width="${sz}" height="${sz}"`:''}>`};
 const folderIcon=(open,sz)=>`<img class="fi" alt="" src="${folderPath(open,cfg.iconStyle,iconColor(cfg.theme))}"${sz?` width="${sz}" height="${sz}"`:''}>`;
@@ -37,18 +38,19 @@ async function reloadThemes(){await loadThemes();applyTheme(cfg.themeId,false);l
 
 /* ---------- Menus ---------- */
 const MENU=[['PROGRAMA',[['Configurações…','Ctrl+,',()=>abrirConfig('aparencia')],['Tipos de arquivo…','',()=>abrirConfig('tipos')],['Sobre o UDS','',()=>abrirConfig('sobre')]]],
-['ARQUIVO',[['Abrir pasta…','Ctrl+O',openFolder],['Abrir arquivo…','',openFile],['Novo arquivo','',()=>mk(root,false)],['Nova pasta','',()=>mk(root,true)],['Salvar','Ctrl+S',saveAll],['Reabrir como texto','',()=>reopen(active)],['Fechar aba','',()=>closeTab(active)]]],
+['ARQUIVO',[['Página inicial','',()=>mostrarInicio()],['Abrir pasta…','Ctrl+O',openFolder],['Abrir arquivo…','',openFile],['Novo arquivo','',()=>mk(root,false)],['Nova pasta','',()=>mk(root,true)],['Salvar','Ctrl+S',saveAll],['Reabrir como texto','',()=>reopen(active)],['Fechar aba','',()=>closeTab(active)]]],
 ['EXIBIR',[['Alternar tema claro/escuro','',toggleTheme],['Recarregar temas','',reloadThemes],['Abrir pasta de temas','',abrirPastaTemas],['Barra lateral','',()=>toggle('sideOpen')],['Painel inferior','',()=>toggle('panelOpen')],['Notas','',()=>toggle('notesOpen')],['Aumentar zoom','Ctrl +',()=>setZoom(cfg.zoom+.1)],['Diminuir zoom','Ctrl -',()=>setZoom(cfg.zoom-.1)],['Zoom padrão','Ctrl 0',()=>setZoom(1)]]],
+['MODO DE TRABALHO',UDSModos.lista().map(m=>['Modo '+m.nome+(m.disponivel===false?' (em breve)':''),'Ctrl+'+m.atalho,()=>setMode(m.id)])],
 ];
 function popup(el,x,y,items){el.innerHTML='';items.forEach(it=>{const d=document.createElement('div');if(it.gt){d.className='gt';d.textContent=it.gt}else{d.innerHTML=`<span>${it.h||esc(it.t)}</span><small>${esc(it.k||'')}</small>`;d.onclick=()=>{hideMenus();it.f()}}el.appendChild(d)});el.style.left=Math.min(x,innerWidth-240)+'px';el.style.top=y+'px';el.style.display='block'}
 function hideMenus(){$('#drop').style.display='none';$('#ctx').style.display='none'}
 document.addEventListener('click',hideMenus);
 $('#logo').onclick=e=>{e.stopPropagation();const it=[];MENU.forEach(([g,l])=>{it.push({gt:g});l.forEach(([t,k,f])=>it.push({t,k,f}))});popup($('#drop'),12,44,it)};
-$('#proj').onclick=e=>{e.stopPropagation();const it=[{t:'Abrir pasta…',k:'Ctrl+O',f:openFolder}];if(cfg.recent.length)it.push({gt:'RECENTES'});cfg.recent.forEach(r=>it.push({t:r,f:()=>setRoot(r).catch(x=>log('Erro: '+x))}));popup($('#drop'),$('#proj').getBoundingClientRect().left,44,it)};
+$('#proj').onclick=e=>{e.stopPropagation();const it=[{t:'Abrir pasta…',k:'Ctrl+O',f:openFolder},{t:'Página inicial',f:()=>mostrarInicio()}];if(cfg.recentes.length)it.push({gt:'RECENTES'});cfg.recentes.forEach(r=>it.push({t:(r.fixado?'📌 ':'')+r.caminho,f:()=>abrirProjeto(r)}));popup($('#drop'),$('#proj').getBoundingClientRect().left,44,it)};
 
 /* ---------- Pastas e arquivos (0.10 e 0.20) ---------- */
 async function loadDir(p){dirs[p]=await inv('list_dir',{path:p})}
-async function setRoot(p){const lista=await inv('list_dir',{path:p});root=p;dirs={};dirs[p]=lista;openD={};docs={};tabs=[];active=null;side='exp';cfg.sideOpen=true;cfg.recent=[p,...cfg.recent.filter(x=>x!=p)].slice(0,8);saveCfg();applyLayout();renderAll();log('Pasta aberta: '+p)}
+async function setRoot(p){const lista=await inv('list_dir',{path:p});root=p;dirs={};dirs[p]=lista;openD={};docs={};tabs=[];active=null;side='exp';if((UDSModos.obter(cfg.modo)||{}).abreExplorador!==false)cfg.sideOpen=true;cfg.recentes=UDSRecentes.adicionar(cfg.recentes,p,cfg.modo,Date.now());saveCfg();fecharInicio();applyLayout();renderAll();log('Pasta aberta: '+p)}
 async function openFolder(){const p=await T.dialog.open({directory:true});if(p)setRoot(p).catch(e=>log('Erro: '+e))}
 async function openFile(){const p=await T.dialog.open({multiple:false});if(p)openF(p)}
 async function toggleDir(d){if(openD[d])delete openD[d];else{try{await loadDir(d);openD[d]=1}catch(e){log('Erro: '+e)}}renderSide()}
@@ -57,7 +59,7 @@ async function mk(dir,isDir){if(!root)return flash('Abra uma pasta primeiro.');d
 async function ren(p){const n=await ask('Novo nome:',base(p));if(!n||n==base(p))return;try{await inv('rename_path',{from:p,to:join(par(p),n)});tabs.filter(t=>t==p||t.startsWith(p+'/')||t.startsWith(p+'\\')).forEach(t=>dropTab(t));await refresh()}catch(e){log('Erro: '+e)}}
 async function del(p){if(await ask(`Excluir "${base(p)}"? Digite sim para confirmar.`)!='sim')return;try{await inv('delete_path',{path:p});tabs.filter(t=>t==p||t.startsWith(p+'/')||t.startsWith(p+'\\')).forEach(t=>dropTab(t));await refresh()}catch(e){log('Erro: '+e)}}
 const lerDoc=async(p,forcar)=>{const r=await inv('read_file',{path:p,forceText:forcar});const d={...r,dirty:false,forced:forcar};d.det=UDSDeteccao.identificar({nome:base(p),head:r.head,texto:r.kind=='text'?r.text:null});return d};
-async function openF(p){if(!docs[p]){try{docs[p]=await lerDoc(p,false)}catch(e){log('Erro: '+e);flash('Erro ao abrir: '+base(p));return}}if(!tabs.includes(p))tabs.push(p);active=p;renderAll()}
+async function openF(p){if(!docs[p]){try{docs[p]=await lerDoc(p,false)}catch(e){log('Erro: '+e);flash('Erro ao abrir: '+base(p));return}}if(!tabs.includes(p))tabs.push(p);active=p;fecharInicio();renderAll()}
 async function reopen(p){if(!p)return;try{docs[p]=await lerDoc(p,true);renderAll()}catch(e){log('Erro: '+e)}}
 async function saveAll(){let n=0,reload=false;for(const p of tabs){const d=docs[p];if(d&&d.dirty&&d.kind=='text'){try{await inv('write_file',{path:p,content:d.text});d.dirty=false;n++;if(themesDir&&p.startsWith(themesDir)&&base(p)=='theme.json')reload=true}catch(e){log('Erro ao salvar '+base(p)+': '+e)}}}renderTabs();renderSide();if(n){log(`${n} arquivo(s) salvo(s).`);flash('Salvo.')}if(reload)reloadThemes()}
 function dropTab(p){tabs=tabs.filter(t=>t!=p);delete docs[p];if(active==p)active=tabs[tabs.length-1]||null;renderAll()}
@@ -79,7 +81,7 @@ function renderSide(){const s=$('#side');
  s.innerHTML=h;s.querySelectorAll('[data-p]').forEach(e=>e.onclick=()=>openF(e.dataset.p));s.querySelectorAll('[data-d]').forEach(e=>e.onclick=()=>toggleDir(e.dataset.d));
  s.querySelectorAll('[data-s]').forEach(e=>e.onclick=()=>{sec[e.dataset.s]=!sec[e.dataset.s];renderSide()});const of=$('#of');if(of)of.onclick=openFolder;
  $('#mo').onclick=e=>{e.stopPropagation();popup($('#ctx'),e.clientX-150,e.clientY+10,[{t:'Novo arquivo',f:()=>mk(root,false)},{t:'Nova pasta',f:()=>mk(root,true)},{t:'Atualizar',f:refresh}])}}
-$('#side').oncontextmenu=e=>{e.preventDefault();if(side!='exp'||!root)return;const t=e.target.closest('[data-p],[data-d]'),p=t&&(t.dataset.p||t.dataset.d),dir=!t?root:t.dataset.d||par(p);const it=[{t:'Novo arquivo',f:()=>mk(dir,false)},{t:'Nova pasta',f:()=>mk(dir,true)}];if(p)it.push({t:'Renomear',f:()=>ren(p)},{t:'Excluir',f:()=>del(p)});popup($('#ctx'),e.clientX,e.clientY,it)};
+$('#side').oncontextmenu=e=>{e.preventDefault();if(side!='exp'||!root)return;const t=e.target.closest('[data-p],[data-d]'),p=t&&(t.dataset.p||t.dataset.d),dir=!t?root:t.dataset.d||par(p);const it=[];if(p)it.push({t:'Visualizar',f:()=>prev.abrir(p,!!(t&&t.dataset.d))});it.push({t:'Novo arquivo',f:()=>mk(dir,false)},{t:'Nova pasta',f:()=>mk(dir,true)});if(p)it.push({t:'Renomear',f:()=>ren(p)},{t:'Excluir',f:()=>del(p)});popup($('#ctx'),e.clientX,e.clientY,it)};
 
 /* ---------- Abas e cabeçalho ---------- */
 function renderTabs(){const t=$('#tabs');t.innerHTML='';tabs.forEach(p=>{const d=document.createElement('div');d.className='tab'+(p==active?' on':'');d.innerHTML=`${fileIcon(p,undefined,docs[p])} ${esc(base(p))}${docs[p]&&docs[p].dirty?' ●':''}<i title="Fechar">✕</i>`;d.onclick=()=>openF(p);d.querySelector('i').onclick=e=>{e.stopPropagation();closeTab(p)};t.appendChild(d)});const pl=document.createElement('div');pl.className='plus';pl.textContent='+';pl.title='Novo arquivo';pl.onclick=()=>mk(root,false);t.appendChild(pl)}
@@ -87,8 +89,8 @@ function renderTop(){$('#proj').innerHTML=`<span>${esc(root?base(root):'Abrir pa
  $('#t1').innerHTML=svg('l1');$('#t2').innerHTML=svg('l2');$('#t3').innerHTML=svg('l3');$('#si').innerHTML=svg('search')}
 
 /* ---------- Área central ---------- */
-function welcome(){const v=$('#view');v.innerHTML=`<div class="wel"><img src="logo.png" width="64" height="64" alt=""><h1>Universal Development Studio</h1>One Studio. Unlimited Possibilities.<br><br><button data-a="of">Abrir pasta</button> <button data-a="ofi">Abrir arquivo</button><br><br>${cfg.recent.length?'Projetos recentes':''}${cfg.recent.map(r=>`<div><a href="#" data-r="${esc(r)}" style="color:var(--ac)">${esc(r)}</a></div>`).join('')}</div>`;
- v.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>b.dataset.a=='of'?openFolder():openFile());v.querySelectorAll('[data-r]').forEach(a=>a.onclick=e=>{e.preventDefault();setRoot(a.dataset.r).catch(x=>log('Erro: '+x))})}
+function welcome(){const v=$('#view');v.innerHTML=`<div class="wel"><img src="logo.png" width="64" height="64" alt=""><h1>Universal Development Studio</h1>One Studio. Unlimited Possibilities.<br><br><button data-a="of">Abrir pasta</button> <button data-a="ofi">Abrir arquivo</button> <button data-a="ini">Página inicial</button><br><br>${cfg.recentes.length?'Projetos recentes':''}${cfg.recentes.map((r,i)=>`<div><a href="#" data-r="${i}" style="color:var(--ac)">${esc(r.caminho)}</a></div>`).join('')}</div>`;
+ v.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>b.dataset.a=='of'?openFolder():b.dataset.a=='ini'?mostrarInicio():openFile());v.querySelectorAll('[data-r]').forEach(a=>a.onclick=e=>{e.preventDefault();abrirProjeto(cfg.recentes[+a.dataset.r])})}
 let limpaView=null;
 const ctx={url,get cfg(){return cfg},saveCfg,onLimpar:f=>{limpaView=f},fail:m=>{$('#view').innerHTML=`<div class="wel">⚠ ${esc(m)}<br><button id="rt">Abrir como texto</button></div>`;$('#rt').onclick=()=>reopen(active)}};
 // tipo mostrado na barra de status: nome + origem da identificação + aviso se a extensão não combina com o conteúdo
@@ -97,14 +99,15 @@ function statusTipo(p,d,rotulo){const t=d.det;let x=t&&t.via=='conteudo'&&t.nome
 const binDet=d=>!!(d.det&&d.det.formato&&!d.det.formato.texto);
 function view(){if(limpaView){try{limpaView()}catch(e){}limpaView=null}const v=$('#view');v.innerHTML='';$('#s3').textContent='';$('#s2').textContent='';if(!active)return welcome();const p=active,d=docs[p];
  if(d.forced||d.kind=='text'&&!binDet(d)&&!UDS.findViewer(p,d)){$('#s3').textContent=statusTipo(p,d,langOf('x.'+efetiva(p,d)));return editor(p)}
- const vw=UDS.findViewer(p,d);if(vw){$('#s3').textContent=statusTipo(p,d,vw.nome);try{return vw.open(p,d,v,ctx)}catch(e){return ctx.fail('Falha no visualizador '+vw.nome+': '+e.message)}}
+ const vw=UDS.findViewer(p,d);if(vw&&cfg.modo=='texto'){$('#s3').textContent=statusTipo(p,d,vw.nome);v.innerHTML=`<div class="wel">${fileIcon(p,56,d)}<h1>${esc(base(p))}</h1>O modo <b>Texto</b> mostra só texto, e este arquivo é <b>${esc(vw.nome)}</b>.<br><br><button id="tx-un" class="gb">Abrir no modo Universal</button> <button id="tx-rt">Abrir como texto</button></div>`;$('#tx-un').onclick=()=>setMode('universal');$('#tx-rt').onclick=()=>reopen(p);return}
+ if(vw){$('#s3').textContent=statusTipo(p,d,vw.nome);try{return vw.open(p,d,v,ctx)}catch(e){return ctx.fail('Falha no visualizador '+vw.nome+': '+e.message)}}
  const t=d.det,prev=t&&t.vis?`O visualizador está previsto para a etapa ${t.vis}.`:'Ainda não há visualizador para este formato.';$('#s3').textContent=statusTipo(p,d,t&&t.nome?t.nome:'Binário');
  v.innerHTML=`<div class="wel">${fileIcon(p,56,d)}<h1>${esc(base(p))}</h1>${t&&t.nome?`Formato identificado: <b>${esc(t.nome)}</b>${t.via=='conteudo'?' (pelo conteúdo)':''}<br>`:'Formato não reconhecido.<br>'}${t&&t.conflito?`⚠ A extensão <b>.${esc(t.extArquivo)}</b> não combina com o conteúdo.<br>`:''}${prev}<br>${(d.size/1024).toFixed(1)} KB<br><br><button id="rt">Abrir como texto</button></div>`;$('#rt').onclick=()=>reopen(p)}
 function editor(p){const v=$('#view'),d=docs[p],ext=efetiva(p,d);v.innerHTML='<div class="ed"><div class="gu"></div><div class="al"></div><pre></pre><textarea spellcheck="false" wrap="off" aria-label="Editor"></textarea></div>';const ed=v.querySelector('.ed');ed.style.fontSize=cfg.fs+'px';
  const ta=ed.querySelector('textarea'),pre=ed.querySelector('pre'),gu=ed.querySelector('.gu'),al=ed.querySelector('.al');ta.value=d.text;
  const up=()=>{pre.innerHTML=highlight(ta.value,ext)+'\n';gu.innerHTML=Array.from({length:ta.value.split('\n').length},(_,i)=>i+1).join('<br>')};
  const lh=()=>parseFloat(getComputedStyle(ta).lineHeight)||20;
- const cur=()=>{const a=ta.value.slice(0,ta.selectionStart).split('\n');$('#s2').textContent=`Ln ${a.length}, Col ${a[a.length-1].length+1}`;al.style.top=(8+(a.length-1)*lh()-ta.scrollTop)+'px';al.style.height=lh()+'px'};
+ const cur=()=>{const a=ta.value.slice(0,ta.selectionStart).split('\n');if(Date.now()>flashAte)$('#s2').textContent=`Ln ${a.length}, Col ${a[a.length-1].length+1}`;al.style.top=(8+(a.length-1)*lh()-ta.scrollTop)+'px';al.style.height=lh()+'px'};
  ta.oninput=()=>{d.text=ta.value;if(!d.dirty){d.dirty=true;renderTabs();renderSide()}up();cur()};
  ta.onscroll=()=>{pre.style.transform=`translate(${-ta.scrollLeft}px,${-ta.scrollTop}px)`;gu.style.transform=`translateY(${-ta.scrollTop}px)`;cur()};
  ta.onkeyup=ta.onclick=cur;ta.onkeydown=e=>{if(e.key=='Tab'){e.preventDefault();document.execCommand('insertText',false,'  ')}};up();cur();ta.focus()}
@@ -130,7 +133,7 @@ function showPanel(){const pt=$('#ptabs');pt.innerHTML='';PT.forEach(([k,n])=>{c
 
 
 /* ---------- Configurações: caixa flutuante ---------- */
-const CFG_ABAS=[['aparencia','Aparência'],['editor','Editor'],['tipos','Tipos de arquivo'],['atalhos','Atalhos'],['extensoes','Extensões'],['sobre','Sobre']];
+const CFG_ABAS=[['aparencia','Aparência'],['editor','Editor'],['inicio','Início e modos'],['tipos','Tipos de arquivo'],['atalhos','Atalhos'],['extensoes','Extensões'],['sobre','Sobre']];
 let cfgAba='aparencia',cfgFiltro='';
 const cfgAberta=()=>$('#cfgwin').style.display=='flex';
 function abrirConfig(aba){if(aba)cfgAba=aba;const w=$('#cfgwin'),nova=!cfgAberta();w.style.display='flex';if(nova){w.style.left=Math.max(10,(innerWidth-w.offsetWidth)/2)+'px';w.style.top='64px'}renderConfig()}
@@ -159,11 +162,16 @@ function renderConfig(){const nav=$('#cfgnav');nav.innerHTML='';
  else if(cfgAba=='editor'){
   b.innerHTML=`<h3>Tamanho da fonte do editor: <span id="fv">${cfg.fs}</span></h3><input type="range" id="fs" min="10" max="24" value="${cfg.fs}" style="width:260px"><div class="hint">Mais opções do editor (fonte, quebra de linha, recuo) chegam nas etapas 2.x do roteiro.</div>`;
   $('#fs').oninput=e=>{cfg.fs=+e.target.value;$('#fv').textContent=cfg.fs;document.querySelectorAll('.ed').forEach(x=>x.style.fontSize=cfg.fs+'px');saveCfg()}}
+ else if(cfgAba=='inicio'){
+  b.innerHTML=`<h3>Página inicial</h3><label class="ln"><input type="checkbox" id="cn1"> Mostrar a página inicial ao iniciar</label><label class="ln"><input type="checkbox" id="cn2"> Reabrir direto o último projeto, no modo em que foi usado</label><div class="hint">A página inicial lista os projetos recentes (fixe os que não quer perder) e deixa escolher a função. Ela volta pelo menu do logo → Arquivo → Página inicial.</div>
+   <h3>Modos de trabalho</h3><table>${UDSModos.lista().map(m=>`<tr><td>${esc(m.nome)}${m.disponivel===false?' (em breve, '+esc(m.previsto||'')+')':''}</td><td>Ctrl+${esc(m.atalho)}</td><td>${esc(m.desc||'')}</td></tr>`).join('')}</table><div class="hint">Cada modo lembra os painéis que você deixou visíveis. Trocar de modo não fecha abas nem perde alterações.</div>`;
+  $('#cn1').checked=cfg.inicio.mostrar!==false;$('#cn2').checked=!!cfg.inicio.reabrir;
+  $('#cn1').onchange=e=>{cfg.inicio.mostrar=e.target.checked;saveCfg()};$('#cn2').onchange=e=>{cfg.inicio.reabrir=e.target.checked;saveCfg()}}
  else if(cfgAba=='tipos'){
   b.innerHTML=`<h3>Tipos de arquivo</h3><input type="text" id="tf" placeholder="Filtrar por nome ou extensão (ex.: html, .png)" value="${esc(cfgFiltro)}"><div class="hint">Cada tipo tem ícone nos 2 estilos, em preto e branco. Criar tipos novos e associar ícones: etapa 1.65. Até lá, veja ReadMe/icones-personalizados.md.</div><div id="tl">${listaTiposHtml()}</div>`;
   $('#tf').oninput=e=>{cfgFiltro=e.target.value;$('#tl').innerHTML=listaTiposHtml()};$('#tf').focus()}
  else if(cfgAba=='atalhos'){
-  b.innerHTML=`<h3>Atalhos de teclado</h3><table>${[['Ctrl+O','Abrir pasta'],['Ctrl+S','Salvar'],['Ctrl+,','Abrir estas configurações'],['Ctrl +  /  Ctrl −  /  Ctrl 0','Aumentar, diminuir e restaurar o zoom'],['Ctrl + roda do mouse','Zoom da interface'],['Tab (no editor)','Inserir 2 espaços'],['Esc','Fechar esta caixa']].map(([k,t])=>`<tr><td>${esc(k)}</td><td>${esc(t)}</td></tr>`).join('')}</table><div class="hint">Atalhos personalizáveis: etapa 4.70.</div>`}
+  b.innerHTML=`<h3>Atalhos de teclado</h3><table>${[['Ctrl+O','Abrir pasta'],['Ctrl+S','Salvar'],['Ctrl+,','Abrir estas configurações'],['Ctrl+1 a Ctrl+4','Trocar o modo de trabalho (Universal, Texto, Áudio, Vídeo)'],['Botão direito → Visualizar','Prévia de um arquivo ou pasta, sem abrir aba'],['Ctrl +  /  Ctrl −  /  Ctrl 0','Aumentar, diminuir e restaurar o zoom'],['Ctrl + roda do mouse','Zoom da interface'],['Tab (no editor)','Inserir 2 espaços'],['Esc','Fechar a prévia, a página inicial ou esta caixa']].map(([k,t])=>`<tr><td>${esc(k)}</td><td>${esc(t)}</td></tr>`).join('')}</table><div class="hint">Atalhos personalizáveis: etapa 4.70.</div>`}
  else if(cfgAba=='extensoes'){
   b.innerHTML=`<h3>Extensões</h3><div class="hint">Temas: disponíveis (veja a aba Aparência).<br>Pacotes de ícones em pastas: etapa 1.66.<br>Plugins de visualizador, editor e linguagem: etapas 6.00 a 6.50.<br>Gerenciador de extensões e permissões: etapas 7.00 e 7.50.</div>`}
  else{
@@ -173,9 +181,43 @@ $('#cfgx').onclick=fecharConfig;
 (()=>{const w=$('#cfgwin'),h=w.querySelector('.ct');let o=null;h.onpointerdown=e=>{if(e.target.closest('button'))return;o=[e.clientX-w.offsetLeft,e.clientY-w.offsetTop];h.setPointerCapture(e.pointerId)};
  h.onpointermove=e=>{if(!o)return;w.style.left=Math.min(innerWidth-80,Math.max(80-w.offsetWidth,e.clientX-o[0]))+'px';w.style.top=Math.min(innerHeight-40,Math.max(0,e.clientY-o[1]))+'px'};h.onpointerup=()=>o=null})();
 
+/* ---------- Modos de trabalho, página inicial e Visualizar (1.4.2) ---------- */
+function setMode(id){const r=UDSModos.trocar(cfg,id);if(!r.ok){flash(r.motivo=='indisponivel'?`O modo ${UDSModos.obter(id).nome} chega na versão ${r.previsto}.`:'Modo desconhecido.');return false}
+ if(root)cfg.recentes=UDSRecentes.definirModo(cfg.recentes,root,id);saveCfg();fecharInicio();applyLayout();renderAll();flash('Modo '+UDSModos.obter(id).nome);return true}
+function renderModo(){const m=UDSModos.obter(cfg.modo)||UDSModos.obter('universal');$('#modo').innerHTML=`${svgRaw(m.icone)}<span>${esc(m.nome)}</span>${svg('chev')}`;$('#modo').title='Modo de trabalho: '+m.nome+' (Ctrl+1 a Ctrl+4)'}
+$('#modo').onclick=e=>{e.stopPropagation();popup($('#drop'),$('#modo').getBoundingClientRect().left,44,[{gt:'MODO DE TRABALHO'},...UDSModos.lista().map(m=>({h:`<span class=\"mi\">${svgRaw(m.icone)}</span>${esc(m.nome)}${m.disponivel===false?' <small>(em breve)</small>':''}${m.id==cfg.modo?' ✓':''}`,k:'Ctrl+'+m.atalho,f:()=>setMode(m.id)}))])};
+function renderTxBar(){const b=$('#txbar');if(cfg.modo!='texto'){b.style.display='none';return}b.style.display='flex';
+ b.innerHTML=`<b>Modo Texto</b><span class=\"tn\" id=\"tx-n\"></span><span class=\"sp\"></span><span>Fonte</span><button id=\"tx-f1\" aria-label=\"Diminuir a fonte\">A−</button><span class=\"tn\">${cfg.fs}</span><button id=\"tx-f2\" aria-label=\"Aumentar a fonte\">A+</button><button id=\"tx-m\">Trocar de modo</button>`;
+ $('#tx-f1').onclick=()=>fonteTexto(-1);$('#tx-f2').onclick=()=>fonteTexto(1);$('#tx-m').onclick=e=>{e.stopPropagation();$('#modo').click()};contagemTexto()}
+function fonteTexto(d){cfg.fs=Math.min(24,Math.max(10,cfg.fs+d));document.querySelectorAll('.ed').forEach(x=>x.style.fontSize=cfg.fs+'px');saveCfg();renderTxBar()}
+function contagemTexto(){const e=$('#tx-n');if(!e)return;const d=active&&docs[active];if(!d||d.kind!='text'||UDS.findViewer(active,d)&&!d.forced){e.textContent='';return}const c=UDSModos.texto.contarTexto(d.text);e.textContent=`${c.linhas} linhas · ${c.palavras} palavras · ${c.caracteres} caracteres`}
+document.addEventListener('input',e=>{if(cfg.modo=='texto'&&e.target.closest&&e.target.closest('#view .ed'))contagemTexto()});
+let inicioAberto=false,inicioCtl=null;
+function montarInicio(){const el=$('#inicio');el.style.display='block';if(inicioCtl)inicioCtl.destruir();
+ inicioCtl=UDSInicio.montar(el,{recentes:cfg.recentes,modos:UDSModos.lista(),modoAtual:cfg.modo,versao:VERSION,mostrarAoIniciar:cfg.inicio.mostrar!==false,
+  tempo:UDSRecentes.tempoRelativo,nome:UDSRecentes.nomeDe,existe:p=>inv('list_dir',{path:p}).then(()=>true,()=>false),
+  onAbrir:r=>abrirProjeto(r),onModo:id=>setMode(id),onAbrirPasta:openFolder,onAbrirArquivo:openFile,
+  onFixar:r=>{cfg.recentes=UDSRecentes.alternarFixado(cfg.recentes,r.caminho);saveCfg();montarInicio()},
+  onRemover:r=>{cfg.recentes=UDSRecentes.remover(cfg.recentes,r.caminho);saveCfg();montarInicio()},
+  onMenu:(r,x,y)=>popup($('#ctx'),x,y,[{t:'Abrir',f:()=>abrirProjeto(r)},{t:r.fixado?'Desafixar':'Fixar na lista',f:()=>{cfg.recentes=UDSRecentes.alternarFixado(cfg.recentes,r.caminho);saveCfg();montarInicio()}},{t:'Remover da lista',f:()=>{cfg.recentes=UDSRecentes.remover(cfg.recentes,r.caminho);saveCfg();montarInicio()}}]),
+  onMostrarAoIniciar:v=>{cfg.inicio.mostrar=v;saveCfg()}})}
+function mostrarInicio(){inicioAberto=true;montarInicio()}
+function fecharInicio(){if(!inicioAberto)return;inicioAberto=false;if(inicioCtl)inicioCtl.destruir();inicioCtl=null;$('#inicio').style.display='none'}
+// Abre um projeto recente no modo em que foi usado. Se a pasta sumiu (apagada, pendrive removido), avisa e não muda nada.
+async function abrirProjeto(r){if(!r)return;try{await inv('list_dir',{path:r.caminho})}catch(e){flash('Pasta não encontrada: '+UDSRecentes.nomeDe(r.caminho));log('Não foi possível abrir '+r.caminho+': '+e);return}
+ const m=UDSModos.obter(r.modo);if(m&&m.disponivel!==false&&cfg.modo!=r.modo)UDSModos.trocar(cfg,r.modo);
+ try{await setRoot(r.caminho)}catch(e){flash('Erro ao abrir a pasta.');log('Erro: '+e)}}
+async function iniciarTela(){if(cfg.inicio.reabrir&&cfg.recentes[0]){UDSLoading.etapa('Abrindo o último projeto…',.95);await abrirProjeto(cfg.recentes[0]);if(root)return}if(cfg.inicio.mostrar!==false)mostrarInicio()}
+const prev=UDSVisualizar.criar({win:$('#prevwin'),inv,lerDoc:(p,f)=>lerDoc(p,f),findViewer:(p,d)=>UDS.findViewer(p,d),url,cfg:()=>cfg,saveCfg,esc,base,extOf,efetiva:(p,d)=>efetiva(p,d),highlight,
+ fileIcon:(n,sz,d)=>fileIcon(n,sz,d),folderIcon:(o,sz)=>folderIcon(o,sz),abrirNoUDS:p=>openF(p),flash});
+// Esc fecha primeiro a prévia, depois a página inicial; a tecla não chega às outras janelas. Ctrl+1 a Ctrl+4 trocam o modo.
+document.addEventListener('keydown',e=>{const m=e.ctrlKey||e.metaKey;
+ if(m&&!e.shiftKey&&!e.altKey&&/^[1-9]$/.test(e.key)){const md=UDSModos.doAtalho(e.key);if(md){e.preventDefault();e.stopImmediatePropagation();setMode(md.id)}return}
+ if(e.key=='Escape'&&!document.fullscreenElement&&$('#mod').style.display!='grid'){if(prev.aberta()){e.stopImmediatePropagation();prev.fechar()}else if(inicioAberto&&!cfgAberta()){e.stopImmediatePropagation();fecharInicio()}}},true);
+
 /* ---------- Início ---------- */
-function renderAll(){renderRail();renderTop();renderTabs();renderSide();view();renderNotes();if(cfgAberta())renderConfig();$('#s1').textContent=root?'📁 '+base(root):'UDS '+VERSION}
+function renderAll(){renderRail();renderTop();renderModo();renderTabs();renderSide();view();renderTxBar();renderNotes();if(cfgAberta())renderConfig();if(inicioAberto)montarInicio();$('#s1').textContent=root?'📁 '+base(root):'UDS '+VERSION}
 document.addEventListener('keydown',e=>{const m=e.ctrlKey||e.metaKey;if(m&&e.key=='s'){e.preventDefault();saveAll()}else if(m&&e.key=='o'){e.preventDefault();openFolder()}else if(m&&e.key==','){e.preventDefault();abrirConfig()}else if(e.key=='Escape'&&cfgAberta()&&$('#mod').style.display!='grid'){fecharConfig()}else if(m&&(e.key=='+'||e.key=='=')){e.preventDefault();setZoom(cfg.zoom+.1)}else if(m&&(e.key=='-'||e.key=='_')){e.preventDefault();setZoom(cfg.zoom-.1)}else if(m&&e.key=='0'){e.preventDefault();setZoom(1)}});
 document.addEventListener('wheel',e=>{if(e.ctrlKey){e.preventDefault();setZoom(cfg.zoom+(e.deltaY<0?.1:-.1))}},{passive:false});
 $('#t1').onclick=()=>toggle('sideOpen');$('#t2').onclick=()=>toggle('panelOpen');$('#t3').onclick=()=>toggle('notesOpen');$('#zl').onclick=()=>setZoom(1);
-(async()=>{UDSLoading.etapa('Carregando as configurações…',.2);try{Object.assign(cfg,JSON.parse(await inv('load_config')))}catch(e){}UDSLoading.preferencia(cfg.mostrarLoading!==false);if(!ESTILOS.includes(cfg.iconStyle))cfg.iconStyle='estilo1';if(!cfg.themeId||cfg.themeId=='uds-escuro'&&cfg.theme=='light')cfg.themeId=cfg.theme=='light'?'uds-claro':'uds-escuro';UDSLoading.etapa('Lendo os temas…',.55);await loadThemes();applyTheme(cfg.themeId,false);setZoom(cfg.zoom);UDSLoading.etapa('Montando a interface…',.85);applyLayout();renderAll();showPanel();log('UDS '+VERSION+' pronto. Dados portáteis em: '+await inv('portable_path'))})().catch(e=>console.error(e)).finally(()=>UDSLoading.concluir());
+(async()=>{UDSLoading.etapa('Carregando as configurações…',.2);try{Object.assign(cfg,JSON.parse(await inv('load_config')))}catch(e){}UDSLoading.preferencia(cfg.mostrarLoading!==false);cfg.recentes=UDSRecentes.normalizar(cfg.recentes&&cfg.recentes.length?cfg.recentes:cfg.recent);delete cfg.recent;cfg.inicio={mostrar:true,reabrir:false,...(cfg.inicio&&typeof cfg.inicio=='object'?cfg.inicio:{})};UDSModos.iniciar(cfg);if(!ESTILOS.includes(cfg.iconStyle))cfg.iconStyle='estilo1';if(!cfg.themeId||cfg.themeId=='uds-escuro'&&cfg.theme=='light')cfg.themeId=cfg.theme=='light'?'uds-claro':'uds-escuro';UDSLoading.etapa('Lendo os temas…',.55);await loadThemes();applyTheme(cfg.themeId,false);setZoom(cfg.zoom);UDSLoading.etapa('Montando a interface…',.85);applyLayout();renderAll();showPanel();await iniciarTela();log('UDS '+VERSION+' pronto. Dados portáteis em: '+await inv('portable_path'))})().catch(e=>console.error(e)).finally(()=>UDSLoading.concluir());

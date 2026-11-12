@@ -1,12 +1,12 @@
 {
   "name": "universal-development-studio",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "private": true,
   "scripts": {
     "dev": "tauri dev",
     "build": "tauri build --no-bundle",
     "icons": "tauri icon app-icon.png",
-    "test": "node --test tests/core.test.js tests/deteccao.test.js tests/audio.test.js tests/video.test.js tests/loading.test.js"
+    "test": "node --test tests/core.test.js tests/deteccao.test.js tests/audio.test.js tests/video.test.js tests/loading.test.js tests/recentes.test.js tests/modos.test.js tests/visualizar.test.js"
   },
   "devDependencies": {
     "@tauri-apps/cli": "^2"
